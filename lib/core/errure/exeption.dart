@@ -1,1 +1,1 @@
-class ServerExeption implements Exception {}
+class ServerException implements Exception {}

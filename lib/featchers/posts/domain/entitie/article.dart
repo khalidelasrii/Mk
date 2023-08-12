@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Article extends Equatable {
-  final int id;
+  final String id;
   final String article;
   final String name;
   final double prix;
@@ -13,5 +13,5 @@ class Article extends Equatable {
       required this.prix});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [id, article, name, prix];
 }

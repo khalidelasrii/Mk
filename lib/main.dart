@@ -27,7 +27,7 @@ class Maktabati extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(focusColor: Colors.blue),
-        initialRoute: SingIn.screenRout,
+        initialRoute: Home.screenRout,
         routes: {
           // GoogleAuth.screenRout: (context) => const GoogleAuth(),
           // Auth.screenRout: (context) => const Auth(),
