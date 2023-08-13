@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'home.dart';
-
 class SingIn extends StatelessWidget {
   const SingIn({super.key});
   static const String screenRout = 'SingIn';
@@ -167,7 +165,7 @@ class SignInfaild extends StatelessWidget {
                     password: _passwordControllor.text.trim());
                 final user = FirebaseAuth.instance.currentUser;
                 if (user != null) {
-                  Navigator.pushNamed(context, Home.screenRout);
+                  // Navigator.pushNamed(context, Home.screenRout);
                 }
               } catch (errure) {
                 print(errure);
@@ -186,7 +184,7 @@ class SignInfaild extends StatelessWidget {
                       await signInWithGoogle();
 
                   if (userCredential != null) {
-                    Navigator.pushNamed(context, Home.screenRout);
+                    // Navigator.pushNamed(context, Home.screenRout);
                   }
                 } catch (e) {
                   print(e);

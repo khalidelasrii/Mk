@@ -4,17 +4,17 @@ import 'package:mk/featchers/posts/data/data_sources/articles_remote_data_source
 import 'package:mk/featchers/posts/data/models/article_model.dart';
 import '../../../../core/errure/faillure.dart';
 import '../../domain/entitie/article.dart';
-import '../../domain/repository/articles_repository.dart';
+import '../../domain/repository/repository_articles.dart';
 
 class ArticleRepositoryImpl implements RepositoryArticles {
-  final ArticlesRemoteDataSource articlesRemoteDataSource;
+  final ArticlesFirebase articlesFirebase;
 
-  ArticleRepositoryImpl(this.articlesRemoteDataSource);
+  ArticleRepositoryImpl({required this.articlesFirebase});
 
   @override
   Future<Either<Faillure, List<Article>>> getArticles() async {
     try {
-      final remoteArticle = await articlesRemoteDataSource.getArticles();
+      final remoteArticle = await articlesFirebase.getArticles();
       return right(remoteArticle);
     } on ServerException {
       return Left(ServerFailure());
@@ -29,7 +29,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
         name: article.name,
         prix: article.prix);
     try {
-      await articlesRemoteDataSource.addArticle(articleModel);
+      await articlesFirebase.addArticle(articleModel);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());
@@ -44,7 +44,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
         name: article.name,
         prix: article.prix);
     try {
-      await articlesRemoteDataSource.updateArticle(articleModel);
+      await articlesFirebase.updateArticle(articleModel);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());
@@ -54,7 +54,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   @override
   Future<Either<Faillure, Unit>> delletArticle(String id) async {
     try {
-      await articlesRemoteDataSource.delletArticle(id);
+      await articlesFirebase.delletArticle(id);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());
