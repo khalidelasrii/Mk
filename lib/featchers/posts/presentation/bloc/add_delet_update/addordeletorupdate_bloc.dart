@@ -14,18 +14,18 @@ part 'addordeletorupdate_state.dart';
 
 class AddordeletorupdateBloc
     extends Bloc<AddordeletorupdateEvent, AddordeletorupdateState> {
-  final AddArticleUseCase addArticleUseCase;
-  final DelletArticleUseCase delletArticleUseCase;
-  final UpdateArticleUseCase updateArticleUseCase;
+  final AddArticleUseCase addArticle;
+  final DelletArticleUseCase delletArticle;
+  final UpdateArticleUseCase updateArticle;
   AddordeletorupdateBloc(
-      {required this.addArticleUseCase,
-      required this.delletArticleUseCase,
-      required this.updateArticleUseCase})
+      {required this.addArticle,
+      required this.delletArticle,
+      required this.updateArticle})
       : super(AddordeletorupdateInitial()) {
     on<AddordeletorupdateEvent>((event, emit) async {
       if (event is AddArticleEvent) {
         emit(LodingAddDeleteUpdateArticleState());
-        final faillureOrDoneMessage = await addArticleUseCase(event.article);
+        final faillureOrDoneMessage = await addArticle(event.article);
 
         faillureOrDoneMessage.fold((faillure) {
           emit(ErrorAddDeleteUpdateState(
@@ -35,8 +35,7 @@ class AddordeletorupdateBloc
         });
       } else if (event is DelletArticleEvent) {
         emit(LodingAddDeleteUpdateArticleState());
-        final faillureOrDoneMessage =
-            await delletArticleUseCase(event.articlId);
+        final faillureOrDoneMessage = await delletArticle(event.articlId);
 
         faillureOrDoneMessage.fold((faillure) {
           emit(ErrorAddDeleteUpdateState(
@@ -48,7 +47,7 @@ class AddordeletorupdateBloc
         /////
       } else if (event is UpdatArticleEvent) {
         emit(LodingAddDeleteUpdateArticleState());
-        final faillureOrDoneMessage = await updateArticleUseCase(event.article);
+        final faillureOrDoneMessage = await updateArticle(event.article);
 
         faillureOrDoneMessage.fold((faillure) {
           emit(ErrorAddDeleteUpdateState(

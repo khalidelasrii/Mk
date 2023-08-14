@@ -7,7 +7,7 @@ import '../../domain/entitie/article.dart';
 import '../../domain/repository/repository_articles.dart';
 
 class ArticleRepositoryImpl implements RepositoryArticles {
-  final ArticlesFirebase articlesFirebase;
+  final ArticlesRemoteDataSource articlesFirebase;
 
   ArticleRepositoryImpl({required this.articlesFirebase});
 

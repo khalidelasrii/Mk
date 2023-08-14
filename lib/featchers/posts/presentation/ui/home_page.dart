@@ -11,26 +11,22 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(context),
-      body: _buildBody(context),
-    );
+        appBar: AppBar(),
+        body: BlocBuilder<ArticleBloc, ArticleState>(
+          builder: (context, state) {
+            if (state is ArticleInitial) {
+              return const LowdingWidget();
+            } else if (state is LodingArticlesState) {
+              return const LowdingWidget();
+            } else if (state is LodedArticlesState) {
+              return LodedWidget(articles: state.articles);
+            } else if (state is ErrorArticlesState) {
+              return MessageDisplay(
+                message: state.message,
+              );
+            }
+            return const SizedBox();
+          },
+        ));
   }
-}
-
-AppBar _buildAppbar(BuildContext context) => AppBar();
-
-Widget _buildBody(BuildContext context) {
-  return BlocBuilder<ArticleBloc, ArticleState>(builder: (context, state) {
-    if (state is LodingArticlesState) {
-      return const LowdingWidget();
-    } else if (state is LodedArticlesState) {
-      return LodedWidget(articles: state.articles);
-    } else if (state is ErrorArticlesState) {
-      return MessageDisplay(
-        message: state.message,
-        color: Colors.red,
-      );
-    }
-    return const SizedBox();
-  });
 }

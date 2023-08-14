@@ -3,24 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/posts/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/posts/presentation/bloc/article/article_bloc.dart';
-import 'package:mk/featchers/posts/presentation/widgets/sing_in.dart';
 import 'featchers/posts/presentation/ui/home_page.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: const FirebaseOptions(
-    apiKey: "AIzaSyBxlxB-nnjgEN542jqPvQrQo9O9KhgO9D8",
-    authDomain: "milotech-33497.firebaseapp.com",
-    projectId: "milotech-33497",
-    storageBucket: "milotech-33497.appspot.com",
-    messagingSenderId: "1090838931629",
-    appId: "1:1090838931629:web:64efe23033a1a187277e24",
-  ));
-
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyBxlxB-nnjgEN542jqPvQrQo9O9KhgO9D8",
+      authDomain: "milotech-33497.firebaseapp.com",
+      projectId: "milotech-33497",
+      storageBucket: "milotech-33497.appspot.com",
+      messagingSenderId: "1090838931629",
+      appId: "1:1090838931629:web:64efe23033a1a187277e24",
+    ),
+  );
   await di.init();
-
   runApp(const Maktabati());
 }
 
@@ -43,7 +41,6 @@ class Maktabati extends StatelessWidget {
           theme: ThemeData(focusColor: Colors.blue),
           initialRoute: HomePage.screenRout,
           routes: {
-            SingIn.screenRout: (context) => const SingIn(),
             HomePage.screenRout: (context) => const HomePage(),
           }),
     );

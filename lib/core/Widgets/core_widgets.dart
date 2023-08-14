@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 
-CircularProgressIndicator lowdingWidget() {
-  return const CircularProgressIndicator();
-}
-
 class LowdingWidget extends StatelessWidget {
   const LowdingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: SizedBox(
-            height: 40,
-            child: CircularProgressIndicator(
-              color: Colors.amber,
-            )),
-      ),
+    return const Center(
+      child: SizedBox(
+          height: 40,
+          child: CircularProgressIndicator(
+            color: Colors.amber,
+          )),
     );
   }
 }
@@ -24,9 +18,8 @@ class LowdingWidget extends StatelessWidget {
 // MEssage display
 
 class MessageDisplay extends StatelessWidget {
-  const MessageDisplay({super.key, required this.color, required this.message});
+  const MessageDisplay({super.key, required this.message});
   final String message;
-  final Color color;
   @override
   Widget build(BuildContext context) {
     return SnackBar(
@@ -35,7 +28,7 @@ class MessageDisplay extends StatelessWidget {
       child: SizedBox(
         child: Text(
           message,
-          style: TextStyle(color: color),
+          style: const TextStyle(color: Colors.red),
         ),
       ),
     ));
