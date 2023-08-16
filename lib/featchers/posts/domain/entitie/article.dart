@@ -7,11 +7,11 @@ class Article extends Equatable {
   final double prix;
 
   Article(
-      {required this.id,
-      required this.article,
+      {required this.article,
       required this.name,
-      required this.prix});
+      required this.prix,
+      required this.id});
 
   @override
-  List<Object?> get props => [id, article, name, prix];
+  List<Object?> get props => [article, name, prix];
 }

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/posts/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/posts/presentation/bloc/article/article_bloc.dart';
+import 'featchers/posts/presentation/ui/add_article.dart';
 import 'featchers/posts/presentation/ui/home_page.dart';
+import 'featchers/posts/presentation/ui/update_article.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -42,6 +44,8 @@ class Maktabati extends StatelessWidget {
           initialRoute: HomePage.screenRout,
           routes: {
             HomePage.screenRout: (context) => const HomePage(),
+            AddArticle.screenRout: (context) => const AddArticle(),
+            UpdateArticle.screenRout: (context) => const UpdateArticle(),
           }),
     );
   }

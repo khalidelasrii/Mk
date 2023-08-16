@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:mk/featchers/posts/data/models/article_model.dart';
 import 'package:mk/featchers/posts/domain/entitie/article.dart';
 
 abstract class ArticlesRemoteDataSource {
@@ -16,10 +15,12 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   @override
   Future<Unit> addArticle(Article article) async {
     await _firestore.collection('Articles').add({
+      'id': article.id,
       'article': article.article,
       'name': article.name,
       'prix': article.prix,
     });
+
     return unit;
   }
 
@@ -34,7 +35,13 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
     final querySnapshot = await _firestore.collection('Articles').get();
     final articles = querySnapshot.docs.map((doc) {
       final data = doc.data();
-      return ArticleModel.fromMap(data);
+      final articleId = doc.id; // Get the document ID
+      return Article(
+        id: articleId,
+        article: data['article'], // Replace with your field names
+        name: data['name'],
+        prix: data['prix'].toDouble(),
+      );
     }).toList();
     return articles; // Return the list of articles
   }

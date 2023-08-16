@@ -24,15 +24,22 @@ class AddordeletorupdateBloc
       : super(AddordeletorupdateInitial()) {
     on<AddordeletorupdateEvent>((event, emit) async {
       if (event is AddArticleEvent) {
-        emit(LodingAddDeleteUpdateArticleState());
-        final faillureOrDoneMessage = await addArticle(event.article);
+        if (event.article.article == "" ||
+            event.article.name == "" ||
+            event.article.prix == 0) {
+          emit(const ErrorAddDeleteUpdateState(
+              message: 'Remplire tout les champ'));
+        } else {
+          final faillureOrDoneMessage = await addArticle(event.article);
 
-        faillureOrDoneMessage.fold((faillure) {
-          emit(ErrorAddDeleteUpdateState(
-              message: _mapFailureTomessage(faillure)));
-        }, (_) {
-          emit(const ErrorAddDeleteUpdateState(message: ADD_SUCCESS_MESSAGES));
-        });
+          faillureOrDoneMessage.fold((faillure) {
+            emit(ErrorAddDeleteUpdateState(
+                message: _mapFailureTomessage(faillure)));
+          }, (_) {
+            emit(
+                const ErrorAddDeleteUpdateState(message: ADD_SUCCESS_MESSAGES));
+          });
+        }
       } else if (event is DelletArticleEvent) {
         emit(LodingAddDeleteUpdateArticleState());
         final faillureOrDoneMessage = await delletArticle(event.articlId);

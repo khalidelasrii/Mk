@@ -2,10 +2,10 @@ import 'package:mk/featchers/posts/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
   ArticleModel(
-      {required super.id,
-      required super.article,
+      {required super.article,
       required super.name,
-      required super.prix});
+      required super.prix,
+      required super.id});
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
