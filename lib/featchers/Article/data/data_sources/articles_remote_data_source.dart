@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:mk/featchers/posts/domain/entitie/article.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ArticlesRemoteDataSource {
   Future<List<Article>> getArticles();

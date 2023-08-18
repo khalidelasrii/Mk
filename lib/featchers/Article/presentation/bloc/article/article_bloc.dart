@@ -2,8 +2,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mk/core/errure/faillure.dart';
-import 'package:mk/featchers/posts/domain/entitie/article.dart';
-import 'package:mk/featchers/posts/domain/use_case/get_articles_use_case.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
+import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart';
 part 'article_event.dart';
 part 'article_state.dart';
 

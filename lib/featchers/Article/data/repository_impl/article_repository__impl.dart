@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
-import 'package:mk/featchers/posts/data/data_sources/articles_remote_data_source.dart';
-import 'package:mk/featchers/posts/data/models/article_model.dart';
+import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
+import 'package:mk/featchers/Article/data/models/article_model.dart';
 import '../../../../core/errure/faillure.dart';
 import '../../domain/entitie/article.dart';
 import '../../domain/repository/repository_articles.dart';

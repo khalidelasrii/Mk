@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/posts/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
+import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
+import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 
 import '../../domain/entitie/article.dart';
 
@@ -32,6 +33,13 @@ class LodedWidget extends StatelessWidget {
                               name: article.name,
                               prix: article.prix,
                               id: article.id);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => AddOrUpdateArticle(
+                                        isUpdate: true,
+                                        article: artic,
+                                      )));
                         },
                         icon: const Icon(Icons.mode),
                       ),

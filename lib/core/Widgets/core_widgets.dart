@@ -22,8 +22,9 @@ class MessageDisplay extends StatelessWidget {
   final String message;
   @override
   Widget build(BuildContext context) {
-    return SnackBar(
-        content: Padding(
+    return ScaffoldMessenger(
+        child: SnackBar(
+            content: Padding(
       padding: const EdgeInsets.all(20.0),
       child: SizedBox(
         child: Text(
@@ -31,6 +32,6 @@ class MessageDisplay extends StatelessWidget {
           style: const TextStyle(color: Colors.red),
         ),
       ),
-    ));
+    )));
   }
 }

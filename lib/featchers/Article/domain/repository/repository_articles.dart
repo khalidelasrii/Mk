@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:mk/featchers/posts/domain/entitie/article.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 import '../../../../core/errure/faillure.dart';
 

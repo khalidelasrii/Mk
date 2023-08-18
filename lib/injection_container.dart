@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mk/featchers/posts/data/data_sources/articles_remote_data_source.dart';
-import 'package:mk/featchers/posts/domain/repository/repository_articles.dart';
-import 'package:mk/featchers/posts/domain/use_case/add_article_use_case.dart';
-import 'package:mk/featchers/posts/domain/use_case/get_articles_use_case.dart';
-import 'package:mk/featchers/posts/domain/use_case/update_article_use_case.dart';
-import 'package:mk/featchers/posts/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
-import 'package:mk/featchers/posts/presentation/bloc/article/article_bloc.dart';
+import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
+import 'package:mk/featchers/Article/domain/repository/repository_articles.dart';
+import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
+import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
+import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 
-import 'featchers/posts/data/repository_impl/article_repository__impl.dart';
-import 'featchers/posts/domain/use_case/dellet_article_use_case.dart';
+import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
+import 'featchers/Article/domain/use_case/dellet_article_use_case.dart';
 
 final sl = GetIt.instance;
 

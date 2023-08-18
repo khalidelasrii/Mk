@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:mk/featchers/posts/domain/entitie/article.dart';
-import 'package:mk/featchers/posts/domain/repository/repository_articles.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
+import 'package:mk/featchers/Article/domain/repository/repository_articles.dart';
 
 import '../../../../core/errure/faillure.dart';
 

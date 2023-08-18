@@ -1,4 +1,4 @@
-import 'package:mk/featchers/posts/domain/entitie/article.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
   ArticleModel(
