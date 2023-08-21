@@ -15,7 +15,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   Future<Either<Faillure, List<Article>>> getArticles() async {
     try {
       final remoteArticle = await articlesFirebase.getArticles();
-      return right(remoteArticle);
+      return Right(remoteArticle);
     } on ServerException {
       return Left(ServerFailure());
     }
