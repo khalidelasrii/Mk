@@ -8,7 +8,7 @@ class SingInUseCase {
   UserRepository userRepository;
   SingInUseCase({required this.userRepository});
 
-  Future<Either<Faillure, List<Usr>>> call() async {
-    return await userRepository.singIn();
+  Future<Either<Faillure, Map>> call(Usr usr) async {
+    return await userRepository.singIn(usr);
   }
 }

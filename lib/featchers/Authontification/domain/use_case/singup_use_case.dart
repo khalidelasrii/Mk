@@ -7,7 +7,7 @@ class SingUpUseCase {
   UserRepository userRepository;
   SingUpUseCase({required this.userRepository});
 
-  Future<Either<Faillure, List<Usr>>> call() async {
-    return await userRepository.singUp();
+  Future<Either<Faillure, Map>> call(Usr usr) async {
+    return await userRepository.singUp(usr);
   }
 }

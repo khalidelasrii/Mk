@@ -16,10 +16,8 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
         final faillureOrArticles = await getArticles();
         faillureOrArticles.fold((faillure) {
           emit(ErrorArticlesState(message: _mapFailureTomessage(faillure)));
-          print(_mapFailureTomessage(faillure));
         }, (articles) {
           emit(LodedArticlesState(articles: articles));
-          print(articles);
         });
       }
     });
