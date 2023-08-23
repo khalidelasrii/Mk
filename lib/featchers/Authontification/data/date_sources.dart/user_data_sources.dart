@@ -1,38 +1,40 @@
-import 'package:mk/featchers/Authontification/data/models/user_model.dart';
+import 'dart:async';
+
+import 'package:dartz/dartz.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class UserDataSources {
-  Future<Map> signIn(Usr usr);
-  Future<Map> signUp(Usr usr);
+  Future<Either<String, User?>> signIn(Usr usr);
+  Future<Unit> signUp(Usr usr);
+  Future<Unit> singOut();
 }
 
 class UserDataSourcesImpl1 implements UserDataSources {
-  final firebase = FirebaseAuth.instance;
+  final _auth = FirebaseAuth.instance;
 
   @override
-  Future<Map> signIn(Usr usr) async {
-    await firebase.signInWithEmailAndPassword(
-        email: usr.email!, password: usr.password!);
+  Future<Either<String, User?>> signIn(Usr usr) async {
+    try {
+      _auth.signInWithEmailAndPassword(
+          email: usr.email!, password: usr.password!);
+      final user = _auth.currentUser;
 
-    final usrsign = UserModel(
-      email: firebase.currentUser!.email,
-      password: '',
-      id: firebase.currentUser!.uid,
-      profile: firebase.currentUser!.photoURL,
-      name: firebase.currentUser!.displayName,
-    );
-    return usrsign.toMap();
+      return Right(user);
+    } catch (e) {
+      return Left('$e');
+    }
   }
 
   @override
-  Future<Map> signUp(Usr usr) async {
-    await firebase.createUserWithEmailAndPassword(
+  Future<Unit> signUp(Usr usr) async {
+    _auth.createUserWithEmailAndPassword(
         email: usr.email!, password: usr.password!);
-    final usrsingup = UserModel(
-        id: firebase.currentUser!.uid,
-        email: firebase.currentUser!.email,
-        password: '');
-    return usrsingup.toMap();
+    return Future.value(unit);
+  }
+
+  Future<Unit> singOut() async {
+    _auth.signOut();
+    return Future.value(unit);
   }
 }

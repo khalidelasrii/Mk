@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singup_use_case.dart';
 
-import '../../../../../core/errure/faillure.dart';
+import '../../../domain/entitie/user.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -12,35 +13,28 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   SingInUseCase singInUseCase;
   SingUpUseCase singUpUseCase;
-  AuthBloc({required this.singInUseCase, required this.singUpUseCase})
-      : super(AuthInitial()) {
+  SingOutUseCase singOutUseCase;
+  AuthBloc({
+    required this.singOutUseCase,
+    required this.singInUseCase,
+    required this.singUpUseCase,
+  }) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
       if (event is SingInEvent) {
-        emit(AwaitAuthState());
-        final usr = await singInUseCase
-            .call(Usr(email: event.email, id: '', password: event.password));
-        usr.fold(
-            (faillure) =>
-                emit(AuthErrorState(message: _mapFailureTomessage(faillure))),
-            (user) => emit(SingInState(usr: user)));
-      } else if (event is SingUpEvent) {
-        emit(AwaitAuthState());
-        final usr = await singUpUseCase
-            .call(Usr(id: '', email: event.email, password: event.password));
-        usr.fold(
-            (faillure) =>
-                emit(AuthErrorState(message: _mapFailureTomessage(faillure))),
-            (user) => emit(SingUpState(usr: user)));
+        // ! catche the email and password and sing in ;
+        final usr = Usr(email: event.email, password: event.password);
+        final singin = await singInUseCase.call(usr);
+        // ! catche the email and password and sing in ;
+        singin.fold((message) {
+          emit(AuthErrorState(message: message));
+        }, (user) {
+          user == null ? emit(SingOutState()) : emit(SingInState(usr: user));
+        });
+      } else if (event is SingOutEvent) {
+        singOutUseCase.call();
+        emit(SingOutState());
+        print('Sing out beby ');
       }
     });
-  }
-
-  String _mapFailureTomessage(Faillure faillure) {
-    switch (faillure.runtimeType) {
-      case ServerFailure:
-        return 'Server Faillure ,Plais try again later';
-      default:
-        return 'Unexpected error, please try again later';
-    }
   }
 }

@@ -24,3 +24,5 @@ class SingUpEvent extends AuthEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+class SingOutEvent extends AuthEvent {}

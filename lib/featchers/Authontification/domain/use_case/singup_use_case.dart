@@ -5,9 +5,9 @@ import 'package:mk/featchers/Authontification/domain/repository/user_repository.
 
 class SingUpUseCase {
   UserRepository userRepository;
-  SingUpUseCase({required this.userRepository});
+  SingUpUseCase(this.userRepository);
 
-  Future<Either<Faillure, Map>> call(Usr usr) async {
+  Future<Either<Faillure, Unit>> call(Usr usr) async {
     return await userRepository.singUp(usr);
   }
 }

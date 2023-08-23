@@ -9,8 +9,6 @@ sealed class AuthState extends Equatable {
 
 final class AuthInitial extends AuthState {}
 
-class AwaitAuthState extends AuthState {}
-
 class AuthErrorState extends AuthState {
   final String message;
 
@@ -21,17 +19,9 @@ class AuthErrorState extends AuthState {
 }
 
 class SingInState extends AuthState {
-  final Map usr;
+  final User? usr;
 
-  const SingInState({required this.usr});
-  @override
-  List<Object> get props => [usr];
+  const SingInState({this.usr});
 }
 
-class SingUpState extends AuthState {
-  final Map usr;
-
-  const SingUpState({required this.usr});
-  @override
-  List<Object> get props => [usr];
-}
+class SingOutState extends AuthState {}
