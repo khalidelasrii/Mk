@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/responsive.dart';
@@ -5,50 +7,112 @@ import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 
 import '../../../../core/Widgets/core_widgets.dart';
 import '../../../Authontification/presentation/bloc/auth/auth_bloc.dart';
+import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import '../bloc/article/article_bloc.dart';
-import '../widgets/loded_widget.dart';
 import 'add_article.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is AuthErrorState) {
-          _showSnackbar(context, state.message);
-        }
-      },
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => const SingIn()));
+      }
+    });
+    return BlocBuilder<ArticleBloc, ArticleState>(
       builder: (context, state) {
-        if (state is SingInState) {
-          return const ResponsiveLayote(
-            disktopScafolde: HomePageDesktop(),
-            moubileSccafolde: HomePageMobile(),
-          );
-        } else if (state is SingOutState) {
-          return SingIn();
+        dynamic x;
+        if (state is ArticleInitial) {
+          x = const CerclulareLodingWidget();
+          return _fonction(x);
+        } else if (state is LodingArticlesState) {
+          x = const CerclulareLodingWidget();
+          return _fonction(x);
+        } else if (state is LodedArticlesState) {
+          x = _streamBuilderWidget(state.articles);
+
+          return _fonction(x);
+        } else if (state is ErrorArticlesState) {
+          x = MessageDisplay(message: state.message);
+          return _fonction(x);
         }
-        return const Scaffold(
-          body: Center(child: Text(' try a gain')),
+        return const SizedBox();
+      },
+    );
+  }
+
+  _streamBuilderWidget(Stream<QuerySnapshot<Map<String, dynamic>>> xxx) {
+    return StreamBuilder(
+      stream: xxx,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final List<Row> articlesListe = [];
+
+        if (snapshot.hasData) {
+          final articles = snapshot.data!.docs.reversed.toList();
+          for (var article in articles) {
+            final articleListe = Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(article['name']),
+                    Text(article['article']),
+                    Text(article['prix'].toString()),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                  ],
+                ),
+                Expanded(child: SizedBox()),
+                IconButton(
+                    onPressed: () {
+                      BlocProvider.of<AddordeletorupdateBloc>(context).add(
+                          DelletArticleEvent(articlId: article.id.toString()));
+                    },
+                    icon: const Icon(Icons.delete))
+              ],
+            );
+
+            articlesListe.add(articleListe);
+          }
+        }
+
+        return ListView(
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+          children: articlesListe,
         );
       },
     );
+  }
+
+  _fonction(dynamic x) {
+    return ResponsiveLayote(
+        disktopScafolde: HomePageDesktop(
+          x: x,
+        ),
+        moubileSccafolde: HomePageMobile(x: x));
   }
 }
 
 //! Desktop Home paga
 class HomePageDesktop extends StatelessWidget {
-  const HomePageDesktop({
-    super.key,
-  });
+  final dynamic x;
+  const HomePageDesktop({super.key, required this.x});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: _buildAppbar(context),
-      body: _buildBody(),
+      body: _buildBody(context, x),
       floatingActionButton: _floatingActionButton(context),
     );
   }
@@ -57,15 +121,15 @@ class HomePageDesktop extends StatelessWidget {
 //! Mobile Home paga
 
 class HomePageMobile extends StatelessWidget {
-  const HomePageMobile({
-    super.key,
-  });
+  final dynamic x;
+
+  const HomePageMobile({super.key, required this.x});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.green,
       appBar: _buildAppbar(context),
-      body: _buildBody(),
+      body: _buildBody(context, x),
       floatingActionButton: _floatingActionButton(context),
     );
   }
@@ -73,7 +137,8 @@ class HomePageMobile extends StatelessWidget {
 
 AppBar _buildAppbar(BuildContext context) {
   return AppBar(
-    backgroundColor: Colors.red,
+    toolbarHeight: 100,
+    backgroundColor: Colors.black,
     actions: [
       IconButton(
           onPressed: () {
@@ -86,22 +151,21 @@ AppBar _buildAppbar(BuildContext context) {
   );
 }
 
-Widget _buildBody() {
-  return BlocBuilder<ArticleBloc, ArticleState>(
-    builder: (context, state) {
-      if (state is ArticleInitial) {
-        return const LowdingWidget();
-      } else if (state is LodingArticlesState) {
-        return const LowdingWidget();
-      } else if (state is LodedArticlesState) {
-        return RefreshIndicator(
-            onRefresh: () => _onRefrech(context),
-            child: LodedWidget(articles: state.articles));
-      } else if (state is ErrorArticlesState) {
-        return MessageDisplay(message: state.message);
-      }
-      return const SizedBox();
-    },
+Widget _buildBody(BuildContext context, dynamic x) {
+  return Row(
+    children: [
+      Container(
+        height: double.infinity,
+        width: 200,
+        color: Colors.black,
+      ),
+      Expanded(
+        child: Container(
+          color: Colors.amber,
+          child: x,
+        ),
+      )
+    ],
   );
 }
 
@@ -116,20 +180,5 @@ Widget _floatingActionButton(BuildContext context) {
                   )));
     },
     child: const Icon(Icons.add),
-  );
-}
-
-Future<void> _onRefrech(BuildContext context) async {
-  BlocProvider.of<ArticleBloc>(context).add(RefreshArticlesEvent());
-}
-
-void _showSnackbar(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      duration: Duration(
-          seconds:
-              2), // Set the duration for how long the snackbar will be visible
-    ),
   );
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
@@ -12,7 +13,8 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   ArticleRepositoryImpl({required this.articlesFirebase});
 
   @override
-  Future<Either<Faillure, List<Article>>> getArticles() async {
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getArticles() async {
     try {
       final remoteArticle = await articlesFirebase.getArticles();
       return Right(remoteArticle);

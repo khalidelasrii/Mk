@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entitie/article.dart';
 import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
+import '../ui/home_page.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key, required this.isUpdate, this.article});
@@ -31,21 +32,22 @@ class _FormWidgetState extends State<FormWidget> {
   }
 
   void validateFormthenUpdateOrAddArticle() {
-    final isValid = _formKey.currentState!.validate();
-    if (isValid) {
-      final article = Article(
-          article: _articleControlor.text,
-          name: _nameControlor.text,
-          prix: double.tryParse(_prixControlor.text) ?? 00,
-          id: _idControlor.text);
+    final article = Article(
+        article: _articleControlor.text,
+        name: _nameControlor.text,
+        prix: _prixControlor.text,
+        id: _idControlor.text);
 
-      if (widget.isUpdate) {
-        BlocProvider.of<AddordeletorupdateBloc>(context)
-            .add(UpdatArticleEvent(article: article));
-      } else {
-        BlocProvider.of<AddordeletorupdateBloc>(context)
-            .add(AddArticleEvent(article: article));
-      }
+    if (widget.isUpdate) {
+      BlocProvider.of<AddordeletorupdateBloc>(context)
+          .add(UpdatArticleEvent(article: article));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const HomePage()));
+    } else {
+      BlocProvider.of<AddordeletorupdateBloc>(context)
+          .add(AddArticleEvent(article: article));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => const HomePage()));
     }
   }
 

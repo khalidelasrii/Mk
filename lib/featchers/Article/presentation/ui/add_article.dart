@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/responsive.dart';
-import 'package:mk/core/utile.dart';
+import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
-import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
+import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 
 import '../../../../core/Widgets/core_widgets.dart';
 import '../widgets/form_widget.dart';
 
-Article article = Article(article: '', name: '', prix: 0, id: '');
+Article article = Article(article: '', name: '', prix: '', id: '');
 final TextEditingController _nameController = TextEditingController();
 final TextEditingController _articleController = TextEditingController();
 final TextEditingController _prixController = TextEditingController();
@@ -79,11 +79,9 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
     return BlocConsumer<AddordeletorupdateBloc, AddordeletorupdateState>(
       listener: (context, state) {
         if (state is MessageAddDeleteUpdatePostState) {
+          BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
           SnackBarMessage()
               .showSuccessSnackBar(message: state.message, context: context);
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const HomePage()),
-              (route) => false);
         } else if (state is ErrorAddDeleteUpdateState) {
           SnackBarMessage()
               .showErrorSnackBar(message: state.message, context: context);
@@ -91,7 +89,7 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is LodingAddDeleteUpdateArticleState) {
-          return const LowdingWidget();
+          return const CerclulareLodingWidget();
         }
         return FormWidget(
           isUpdate: isUpdate,

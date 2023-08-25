@@ -1,12 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/bloc/auth/auth_bloc.dart';
-import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 
-class SingInField extends StatelessWidget {
+class SingInField extends StatefulWidget {
   const SingInField({super.key});
 
+  @override
+  State<SingInField> createState() => _SingInFieldState();
+}
+
+class _SingInFieldState extends State<SingInField> {
   @override
   Widget build(BuildContext context) {
     final emailControllor = TextEditingController();
@@ -84,9 +89,12 @@ class SingInField extends StatelessWidget {
                   email: emailControllor.text,
                   password: passwordControllor.text));
 
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return const HomePage();
-              }));
+              FirebaseAuth.instance.authStateChanges().listen((User? user) {
+                if (user != null) {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (_) => HomePage()));
+                }
+              });
             },
             child: const Text('Connexion'),
           ),

@@ -4,7 +4,7 @@ class Article extends Equatable {
   final String id;
   final String article;
   final String name;
-  final double prix;
+  final String prix;
 
   Article(
       {required this.article,

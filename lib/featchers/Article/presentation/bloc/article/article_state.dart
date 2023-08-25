@@ -12,7 +12,7 @@ final class ArticleInitial extends ArticleState {}
 class LodingArticlesState extends ArticleState {}
 
 class LodedArticlesState extends ArticleState {
-  final List<Article> articles;
+  final Stream<QuerySnapshot<Map<String, dynamic>>> articles;
 
   const LodedArticlesState({required this.articles});
 

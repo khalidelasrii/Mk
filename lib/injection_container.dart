@@ -29,8 +29,11 @@ Future<void> init() async {
         delletArticle: sl(),
         updateArticle: sl(),
       ));
-  sl.registerFactory(() =>
-      AuthBloc(singInUseCase: sl(), singUpUseCase: sl(), singOutUseCase: sl()));
+  sl.registerFactory(() => AuthBloc(
+        singInUseCase: sl(),
+        singUpUseCase: sl(),
+        singOutUseCase: sl(),
+      ));
   // Use cases
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));

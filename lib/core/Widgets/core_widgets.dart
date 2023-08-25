@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LowdingWidget extends StatelessWidget {
-  const LowdingWidget({super.key});
+class CerclulareLodingWidget extends StatelessWidget {
+  const CerclulareLodingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

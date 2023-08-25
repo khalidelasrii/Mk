@@ -1,8 +1,8 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mk/core/errure/faillure.dart';
-import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart';
 part 'article_event.dart';
 part 'article_state.dart';
@@ -14,6 +14,7 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
       if (event is GetAllArticlesEvent || event is RefreshArticlesEvent) {
         emit(LodingArticlesState());
         final faillureOrArticles = await getArticles();
+
         faillureOrArticles.fold((faillure) {
           emit(ErrorArticlesState(message: _mapFailureTomessage(faillure)));
         }, (articles) {

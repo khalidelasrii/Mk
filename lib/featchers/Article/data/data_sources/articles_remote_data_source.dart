@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ArticlesRemoteDataSource {
-  Future<List<Article>> getArticles();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getArticles();
   Future<Unit> updateArticle(Article article);
   Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String id);
@@ -31,19 +31,10 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<List<Article>> getArticles() async {
-    final querySnapshot = await _firestore.collection('Articles').get();
-    final articles = querySnapshot.docs.map((doc) {
-      final data = doc.data();
-      final articleId = doc.id; // Get the document ID
-      return Article(
-        id: articleId,
-        article: data['article'], // Replace with your field names
-        name: data['name'],
-        prix: data['prix'].toDouble(),
-      );
-    }).toList();
-    return articles; // Return the list of articles
+  Stream<QuerySnapshot<Map<String, dynamic>>> getArticles() {
+    final querySnapshot = _firestore.collection('Articles').snapshots();
+
+    return querySnapshot; // Return the list of articles
   }
 
   @override

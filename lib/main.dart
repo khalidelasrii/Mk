@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
+import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/bloc/auth/auth_bloc.dart';
-import 'featchers/Authontification/presentation/ui/sing_in.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -43,7 +43,7 @@ class Maktabati extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(focusColor: Colors.blue),
-          home: const SingIn(),
+          home: const HomePage(),
         ));
   }
 }

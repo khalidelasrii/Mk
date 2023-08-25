@@ -18,10 +18,18 @@ class AuthErrorState extends AuthState {
   List<Object> get props => [message];
 }
 
-class SingInState extends AuthState {
-  final User? usr;
+class SingInSuccesState extends AuthState {
+  final String isConnect;
 
-  const SingInState({this.usr});
+  const SingInSuccesState({required this.isConnect});
+  @override
+  List<Object> get props => [isConnect];
 }
 
-class SingOutState extends AuthState {}
+class SingInFalseState extends AuthState {
+  final String isConnect;
+
+  const SingInFalseState({required this.isConnect});
+  @override
+  List<Object> get props => [isConnect];
+}

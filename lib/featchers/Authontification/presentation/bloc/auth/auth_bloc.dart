@@ -21,19 +21,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
       if (event is SingInEvent) {
-        // ! catche the email and password and sing in ;
-        final usr = Usr(email: event.email, password: event.password);
-        final singin = await singInUseCase.call(usr);
-        // ! catche the email and password and sing in ;
-        singin.fold((message) {
-          emit(AuthErrorState(message: message));
-        }, (user) {
-          user == null ? emit(SingOutState()) : emit(SingInState(usr: user));
+        Usr usr = Usr(email: event.email, password: event.password);
+        final successorfaild = await singInUseCase.call(usr);
+
+        successorfaild.fold((error) {
+          emit(SingInFalseState(isConnect: error));
+        }, (_) {
+          emit(const SingInSuccesState(isConnect: 'Welcome Home'));
         });
-      } else if (event is SingOutEvent) {
-        singOutUseCase.call();
-        emit(SingOutState());
-        print('Sing out beby ');
       }
     });
   }
