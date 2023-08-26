@@ -20,44 +20,8 @@ class SingInDeskTop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black87,
-      appBar: AppBar(
-        backgroundColor: Colors.amber,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 80),
-          child: Container(
-            constraints: const BoxConstraints(minWidth: 300, minHeight: 300),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          border: Border.all(color: Colors.black),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              bottomLeft: Radius.circular(25)),
-                        ),
-                        child: const Icon(Icons.abc))),
-                Expanded(
-                    flex: 3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        gradient: const LinearGradient(
-                            colors: [Colors.black, Colors.blueAccent]),
-                        borderRadius: const BorderRadius.only(
-                            topRight: Radius.circular(25),
-                            bottomRight: Radius.circular(25)),
-                      ),
-                      child: const SingInField(),
-                    ))
-              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: _myapbar(),
+      body: _mybody(),
     );
   }
 }
@@ -67,8 +31,65 @@ class SingInMobile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: Colors.green,
+      appBar: _myapbar(),
+      body: _mybody(),
     );
   }
+}
+
+AppBar _myapbar() {
+  return AppBar(
+    backgroundColor: Colors.black,
+    title: Row(
+      children: [
+        SizedBox(
+          height: 40,
+          child: Image.asset('images/MK.png'),
+        )
+      ],
+    ),
+  );
+}
+
+Widget _mybody() {
+  return Center(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 80),
+      child: Container(
+        constraints: const BoxConstraints(minWidth: 300, minHeight: 300),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  border: Border.all(color: Colors.black),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      bottomLeft: Radius.circular(25)),
+                ),
+                child: Image.asset("images/logo.gif"),
+              ),
+            ),
+            Expanded(
+                flex: 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    gradient: const LinearGradient(
+                        colors: [Colors.black, Colors.blueAccent]),
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(25),
+                        bottomRight: Radius.circular(25)),
+                  ),
+                  child: const SingInField(),
+                ))
+          ],
+        ),
+      ),
+    ),
+  );
 }

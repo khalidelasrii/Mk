@@ -21,85 +21,83 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => const SingIn()));
+    User? user = FirebaseAuth.instance.currentUser;
+
+    return user == null
+        ? const SingIn()
+        : BlocBuilder<ArticleBloc, ArticleState>(
+            builder: (context, state) {
+              dynamic x;
+              if (state is ArticleInitial) {
+                x = const CerclulareLodingWidget();
+                return _fonction(x);
+              } else if (state is LodingArticlesState) {
+                x = const CerclulareLodingWidget();
+                return _fonction(x);
+              } else if (state is LodedArticlesState) {
+                x = _streamBuilderWidget(state.articles);
+
+                return _fonction(x);
+              } else if (state is ErrorArticlesState) {
+                x = MessageDisplay(message: state.message);
+                return _fonction(x);
+              }
+              return const SizedBox();
+            },
+          );
+  }
+}
+
+_streamBuilderWidget(Stream<QuerySnapshot<Map<String, dynamic>>> xxx) {
+  return StreamBuilder(
+    stream: xxx,
+    builder: (BuildContext context, AsyncSnapshot snapshot) {
+      final List<Row> articlesListe = [];
+
+      if (snapshot.hasData) {
+        final articles = snapshot.data!.docs.reversed.toList();
+        for (var article in articles) {
+          final articleListe = Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(article['name']),
+                  Text(article['article']),
+                  Text(article['prix'].toString()),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                ],
+              ),
+              Expanded(child: SizedBox()),
+              IconButton(
+                  onPressed: () {
+                    BlocProvider.of<AddordeletorupdateBloc>(context).add(
+                        DelletArticleEvent(articlId: article.id.toString()));
+                  },
+                  icon: const Icon(Icons.delete))
+            ],
+          );
+
+          articlesListe.add(articleListe);
+        }
       }
-    });
-    return BlocBuilder<ArticleBloc, ArticleState>(
-      builder: (context, state) {
-        dynamic x;
-        if (state is ArticleInitial) {
-          x = const CerclulareLodingWidget();
-          return _fonction(x);
-        } else if (state is LodingArticlesState) {
-          x = const CerclulareLodingWidget();
-          return _fonction(x);
-        } else if (state is LodedArticlesState) {
-          x = _streamBuilderWidget(state.articles);
 
-          return _fonction(x);
-        } else if (state is ErrorArticlesState) {
-          x = MessageDisplay(message: state.message);
-          return _fonction(x);
-        }
-        return const SizedBox();
-      },
-    );
-  }
+      return ListView(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        children: articlesListe,
+      );
+    },
+  );
+}
 
-  _streamBuilderWidget(Stream<QuerySnapshot<Map<String, dynamic>>> xxx) {
-    return StreamBuilder(
-      stream: xxx,
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        final List<Row> articlesListe = [];
-
-        if (snapshot.hasData) {
-          final articles = snapshot.data!.docs.reversed.toList();
-          for (var article in articles) {
-            final articleListe = Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(article['name']),
-                    Text(article['article']),
-                    Text(article['prix'].toString()),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                  ],
-                ),
-                Expanded(child: SizedBox()),
-                IconButton(
-                    onPressed: () {
-                      BlocProvider.of<AddordeletorupdateBloc>(context).add(
-                          DelletArticleEvent(articlId: article.id.toString()));
-                    },
-                    icon: const Icon(Icons.delete))
-              ],
-            );
-
-            articlesListe.add(articleListe);
-          }
-        }
-
-        return ListView(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          children: articlesListe,
-        );
-      },
-    );
-  }
-
-  _fonction(dynamic x) {
-    return ResponsiveLayote(
-        disktopScafolde: HomePageDesktop(
-          x: x,
-        ),
-        moubileSccafolde: HomePageMobile(x: x));
-  }
+_fonction(dynamic x) {
+  return ResponsiveLayote(
+      disktopScafolde: HomePageDesktop(
+        x: x,
+      ),
+      moubileSccafolde: HomePageMobile(x: x));
 }
 
 //! Desktop Home paga
@@ -139,6 +137,14 @@ AppBar _buildAppbar(BuildContext context) {
   return AppBar(
     toolbarHeight: 100,
     backgroundColor: Colors.black,
+    title: Row(
+      children: [
+        SizedBox(
+          height: 40,
+          child: Image.asset('images/MK.png'),
+        )
+      ],
+    ),
     actions: [
       IconButton(
           onPressed: () {
@@ -158,10 +164,17 @@ Widget _buildBody(BuildContext context, dynamic x) {
         height: double.infinity,
         width: 200,
         color: Colors.black,
+        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          Padding(
+              padding: const EdgeInsets.only(right: 5.0, bottom: 5),
+              child: MyBoton(
+                text: 'FerstScreen',
+              ))
+        ]),
       ),
       Expanded(
         child: Container(
-          color: Colors.amber,
+          color: Colors.blueGrey,
           child: x,
         ),
       )
@@ -181,4 +194,19 @@ Widget _floatingActionButton(BuildContext context) {
     },
     child: const Icon(Icons.add),
   );
+}
+
+class MyBoton extends StatelessWidget {
+  const MyBoton({super.key, required this.text});
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+        onPressed: () {},
+        child: Text(
+          '$text',
+          style: const TextStyle(color: Colors.white),
+        ));
+  }
 }
