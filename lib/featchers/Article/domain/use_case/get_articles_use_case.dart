@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/errure/faillure.dart';
-import '../entitie/article.dart';
 import '../repository/repository_articles.dart';
 
 class GetArticlesUseCase {

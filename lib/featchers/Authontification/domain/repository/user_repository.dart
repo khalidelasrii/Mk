@@ -5,4 +5,6 @@ abstract class UserRepository {
   Future<Either<String, Unit>> singIn(Usr usr);
   Future<Either<String, Unit>> singUp(Usr usr);
   Future<Unit> singOut();
+  Future<bool> isSignIn();
+  Future<Usr> getUserId();
 }

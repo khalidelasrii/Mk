@@ -8,9 +8,10 @@ import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart'
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
+import 'package:mk/featchers/Authontification/domain/use_case/get_user_id_usecase.dart';
+import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
-import 'package:mk/featchers/Authontification/presentation/bloc/auth/auth_bloc.dart';
 
 import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
 import 'featchers/Article/domain/use_case/dellet_article_use_case.dart';
@@ -18,6 +19,7 @@ import 'featchers/Authontification/data/date_sources.dart/user_data_sources.dart
 import 'featchers/Authontification/data/user_repository_impl.dart/user_repository_impl.dart';
 import 'featchers/Authontification/domain/repository/user_repository.dart';
 import 'featchers/Authontification/domain/use_case/singup_use_case.dart';
+import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -29,15 +31,19 @@ Future<void> init() async {
         delletArticle: sl(),
         updateArticle: sl(),
       ));
-  sl.registerFactory(() => AuthBloc(
+  sl.registerFactory(() => AuthCubit(
         singInUseCase: sl(),
-        singUpUseCase: sl(),
         singOutUseCase: sl(),
+        singUpUseCase: sl(),
+        isSingInUsecase: sl(),
+        getUserIdUSecase: sl(),
       ));
   // Use cases
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));
   sl.registerLazySingleton(() => SingOutUseCase(sl()));
+  sl.registerLazySingleton(() => IsSingInUsecase(sl()));
+  sl.registerLazySingleton(() => GetUserIdUSecase(sl()));
 
   sl.registerLazySingleton(() => GetArticlesUseCase(sl()));
   sl.registerLazySingleton(() => AddArticleUseCase(sl()));

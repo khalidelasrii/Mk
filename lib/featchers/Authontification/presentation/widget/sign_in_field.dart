@@ -1,8 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
-import 'package:mk/featchers/Authontification/presentation/bloc/auth/auth_bloc.dart';
+import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/sing_up.dart';
+
+import '../../domain/entitie/user.dart';
 
 class SingInField extends StatefulWidget {
   const SingInField({super.key});
@@ -16,6 +18,13 @@ class _SingInFieldState extends State<SingInField> {
   Widget build(BuildContext context) {
     final emailControllor = TextEditingController();
     final passwordControllor = TextEditingController();
+
+    @override
+    void despose() {
+      super.dispose();
+      emailControllor.dispose();
+      passwordControllor.dispose();
+    }
 
     return Center(
         child: SingleChildScrollView(
@@ -83,21 +92,38 @@ class _SingInFieldState extends State<SingInField> {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              BlocProvider.of<AuthBloc>(context).add(SingInEvent(
-                  email: emailControllor.text,
-                  password: passwordControllor.text));
-
-              FirebaseAuth.instance.authStateChanges().listen((User? user) {
-                if (user != null) {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => HomePage()));
-                }
-              });
-            },
-            child: const Text('Connexion'),
-          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                style:
+                    ElevatedButton.styleFrom(minimumSize: const Size(200, 50)),
+                onPressed: () async {
+                  Usr usr = Usr(
+                      email: emailControllor.text,
+                      password: passwordControllor.text);
+                  BlocProvider.of<AuthCubit>(context).singIn(usr);
+                },
+                child: const Text('Connexion'),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text(
+                'Try create a Conte',
+                style: TextStyle(color: Colors.white),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const SingUp()));
+                  },
+                  child: const Text(
+                    'Hire',
+                    style: TextStyle(color: Colors.amber),
+                  )),
+            ],
+          )
         ],
       ),
     ));

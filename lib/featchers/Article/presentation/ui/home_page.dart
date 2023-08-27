@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/responsive.dart';
-import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/auth.dart';
 
 import '../../../../core/Widgets/core_widgets.dart';
-import '../../../Authontification/presentation/bloc/auth/auth_bloc.dart';
 import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import '../bloc/article/article_bloc.dart';
+import '../widgets/drawer_boton.dart';
 import 'add_article.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,31 +21,118 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
+    return BlocBuilder<ArticleBloc, ArticleState>(
+      builder: (context, state) {
+        dynamic x;
 
-    return user == null
-        ? const SingIn()
-        : BlocBuilder<ArticleBloc, ArticleState>(
-            builder: (context, state) {
-              dynamic x;
-              if (state is ArticleInitial) {
-                x = const CerclulareLodingWidget();
-                return _fonction(x);
-              } else if (state is LodingArticlesState) {
-                x = const CerclulareLodingWidget();
-                return _fonction(x);
-              } else if (state is LodedArticlesState) {
-                x = _streamBuilderWidget(state.articles);
-
-                return _fonction(x);
-              } else if (state is ErrorArticlesState) {
-                x = MessageDisplay(message: state.message);
-                return _fonction(x);
-              }
-              return const SizedBox();
-            },
-          );
+        if (state is ArticleInitial) {
+          x = const CerclulareLodingWidget();
+          return _fonction(x);
+        } else if (state is LodingArticlesState) {
+          x = const CerclulareLodingWidget();
+          return _fonction(x);
+        } else if (state is LodedArticlesState) {
+          x = _streamBuilderWidget(state.articles);
+          return _fonction(x);
+        } else if (state is ErrorArticlesState) {
+          x = MessageDisplay(message: state.message);
+          return _fonction(x);
+        }
+        return const SizedBox();
+      },
+    );
   }
+}
+
+//! Desktop Home paga
+class HomePageDesktop extends StatelessWidget {
+  final dynamic x;
+  const HomePageDesktop({super.key, required this.x});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      appBar: _buildAppbar(context),
+      body: _buildBody(context, x),
+      floatingActionButton: _floatingActionButton(context),
+    );
+  }
+}
+
+//! Mobile Home paga
+
+class HomePageMobile extends StatelessWidget {
+  final dynamic x;
+
+  const HomePageMobile({super.key, required this.x});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.green,
+      appBar: _buildAppbar(context),
+      body: _buildBody(context, x),
+      floatingActionButton: _floatingActionButton(context),
+    );
+  }
+}
+
+AppBar _buildAppbar(BuildContext context) {
+  return AppBar(
+    toolbarHeight: 100,
+    backgroundColor: Colors.black,
+    title: Row(
+      children: [
+        SizedBox(
+          height: 40,
+          child: Image.asset('images/MK.png'),
+        )
+      ],
+    ),
+    actions: [
+      IconButton(
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const Auth()));
+          },
+          icon: const Icon(Icons.exit_to_app))
+    ],
+  );
+}
+
+Widget _buildBody(BuildContext context, dynamic x) {
+  return Row(
+    children: [
+      Container(
+        height: double.infinity,
+        width: 200,
+        color: Colors.black,
+        child: DrawerBoton(),
+      ),
+      Expanded(
+        child: Container(
+          color: Colors.blueGrey,
+          child: x,
+        ),
+      )
+    ],
+  );
+}
+
+Widget _floatingActionButton(BuildContext context) {
+  return FloatingActionButton(
+    onPressed: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => const AddOrUpdateArticle(
+                    isUpdate: false,
+                  )));
+    },
+    child: const Icon(Icons.add),
+  );
 }
 
 _streamBuilderWidget(Stream<QuerySnapshot<Map<String, dynamic>>> xxx) {
@@ -98,115 +185,4 @@ _fonction(dynamic x) {
         x: x,
       ),
       moubileSccafolde: HomePageMobile(x: x));
-}
-
-//! Desktop Home paga
-class HomePageDesktop extends StatelessWidget {
-  final dynamic x;
-  const HomePageDesktop({super.key, required this.x});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: _buildAppbar(context),
-      body: _buildBody(context, x),
-      floatingActionButton: _floatingActionButton(context),
-    );
-  }
-}
-
-//! Mobile Home paga
-
-class HomePageMobile extends StatelessWidget {
-  final dynamic x;
-
-  const HomePageMobile({super.key, required this.x});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green,
-      appBar: _buildAppbar(context),
-      body: _buildBody(context, x),
-      floatingActionButton: _floatingActionButton(context),
-    );
-  }
-}
-
-AppBar _buildAppbar(BuildContext context) {
-  return AppBar(
-    toolbarHeight: 100,
-    backgroundColor: Colors.black,
-    title: Row(
-      children: [
-        SizedBox(
-          height: 40,
-          child: Image.asset('images/MK.png'),
-        )
-      ],
-    ),
-    actions: [
-      IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (_) => const SingIn()));
-            BlocProvider.of<AuthBloc>(context).add(SingOutEvent());
-          },
-          icon: const Icon(Icons.exit_to_app))
-    ],
-  );
-}
-
-Widget _buildBody(BuildContext context, dynamic x) {
-  return Row(
-    children: [
-      Container(
-        height: double.infinity,
-        width: 200,
-        color: Colors.black,
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Padding(
-              padding: const EdgeInsets.only(right: 5.0, bottom: 5),
-              child: MyBoton(
-                text: 'FerstScreen',
-              ))
-        ]),
-      ),
-      Expanded(
-        child: Container(
-          color: Colors.blueGrey,
-          child: x,
-        ),
-      )
-    ],
-  );
-}
-
-Widget _floatingActionButton(BuildContext context) {
-  return FloatingActionButton(
-    onPressed: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => const AddOrUpdateArticle(
-                    isUpdate: false,
-                  )));
-    },
-    child: const Icon(Icons.add),
-  );
-}
-
-class MyBoton extends StatelessWidget {
-  const MyBoton({super.key, required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: () {},
-        child: Text(
-          '$text',
-          style: const TextStyle(color: Colors.white),
-        ));
-  }
 }

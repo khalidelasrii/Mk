@@ -21,4 +21,14 @@ class UserRepositooryImpl implements UserRepository {
   Future<Unit> singOut() async {
     return await userDataSources.singOut();
   }
+
+  @override
+  Future<bool> isSignIn() async {
+    return await userDataSources.isSignIn();
+  }
+
+  @override
+  Future<Usr> getUserId() async {
+    return await userDataSources.getUserId();
+  }
 }

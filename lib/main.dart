@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
-import 'package:mk/featchers/Authontification/presentation/bloc/auth/auth_bloc.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/auth.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
+import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -37,13 +39,19 @@ class Maktabati extends StatelessWidget {
             create: (_) => di.sl<AddordeletorupdateBloc>(),
           ),
           BlocProvider(
-            create: (_) => di.sl<AuthBloc>(),
+            create: (_) => di.sl<AuthCubit>(),
           )
         ],
         child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(focusColor: Colors.blue),
-          home: const HomePage(),
-        ));
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(focusColor: Colors.blue),
+            home: BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) {
+                if (state is IsSingInState) {
+                  return const HomePage();
+                }
+                return const SingIn();
+              },
+            )));
   }
 }
