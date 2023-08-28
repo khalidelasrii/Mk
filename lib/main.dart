@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
-import 'package:mk/featchers/Authontification/presentation/ui/auth.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'injection_container.dart' as di;
@@ -39,19 +39,22 @@ class Maktabati extends StatelessWidget {
             create: (_) => di.sl<AddordeletorupdateBloc>(),
           ),
           BlocProvider(
-            create: (_) => di.sl<AuthCubit>(),
+            create: (_) => di.sl<AuthCubit>()..appStart(),
           )
         ],
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(focusColor: Colors.blue),
-            home: BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) {
-                if (state is IsSingInState) {
-                  return const HomePage();
-                }
-                return const SingIn();
-              },
-            )));
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(focusColor: Colors.blue),
+          home: BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              if (state is IsSingInState) {
+                return HomePage(
+                  user: state.userId,
+                );
+              }
+              return const SingIn();
+            },
+          ),
+        ));
   }
 }

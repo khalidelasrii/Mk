@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entitie/article.dart';
 import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
-import '../ui/home_page.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget({super.key, required this.isUpdate, this.article});
@@ -41,13 +40,9 @@ class _FormWidgetState extends State<FormWidget> {
     if (widget.isUpdate) {
       BlocProvider.of<AddordeletorupdateBloc>(context)
           .add(UpdatArticleEvent(article: article));
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => const HomePage()));
     } else {
       BlocProvider.of<AddordeletorupdateBloc>(context)
           .add(AddArticleEvent(article: article));
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => const HomePage()));
     }
   }
 

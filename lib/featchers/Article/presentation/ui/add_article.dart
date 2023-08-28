@@ -13,7 +13,6 @@ Article article = Article(article: '', name: '', prix: '', id: '');
 final TextEditingController _nameController = TextEditingController();
 final TextEditingController _articleController = TextEditingController();
 final TextEditingController _prixController = TextEditingController();
-bool _isInputValid = true;
 @override
 void dispose() {
   _nameController.dispose();

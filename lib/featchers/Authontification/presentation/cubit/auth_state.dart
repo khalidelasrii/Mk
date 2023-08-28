@@ -18,4 +18,18 @@ class IsSingInState extends AuthState {
   List<Object> get props => [userId];
 }
 
-class IsSingOutstate extends AuthState {}
+class IsSingOutstate extends AuthState {
+  final String message;
+
+  const IsSingOutstate({required this.message});
+  @override
+  List<Object> get props => [message];
+}
+
+class ErrorSingState extends AuthState {
+  final String message;
+
+  const ErrorSingState({required this.message});
+  @override
+  List<Object> get props => [message];
+}

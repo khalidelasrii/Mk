@@ -25,36 +25,31 @@ class AuthCubit extends Cubit<AuthState> {
       : super(AuthInitial());
 
   Future<void> appStart() async {
-    try {
-      bool connect = await isSingInUsecase.call();
-      if (connect == true) {
-        final userid = await getUserIdUSecase.call();
-        emit(IsSingInState(userId: userid));
-      } else {
-        emit(IsSingOutstate());
-      }
-    } catch (_) {
-      emit(IsSingOutstate());
+    bool connect = await isSingInUsecase.call();
+    if (connect == true) {
+      final userid = await getUserIdUSecase.call();
+      emit(IsSingInState(userId: userid));
+    } else {
+      emit(const IsSingOutstate(message: 'try to connect'));
     }
   }
 
   Future<void> singIn(Usr usr) async {
-    try {
-      final errorOrmessage = await singInUseCase.call(usr);
-      final userId = await getUserIdUSecase.call();
-      errorOrmessage.fold(
-          (error) => IsSingOutstate(), (_) => IsSingInState(userId: userId));
-    } catch (_) {
-      emit(IsSingOutstate());
-    }
+    final errorOrmessage = await singInUseCase.call(usr);
+    final userId = await getUserIdUSecase.call();
+    errorOrmessage.fold((e) {
+      emit(ErrorSingState(message: e));
+    }, (_) {
+      emit(IsSingInState(userId: userId));
+    });
   }
 
   Future<void> singOut() async {
     try {
       await singOutUseCase.call();
-      emit(IsSingOutstate());
+      emit(const IsSingOutstate(message: 'error to sing out plaise try agine'));
     } catch (_) {
-      emit(IsSingOutstate());
+      emit(const IsSingOutstate(message: 'error to sing out plaise try agine'));
     }
   }
 }

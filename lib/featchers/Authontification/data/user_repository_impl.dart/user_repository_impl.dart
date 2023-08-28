@@ -9,12 +9,22 @@ class UserRepositooryImpl implements UserRepository {
   UserRepositooryImpl({required this.userDataSources});
   @override
   Future<Either<String, Unit>> singIn(Usr usr) async {
-    return userDataSources.signIn(usr);
+    try {
+      await userDataSources.signIn(usr);
+      return const Right(unit);
+    } catch (e) {
+      return const Left('Error to connect');
+    }
   }
 
   @override
   Future<Either<String, Unit>> singUp(Usr usr) async {
-    return await userDataSources.signUp(usr);
+    try {
+      await userDataSources.signUp(usr);
+      return const Right(unit);
+    } catch (e) {
+      return const Left('Error to Connect');
+    }
   }
 
   @override

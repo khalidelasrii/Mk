@@ -7,8 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
 
 abstract class UserDataSources {
-  Future<Either<String, Unit>> signIn(Usr usr);
-  Future<Either<String, Unit>> signUp(Usr usr);
+  Future<Unit> signIn(Usr usr);
+  Future<Unit> signUp(Usr usr);
   Future<Unit> singOut();
   Future<bool> isSignIn();
   Future<UserModel> getUserId();
@@ -18,33 +18,25 @@ class UserDataSourcesImpl1 implements UserDataSources {
   final _auth = FirebaseAuth.instance;
 
   @override
-  Future<Either<String, Unit>> signIn(Usr usr) async {
-    try {
-      _auth.signInWithEmailAndPassword(
-          email: usr.email!, password: usr.password!);
-      return const Right(unit);
-    } catch (e) {
-      return Left('$e');
-    }
+  Future<Unit> signIn(Usr usr) async {
+    await _auth.signInWithEmailAndPassword(
+        email: usr.email, password: usr.password);
+    return unit;
   }
 
   @override
-  Future<Either<String, Unit>> signUp(Usr usr) async {
-    try {
-      _auth.createUserWithEmailAndPassword(
-        email: usr.email!,
-        password: usr.password!,
-      );
+  Future<Unit> signUp(Usr usr) async {
+    await _auth.createUserWithEmailAndPassword(
+      email: usr.email,
+      password: usr.password,
+    );
 
-      return const Right(unit);
-    } catch (e) {
-      return Left('$e');
-    }
+    return unit;
   }
 
   @override
   Future<Unit> singOut() async {
-    _auth.signOut();
+    await _auth.signOut();
     return unit;
   }
 
@@ -55,10 +47,11 @@ class UserDataSourcesImpl1 implements UserDataSources {
   Future<UserModel> getUserId() async {
     final user = _auth.currentUser;
     return UserModel(
+        password: '',
         uid: user!.uid,
         name: user.displayName ?? 'Best User',
         phoneNumber: user.phoneNumber ?? '',
-        email: user.email,
+        email: user.email!,
         profile: user.photoURL ?? '');
   }
 }

@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/responsive.dart';
+import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
+import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/sing_up.dart';
 
+import '../../domain/entitie/user.dart';
 import '../widget/sign_in_field.dart';
 
-class SingIn extends StatelessWidget {
+class SingIn extends StatefulWidget {
   const SingIn({super.key});
 
+  @override
+  State<SingIn> createState() => _SingInState();
+}
+
+class _SingInState extends State<SingIn> {
   @override
   Widget build(BuildContext context) {
     return const ResponsiveLayote(
@@ -21,7 +31,7 @@ class SingInDeskTop extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black87,
       appBar: _myapbar(),
-      body: _mybody(),
+      body: _mybody(context),
     );
   }
 }
@@ -34,7 +44,7 @@ class SingInMobile extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.green,
       appBar: _myapbar(),
-      body: _mybody(),
+      body: _mybody(context),
     );
   }
 }
@@ -53,7 +63,7 @@ AppBar _myapbar() {
   );
 }
 
-Widget _mybody() {
+Widget _mybody(BuildContext context) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 150, vertical: 80),
@@ -85,7 +95,7 @@ Widget _mybody() {
                         topRight: Radius.circular(25),
                         bottomRight: Radius.circular(25)),
                   ),
-                  child: const SingInField(),
+                  child: SingInField(),
                 ))
           ],
         ),

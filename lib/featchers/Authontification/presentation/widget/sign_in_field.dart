@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
-import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
-import 'package:mk/featchers/Authontification/presentation/ui/sing_up.dart';
 
 import '../../domain/entitie/user.dart';
+import '../cubit/auth_cubit.dart';
+import '../ui/sing_up.dart';
 
-class SingInField extends StatefulWidget {
+class SingInField extends StatelessWidget {
   const SingInField({super.key});
 
-  @override
-  State<SingInField> createState() => _SingInFieldState();
-}
-
-class _SingInFieldState extends State<SingInField> {
   @override
   Widget build(BuildContext context) {
     final emailControllor = TextEditingController();
@@ -21,7 +15,6 @@ class _SingInFieldState extends State<SingInField> {
 
     @override
     void despose() {
-      super.dispose();
       emailControllor.dispose();
       passwordControllor.dispose();
     }
