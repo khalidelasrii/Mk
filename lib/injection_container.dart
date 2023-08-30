@@ -10,6 +10,7 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/get_user_id_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.dart';
+import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
 
@@ -37,6 +38,7 @@ Future<void> init() async {
         singUpUseCase: sl(),
         isSingInUsecase: sl(),
         getUserIdUSecase: sl(),
+        singInGoogleUseCase: sl(),
       ));
   // Use cases
   sl.registerLazySingleton(() => SingInUseCase(sl()));
@@ -44,6 +46,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SingOutUseCase(sl()));
   sl.registerLazySingleton(() => IsSingInUsecase(sl()));
   sl.registerLazySingleton(() => GetUserIdUSecase(sl()));
+  sl.registerLazySingleton(() => SingInGoogleUseCase(sl()));
 
   sl.registerLazySingleton(() => GetArticlesUseCase(sl()));
   sl.registerLazySingleton(() => AddArticleUseCase(sl()));

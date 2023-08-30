@@ -1,8 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mk/core/errure/faillure.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart';
 part 'article_event.dart';
 part 'article_state.dart';
@@ -11,25 +10,17 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
   final GetArticlesUseCase getArticles;
   ArticleBloc({required this.getArticles}) : super(ArticleInitial()) {
     on<ArticleEvent>((event, emit) async {
-      if (event is GetAllArticlesEvent || event is RefreshArticlesEvent) {
+      if (event is GetAllArticlesEvent) {
         emit(LodingArticlesState());
         final faillureOrArticles = await getArticles();
 
         faillureOrArticles.fold((faillure) {
-          emit(ErrorArticlesState(message: _mapFailureTomessage(faillure)));
+          emit(const ErrorArticlesState(
+              message: 'Error To get article try restart app'));
         }, (articles) {
           emit(LodedArticlesState(articles: articles));
         });
       }
     });
-  }
-
-  String _mapFailureTomessage(Faillure faillure) {
-    switch (faillure.runtimeType) {
-      case ServerFailure:
-        return 'Server Faillure ,Plais try again later';
-      default:
-        return 'Unexpected error, please try again later';
-    }
   }
 }

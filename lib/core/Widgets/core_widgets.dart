@@ -17,21 +17,3 @@ class CerclulareLodingWidget extends StatelessWidget {
 
 // MEssage display
 
-class MessageDisplay extends StatelessWidget {
-  const MessageDisplay({super.key, required this.message});
-  final String message;
-  @override
-  Widget build(BuildContext context) {
-    return ScaffoldMessenger(
-        child: SnackBar(
-            content: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SizedBox(
-        child: Text(
-          message,
-          style: const TextStyle(color: Colors.red),
-        ),
-      ),
-    )));
-  }
-}

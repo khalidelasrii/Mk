@@ -6,7 +6,8 @@ import '../cubit/auth_cubit.dart';
 import '../ui/sing_up.dart';
 
 class SingInField extends StatelessWidget {
-  const SingInField({super.key});
+  const SingInField({required this.isDisktop, super.key});
+  final bool isDisktop;
 
   @override
   Widget build(BuildContext context) {
@@ -85,22 +86,42 @@ class SingInField extends StatelessWidget {
               ),
             ),
           ),
-          Row(
+
+          Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(minimumSize: const Size(200, 50)),
-                onPressed: () async {
-                  Usr usr = Usr(
-                      email: emailControllor.text,
-                      password: passwordControllor.text);
-                  BlocProvider.of<AuthCubit>(context).singIn(usr);
-                },
-                child: const Text('Connexion'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size(200, 50),
+                        backgroundColor: Colors.green),
+                    onPressed: () async {
+                      Usr usr = Usr(
+                          email: emailControllor.text,
+                          password: passwordControllor.text);
+                      BlocProvider.of<AuthCubit>(context).singIn(usr);
+                    },
+                    child: const Text('Connexion'),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0, backgroundColor: Colors.transparent),
+                      onPressed: () {
+                        BlocProvider.of<AuthCubit>(context).singGoogle();
+                      },
+                      child: SizedBox(
+                        height: 40,
+                        child: Image.asset('images/google.png'),
+                      )),
+                ],
               ),
               const SizedBox(
-                width: 20,
+                height: 20,
               ),
               const Text(
                 'Try create a Conte',

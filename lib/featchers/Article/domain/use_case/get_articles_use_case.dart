@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 import '../../../../core/errure/faillure.dart';
 import '../repository/repository_articles.dart';
@@ -9,8 +9,7 @@ class GetArticlesUseCase {
 
   GetArticlesUseCase(this.repositoryArticles);
 
-  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      call() async {
+  Future<Either<Faillure, List<Article>>> call() async {
     return await repositoryArticles.getArticles();
   }
 }

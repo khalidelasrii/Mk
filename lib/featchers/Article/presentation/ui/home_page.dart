@@ -1,14 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/core/responsive.dart';
+import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 
-import '../../../../core/Widgets/core_widgets.dart';
 import '../../../Authontification/domain/entitie/user.dart';
-import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
-import '../bloc/article/article_bloc.dart';
-import '../widgets/drawer_boton.dart';
+import '../widgets/grid_view_body.dart';
 import 'add_article.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,30 +28,19 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ArticleBloc, ArticleState>(
-      builder: (context, state) {
-        dynamic x;
-
-        if (state is ArticleInitial) {
-          x = const CerclulareLodingWidget();
-          return _fonction(x, widget.user);
-        } else if (state is LodingArticlesState) {
-          x = const CerclulareLodingWidget();
-          return _fonction(x, widget.user);
-        } else if (state is LodedArticlesState) {
-          x = _streamBuilderWidget(state.articles);
-          return _fonction(x, widget.user);
-        } else if (state is ErrorArticlesState) {
-          x = MessageDisplay(message: state.message);
-          return _fonction(x, widget.user);
-        }
-        return const SizedBox();
-      },
-    );
+    return ResponsiveLayote(
+        disktopScafolde: HomePageDesktop(
+          user: widget.user,
+          isDisktop: true,
+        ),
+        moubileSccafolde: HomePageMobile(
+          isDisktop: false,
+          user: widget.user,
+        ));
   }
 }
 
-AppBar _buildAppbar(BuildContext context, Usr user) {
+AppBar _buildAppbar(BuildContext context, Usr? user) {
   return AppBar(
     toolbarHeight: 100,
     backgroundColor: Colors.black,
@@ -65,125 +53,84 @@ AppBar _buildAppbar(BuildContext context, Usr user) {
         const SizedBox(
           width: 20,
         ),
-        SizedBox(
-          child: user.profile == null
-              ? Image.network('${user.profile}')
-              : Text(user.email),
-        ),
+        SizedBox(child: Image.network('${user!.profile}')),
       ],
     ),
     actions: [
       IconButton(
           onPressed: () {
             BlocProvider.of<AuthCubit>(context).singOut();
+            Navigator.push(
+                context, MaterialPageRoute(builder: (_) => const SingIn()));
           },
           icon: const Icon(Icons.exit_to_app))
     ],
   );
 }
 
-Widget _buildBody(BuildContext context, dynamic x) {
+Widget _buildBody(BuildContext context, bool isDisktop, Usr user) {
   return Row(
     children: [
-      Container(
-        height: double.infinity,
-        width: 200,
-        color: Colors.black,
-        child: DrawerBoton(),
+      isDisktop == true
+          ? const Drawer(
+              backgroundColor: Colors.black,
+              width: 90,
+            )
+          : const SizedBox(),
+      BlocConsumer<ArticleBloc, ArticleState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is LodedArticlesState) {
+            return GridViewBody(
+              articles: state.articles,
+              user: user,
+              isDisktop: isDisktop,
+            );
+          } else {
+            return const Expanded(
+              child: SizedBox(
+                child: CerclulareLodingWidget(),
+              ),
+            );
+          }
+        },
       ),
-      Expanded(
-        child: Container(
-          color: Colors.blueGrey,
-          child: x,
-        ),
-      )
     ],
   );
 }
 
-Widget _floatingActionButton(BuildContext context) {
+Widget _floatingActionButton(BuildContext context, Usr user) {
   return FloatingActionButton(
     onPressed: () {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => const AddOrUpdateArticle(
+              builder: (_) => AddOrUpdateArticle(
                     isUpdate: false,
+                    user: user,
                   )));
     },
     child: const Icon(Icons.add),
   );
 }
 
-_streamBuilderWidget(Stream<QuerySnapshot<Map<String, dynamic>>> xxx) {
-  return StreamBuilder(
-    stream: xxx,
-    builder: (BuildContext context, AsyncSnapshot snapshot) {
-      final List<Row> articlesListe = [];
-
-      if (snapshot.hasData) {
-        final articles = snapshot.data!.docs.reversed.toList();
-        for (var article in articles) {
-          final articleListe = Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(article['name']),
-                  Text(article['article']),
-                  Text(article['prix'].toString()),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                ],
-              ),
-              const Expanded(child: SizedBox()),
-              IconButton(
-                  onPressed: () {
-                    BlocProvider.of<AddordeletorupdateBloc>(context).add(
-                        DelletArticleEvent(articlId: article.id.toString()));
-                  },
-                  icon: const Icon(Icons.delete))
-            ],
-          );
-
-          articlesListe.add(articleListe);
-        }
-      }
-
-      return ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        children: articlesListe,
-      );
-    },
-  );
-}
-
-_fonction(dynamic x, Usr user) {
-  return ResponsiveLayote(
-      disktopScafolde: HomePageDesktop(
-        x: x,
-        user: user,
-      ),
-      moubileSccafolde: HomePageMobile(
-        x: x,
-        user: user,
-      ));
-}
-
 //! Desktop Home paga
 class HomePageDesktop extends StatelessWidget {
-  final dynamic x;
   final Usr user;
-  const HomePageDesktop({super.key, required this.x, required this.user});
+  final bool isDisktop;
+  const HomePageDesktop({
+    super.key,
+    required this.user,
+    required this.isDisktop,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: _buildAppbar(context, user),
-      body: _buildBody(context, x),
-      floatingActionButton: _floatingActionButton(context),
+      body: _buildBody(context, isDisktop, user),
+      floatingActionButton: _floatingActionButton(context, user),
     );
   }
 }
@@ -191,17 +138,24 @@ class HomePageDesktop extends StatelessWidget {
 //! Mobile Home paga
 
 class HomePageMobile extends StatelessWidget {
-  final dynamic x;
   final Usr user;
-
-  const HomePageMobile({super.key, required this.x, required this.user});
+  final bool isDisktop;
+  const HomePageMobile({
+    super.key,
+    required this.user,
+    required this.isDisktop,
+  });
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const Drawer(
+        width: 150,
+        backgroundColor: Colors.black,
+      ),
       backgroundColor: Colors.green,
       appBar: _buildAppbar(context, user),
-      body: _buildBody(context, x),
-      floatingActionButton: _floatingActionButton(context),
+      body: _buildBody(context, isDisktop, user),
+      floatingActionButton: _floatingActionButton(context, user),
     );
   }
 }

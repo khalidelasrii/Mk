@@ -33,3 +33,5 @@ class ErrorSingState extends AuthState {
   @override
   List<Object> get props => [message];
 }
+
+class LodingAuthState extends AuthState {}

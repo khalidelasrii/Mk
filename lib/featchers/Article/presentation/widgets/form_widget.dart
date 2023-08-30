@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../Authontification/domain/entitie/user.dart';
 import '../../domain/entitie/article.dart';
 import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
+import '../bloc/article/article_bloc.dart';
+import '../ui/home_page.dart';
 
 class FormWidget extends StatefulWidget {
-  const FormWidget({super.key, required this.isUpdate, this.article});
+  const FormWidget(
+      {super.key, required this.isUpdate, this.article, required this.user});
   final bool isUpdate;
   final Article? article;
+  final Usr user;
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
@@ -21,6 +26,7 @@ class _FormWidgetState extends State<FormWidget> {
 
   @override
   void initState() {
+    widget.user;
     if (widget.isUpdate) {
       _articleControlor.text = widget.article!.article;
       _prixControlor.text = widget.article!.prix.toString();
@@ -40,9 +46,23 @@ class _FormWidgetState extends State<FormWidget> {
     if (widget.isUpdate) {
       BlocProvider.of<AddordeletorupdateBloc>(context)
           .add(UpdatArticleEvent(article: article));
+      BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(
+                    user: widget.user,
+                  )));
     } else {
       BlocProvider.of<AddordeletorupdateBloc>(context)
           .add(AddArticleEvent(article: article));
+      BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (_) => HomePage(
+                    user: widget.user,
+                  )));
     }
   }
 

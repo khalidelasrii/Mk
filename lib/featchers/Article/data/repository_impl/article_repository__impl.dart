@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
-import 'package:mk/featchers/Article/data/models/article_model.dart';
 import '../../../../core/errure/faillure.dart';
 import '../../domain/entitie/article.dart';
 import '../../domain/repository/repository_articles.dart';
+import '../models/article_model.dart';
 
 class ArticleRepositoryImpl implements RepositoryArticles {
   final ArticlesRemoteDataSource articlesFirebase;
@@ -13,8 +12,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   ArticleRepositoryImpl({required this.articlesFirebase});
 
   @override
-  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      getArticles() async {
+  Future<Either<Faillure, List<ArticleModel>>> getArticles() async {
     try {
       final remoteArticle = await articlesFirebase.getArticles();
       return Right(remoteArticle);
@@ -25,13 +23,8 @@ class ArticleRepositoryImpl implements RepositoryArticles {
 
   @override
   Future<Either<Faillure, Unit>> addArticle(Article article) async {
-    final ArticleModel articleModel = ArticleModel(
-        id: article.id,
-        article: article.article,
-        name: article.name,
-        prix: article.prix);
     try {
-      await articlesFirebase.addArticle(articleModel);
+      await articlesFirebase.addArticle(article);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());
@@ -40,13 +33,8 @@ class ArticleRepositoryImpl implements RepositoryArticles {
 
   @override
   Future<Either<Faillure, Unit>> updateArticle(Article article) async {
-    final ArticleModel articleModel = ArticleModel(
-        id: article.id,
-        article: article.article,
-        name: article.name,
-        prix: article.prix);
     try {
-      await articlesFirebase.updateArticle(articleModel);
+      await articlesFirebase.updateArticle(article);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());

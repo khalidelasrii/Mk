@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:mk/featchers/Authontification/data/date_sources.dart/user_data_sources.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
@@ -18,12 +19,21 @@ class UserRepositooryImpl implements UserRepository {
   }
 
   @override
+  Future<Either<String, UserCredential?>> signInWithGoogle() async {
+    try {
+      return Right(await userDataSources.signInWithGoogle());
+    } catch (e) {
+      return const Left('Error to connect try a gaine');
+    }
+  }
+
+  @override
   Future<Either<String, Unit>> singUp(Usr usr) async {
     try {
       await userDataSources.signUp(usr);
       return const Right(unit);
     } catch (e) {
-      return const Left('Error to Connect');
+      return const Left('Error to connect try a gaine');
     }
   }
 

@@ -1,11 +1,14 @@
+import 'dart:html';
+
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
+import 'package:mk/test.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'injection_container.dart' as di;
 
@@ -21,6 +24,7 @@ void main() async {
       appId: "1:1090838931629:web:64efe23033a1a187277e24",
     ),
   );
+
   await di.init();
   runApp(const Maktabati());
 }
@@ -52,7 +56,7 @@ class Maktabati extends StatelessWidget {
                   user: state.userId,
                 );
               }
-              return const SingIn();
+              return const TestImages();
             },
           ),
         ));
