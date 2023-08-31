@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
@@ -12,9 +13,9 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   ArticleRepositoryImpl({required this.articlesFirebase});
 
   @override
-  Future<Either<Faillure, List<ArticleModel>>> getArticles() async {
+  Future<Either<Faillure, List<ArticleModel>>> getmesArticles() async {
     try {
-      final remoteArticle = await articlesFirebase.getArticles();
+      final remoteArticle = await articlesFirebase.getmesArticles();
       return Right(remoteArticle);
     } on ServerException {
       return Left(ServerFailure());
@@ -46,6 +47,17 @@ class ArticleRepositoryImpl implements RepositoryArticles {
     try {
       await articlesFirebase.delletArticle(id);
       return const Right(unit);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getallArticles() async {
+    try {
+      final allArticles = articlesFirebase.getallArticles();
+      return Right(allArticles);
     } on ServerException {
       return Left(ServerFailure());
     }
