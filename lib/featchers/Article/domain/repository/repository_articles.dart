@@ -7,8 +7,7 @@ import '../../../../core/errure/faillure.dart';
 abstract class RepositoryArticles {
   Future<Either<Faillure, List<Article>>> getmesArticles();
 
-  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      getallArticles();
+  Future<Either<Faillure, List<Article>>> getallArticles();
 
   Future<Either<Faillure, Unit>> updateArticle(Article article);
 

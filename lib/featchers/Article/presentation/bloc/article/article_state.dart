@@ -20,6 +20,13 @@ class LodedArticlesState extends ArticleState {
   List<Object> get props => [articles];
 }
 
+class LodedAllarticles extends ArticleState {
+  final List<Article> articles;
+  const LodedAllarticles({required this.articles});
+  @override
+  List<Object> get props => [articles];
+}
+
 class ErrorArticlesState extends ArticleState {
   final String message;
 

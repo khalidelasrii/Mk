@@ -10,6 +10,6 @@ class GetArticlesUseCase {
   GetArticlesUseCase(this.repositoryArticles);
 
   Future<Either<Faillure, List<Article>>> call() async {
-    return await repositoryArticles.getArticles();
+    return await repositoryArticles.getmesArticles();
   }
 }

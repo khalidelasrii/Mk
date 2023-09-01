@@ -53,11 +53,9 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      getallArticles() async {
+  Future<Either<Faillure, List<Article>>> getallArticles() async {
     try {
-      final allArticles = articlesFirebase.getallArticles();
-      return Right(allArticles);
+      return Right(await articlesFirebase.getallArticles());
     } on ServerException {
       return Left(ServerFailure());
     }

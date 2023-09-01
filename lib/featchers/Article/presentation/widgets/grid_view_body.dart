@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
@@ -7,7 +8,7 @@ import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 import '../../../Authontification/domain/entitie/user.dart';
 import '../../domain/entitie/article.dart';
 
-class GridViewBody extends StatelessWidget {
+class GridViewBody extends StatefulWidget {
   const GridViewBody(
       {super.key,
       required this.articles,
@@ -18,15 +19,20 @@ class GridViewBody extends StatelessWidget {
   final bool isDisktop;
 
   @override
+  State<GridViewBody> createState() => _GridViewBodyState();
+}
+
+class _GridViewBodyState extends State<GridViewBody> {
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SizedBox(
         child: GridView.builder(
-          itemCount: articles.length,
+          itemCount: widget.articles.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isDisktop == true ? 5 : 3),
+              crossAxisCount: widget.isDisktop == true ? 5 : 3),
           itemBuilder: (context, index) {
-            final article = articles[index];
+            final article = widget.articles[index];
             return GridTile(
               child: Padding(
                   padding: const EdgeInsets.all(1.0),
@@ -38,7 +44,7 @@ class GridViewBody extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             SizedBox(
-                              child: Text(user.email),
+                              child: Text(article.email),
                             ),
                             DropdownButton<String>(
                               icon: const Icon(Icons.more_horiz),
@@ -71,7 +77,7 @@ class GridViewBody extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                           builder: (_) => AddOrUpdateArticle(
-                                                user: user,
+                                                user: widget.user,
                                                 isUpdate: true,
                                                 article: article,
                                               )));

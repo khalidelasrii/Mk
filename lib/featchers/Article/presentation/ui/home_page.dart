@@ -53,7 +53,9 @@ AppBar _buildAppbar(BuildContext context, Usr? user) {
         const SizedBox(
           width: 20,
         ),
-        SizedBox(child: Image.network('${user!.profile}')),
+        user!.profile == null
+            ? SizedBox(child: Image.network('${user.profile}'))
+            : SizedBox(),
       ],
     ),
     actions: [
@@ -80,7 +82,7 @@ Widget _buildBody(BuildContext context, bool isDisktop, Usr user) {
       BlocConsumer<ArticleBloc, ArticleState>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is LodedArticlesState) {
+          if (state is LodedAllarticles) {
             return GridViewBody(
               articles: state.articles,
               user: user,

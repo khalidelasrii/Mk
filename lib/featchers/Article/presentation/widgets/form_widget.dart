@@ -38,6 +38,7 @@ class _FormWidgetState extends State<FormWidget> {
 
   void validateFormthenUpdateOrAddArticle() {
     final article = Article(
+        email: widget.user.email,
         article: _articleControlor.text,
         name: _nameControlor.text,
         prix: _prixControlor.text,

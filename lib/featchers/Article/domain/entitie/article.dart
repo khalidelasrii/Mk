@@ -5,9 +5,11 @@ class Article extends Equatable {
   final String article;
   final String name;
   final String prix;
+  final String email;
 
   Article(
-      {required this.article,
+      {required this.email,
+      required this.article,
       required this.name,
       required this.prix,
       required this.id});
