@@ -1,6 +1,7 @@
 // ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mk/core/messages.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/dellet_article_use_case.dart';
@@ -29,7 +30,8 @@ class AddordeletorupdateBloc
           emit(
               const ErrorAddDeleteUpdateState(message: SERVER_FAILURE_MESSAGE));
         } else {
-          final faillureOrDoneMessage = await addArticle(event.article);
+          final faillureOrDoneMessage =
+              await addArticle(event.image, event.article);
 
           faillureOrDoneMessage.fold(
             (faillure) {
@@ -42,7 +44,8 @@ class AddordeletorupdateBloc
         }
       } else if (event is DelletArticleEvent) {
         emit(LodingAddDeleteUpdateArticleState());
-        final faillureOrDoneMessage = await delletArticle(event.articlId);
+        final faillureOrDoneMessage =
+            await delletArticle(event.collectionId, event.articlId);
 
         faillureOrDoneMessage.fold(
           (faillure) {

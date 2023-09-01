@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
@@ -25,19 +24,23 @@ class GridViewBody extends StatefulWidget {
 class _GridViewBodyState extends State<GridViewBody> {
   @override
   Widget build(BuildContext context) {
+    final xxx = widget.articles;
+
     return Expanded(
       child: SizedBox(
         child: GridView.builder(
-          itemCount: widget.articles.length,
+          itemCount: xxx.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: widget.isDisktop == true ? 5 : 3),
           itemBuilder: (context, index) {
-            final article = widget.articles[index];
+            final article = xxx[index];
             return GridTile(
               child: Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: Container(
-                    color: Colors.red,
+                    decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.orange),
                     child: SingleChildScrollView(
                       child: Column(children: [
                         Row(
@@ -85,7 +88,8 @@ class _GridViewBodyState extends State<GridViewBody> {
                                   BlocProvider.of<AddordeletorupdateBloc>(
                                           context)
                                       .add(DelletArticleEvent(
-                                          articlId: article.id));
+                                          articlId: article.id,
+                                          collectionId: article.email));
                                   BlocProvider.of<ArticleBloc>(context)
                                       .add(GetAllArticlesEvent());
                                 }

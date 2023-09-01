@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
 import '../../../../core/errure/faillure.dart';
@@ -23,9 +24,10 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, Unit>> addArticle(Article article) async {
+  Future<Either<Faillure, Unit>> addArticle(
+      XFile? image, Article article) async {
     try {
-      await articlesFirebase.addArticle(article);
+      await articlesFirebase.addArticle(image, article);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());
@@ -43,9 +45,10 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, Unit>> delletArticle(String id) async {
+  Future<Either<Faillure, Unit>> delletArticle(
+      String collectionId, String id) async {
     try {
-      await articlesFirebase.delletArticle(id);
+      await articlesFirebase.delletArticle(collectionId, id);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());

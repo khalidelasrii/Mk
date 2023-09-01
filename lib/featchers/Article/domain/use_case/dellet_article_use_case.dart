@@ -7,7 +7,7 @@ class DelletArticleUseCase {
 
   DelletArticleUseCase(this.repositoryArticles);
 
-  Future<Either<Faillure, Unit>> call(String id) async {
-    return await repositoryArticles.delletArticle(id);
+  Future<Either<Faillure, Unit>> call(String collectionId, String id) async {
+    return await repositoryArticles.delletArticle(collectionId, id);
   }
 }

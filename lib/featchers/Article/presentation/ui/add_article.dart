@@ -99,6 +99,7 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
           user: user,
           isUpdate: isUpdate,
           article: isUpdate ? article : null,
+          imagePicker: null,
         );
       },
     );

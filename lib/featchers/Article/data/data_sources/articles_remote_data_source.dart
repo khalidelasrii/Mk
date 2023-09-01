@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:image_picker/image_picker.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 import '../models/article_model.dart';
@@ -13,16 +16,21 @@ abstract class ArticlesRemoteDataSource {
   Future<List<Article>> getallArticles();
   Future<List<ArticleModel>> getmesArticles();
   Future<Unit> updateArticle(Article article);
-  Future<Unit> addArticle(Article article);
-  Future<Unit> delletArticle(String id);
+  Future<Unit> addArticle(XFile? image, Article article);
+  Future<Unit> delletArticle(String collectionId, String id);
+  Future<String> imageArticle();
 }
 
 class ArticlesFirebase implements ArticlesRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance.currentUser;
+  final ImagePicker _picker = ImagePicker();
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  File? _image;
 
   @override
-  Future<Unit> addArticle(Article article) async {
+  Future<Unit> addArticle(XFile? image, Article article) async {
     try {
       await _firestore.collection('Articles').doc(_auth!.email).set({
         'email': _auth!.email,
@@ -46,11 +54,11 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<Unit> delletArticle(String id) async {
+  Future<Unit> delletArticle(String collectionId, String id) async {
     await _firestore
         .collection('Articles')
-        .doc(_auth!.email)
-        .collection(_auth!.uid)
+        .doc(collectionId)
+        .collection(collectionId)
         .doc(id)
         .delete();
     return unit; // Utilisez "unit" ici au lieu de "Future.value(unit)"
@@ -108,52 +116,44 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
             await articlesCollection.doc(articleId).collection(articleId).get();
 
         final subCollectionArticles = subCollectionSnapshot.docs.map((subDoc) {
-          final subArticleData = subDoc.data() as Map<String, dynamic>;
-          final subArticleId = subDoc.id;
+          final subArticleData = subDoc.data();
 
           return Article(
             email: subArticleData['email'],
             article: subArticleData['article'],
             name: subArticleData['name'],
             prix: subArticleData['prix'],
-            id: subArticleId,
+            id: subDoc.id,
           );
         }).toList();
 
         allArticles.addAll(subCollectionArticles);
       }
 
-      print('all articles: $allArticles');
       return allArticles;
     } catch (e) {
-      print('Error fetching articles: $e');
       return [];
     }
   }
+
+  @override
+  Future<String> imageArticle() async {
+    try {
+      final image = await _picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        _image = File(image.path);
+        String filname = DateTime.now().millisecondsSinceEpoch.toString();
+        firebase_storage.Reference ref =
+            storage.ref().child('images/${_auth!.email}/{$filname}.jpg');
+        await ref.putFile(_image!);
+        String downaloadURL = await ref.getDownloadURL();
+        return downaloadURL;
+      } else {
+        return 'images/MK.png';
+      }
+    } catch (e) {
+      return '$e';
+    }
+  }
 }
-//  QuerySnapshot snapshot =
-//         await FirebaseFirestore.instance.collectionGroup('Articles').get();
-//     final usersId = snapshot.docs.map((e) {
-//       return e.id;
-//     });
-
-//     for (var uid in usersId) {
-//       final x = await FirebaseFirestore.instance
-//           .collection('khalid')
-//           .doc(uid)
-//           .collection(uid)
-//           .get();
-
-//       documents.addAll(x.docs.map((collections) {
-//         final data = collections.data();
-//         final userid = collections.id;
-//         return ArticleModel(
-//           name: data['name'],
-//           article: data['article'],
-//           id: userid,
-//           prix: data['prix'],
-//         );
-//       }).toList());
-//     }
-
-

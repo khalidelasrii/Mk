@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../Authontification/domain/entitie/user.dart';
 import '../../domain/entitie/article.dart';
@@ -9,10 +10,15 @@ import '../ui/home_page.dart';
 
 class FormWidget extends StatefulWidget {
   const FormWidget(
-      {super.key, required this.isUpdate, this.article, required this.user});
+      {super.key,
+      required this.imagePicker,
+      required this.isUpdate,
+      this.article,
+      required this.user});
   final bool isUpdate;
   final Article? article;
   final Usr user;
+  final XFile? imagePicker;
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
@@ -56,7 +62,7 @@ class _FormWidgetState extends State<FormWidget> {
                   )));
     } else {
       BlocProvider.of<AddordeletorupdateBloc>(context)
-          .add(AddArticleEvent(article: article));
+          .add(AddArticleEvent(article: article, image: widget.imagePicker));
       BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
       Navigator.push(
           context,
@@ -76,6 +82,11 @@ class _FormWidgetState extends State<FormWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // TextField article ;
+            ElevatedButton(
+                onPressed: () {},
+                child: const Row(
+                  children: [Text('Image'), Icon(Icons.add)],
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
               child: SizedBox(
