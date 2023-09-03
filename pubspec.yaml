@@ -19,7 +19,7 @@ dependencies:
   cloud_firestore: ^4.8.4
   google_sign_in: ^6.1.4
   firebase_database: ^10.2.4
-  firebase_storage: ^11.2.5
+  firebase_storage: ^11.2.6
   get_it: ^7.6.0
   image_picker: ^1.0.2
 

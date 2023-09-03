@@ -82,11 +82,24 @@ class _FormWidgetState extends State<FormWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // TextField article ;
-            ElevatedButton(
-                onPressed: () {},
-                child: const Row(
-                  children: [Text('Image'), Icon(Icons.add)],
-                )),
+            SizedBox(
+              width: 200,
+              child: Center(
+                child: ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+                    onPressed: () {},
+                    child: const Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Icon(Icons.add), Text('Image')],
+                      ),
+                    )),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
               child: SizedBox(
