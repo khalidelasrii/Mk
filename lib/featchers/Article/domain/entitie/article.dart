@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 
 class Article extends Equatable {
@@ -6,9 +8,13 @@ class Article extends Equatable {
   final String name;
   final String prix;
   final String email;
+  final Uint8List? selectedImageInBytes;
+  final String? articleUrl;
 
   Article(
-      {required this.email,
+      {this.articleUrl,
+      this.selectedImageInBytes,
+      required this.email,
       required this.article,
       required this.name,
       required this.prix,

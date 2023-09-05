@@ -2,7 +2,8 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
   ArticleModel(
-      {required super.email,
+      {super.selectedImageInBytes,
+      required super.email,
       required super.article,
       required super.name,
       required super.prix,

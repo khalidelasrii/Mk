@@ -5,7 +5,6 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
-import 'package:mk/temp.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'injection_container.dart' as di;
 
@@ -45,7 +44,11 @@ class Maktabati extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(focusColor: Colors.blue),
+          theme: ThemeData(
+            primaryColor: Color.fromARGB(255, 10, 32, 156),
+            hintColor: Colors.orange,
+            shadowColor: Colors.red,
+          ),
           home: BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is IsSingInState) {
@@ -53,7 +56,7 @@ class Maktabati extends StatelessWidget {
                   user: state.userId,
                 );
               }
-              return ImageUploadScreen();
+              return const SingIn();
             },
           ),
         ));

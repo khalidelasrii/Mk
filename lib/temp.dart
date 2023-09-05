@@ -1,82 +1,98 @@
-import 'dart:io';
-import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-class ImageUploadScreen extends StatefulWidget {
+class UploadImageToFirebase extends StatefulWidget {
+  const UploadImageToFirebase({super.key});
+
   @override
-  _ImageUploadScreenState createState() => _ImageUploadScreenState();
+  State<UploadImageToFirebase> createState() => _UploadImageToFirebaseState();
 }
 
-class _ImageUploadScreenState extends State<ImageUploadScreen> {
-  final ImagePicker _picker = ImagePicker();
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-  Uint8List? _imageBytes;
-
-  Future<void> _pickImage() async {
-    final image = await _picker.pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (image != null) {
-        // Lisez le fichier image en tant que tableau d'octets (Uint8List)
-        _imageBytes = File(image.path).readAsBytesSync();
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
-
-  Future<void> _uploadImage() async {
-    if (_imageBytes != null) {
-      try {
-        String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-        firebase_storage.Reference ref =
-            storage.ref().child('images/$fileName.jpg');
-
-        // Utilisez la méthode putData pour télécharger des données (tableau d'octets)
-        await ref.putData(_imageBytes!);
-
-        String downloadURL = await ref.getDownloadURL();
-        print('Image uploaded and URL: $downloadURL');
-      } catch (e) {
-        print('Error uploading image: $e');
-      }
-    } else {
-      print('No image selected.');
-    }
-  }
+class _UploadImageToFirebaseState extends State<UploadImageToFirebase> {
+  String _imageFile = ''; // Variable to hold the selected image file
+  Uint8List? selectedImageInBytes;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firebase Storage Example'),
+        title: const Text("Upload Image"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _imageBytes != null
-                ? Image.memory(
-                    _imageBytes!,
-                    height: 200,
-                  )
-                : SizedBox(),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: Text('Pick Image'),
-            ),
-            SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _uploadImage,
-              child: Text('Upload Image'),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (_imageFile.isNotEmpty || _imageFile != '')
+                Image.memory(selectedImageInBytes!),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  //! Calling pickImage Method
+                  pickImage();
+                },
+                child: const Text('Pick Image'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                  onPressed: () async {
+                    //! Calling uploadImage Method
+                    await uploadImage(selectedImageInBytes!);
+                  },
+                  child: const Text('Upload Image To Firebase Storage')),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  // Method to pick image in flutter web
+  Future<void> pickImage() async {
+    try {
+      // Pick image using file_picker package
+      FilePickerResult? fileResult = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
+
+      // If user picks an image, save selected image to variable
+      if (fileResult != null) {
+        setState(() {
+          _imageFile = fileResult.files.first.name;
+          selectedImageInBytes = fileResult.files.first.bytes;
+        });
+      }
+    } catch (e) {
+      // If an error occured, show SnackBar with error message
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Error:$e")));
+    }
+  }
+
+  // Method to upload selected image in flutter web
+  // This method will get selected image in Bytes
+  Future<String> uploadImage(Uint8List selectedImageInBytes) async {
+    try {
+      // This is referance where image uploaded in firebase storage bucket
+      Reference ref = FirebaseStorage.instance.ref().child('Images');
+
+      // metadata to save image extension
+      final metadata = SettableMetadata(contentType: 'image/jpeg');
+
+      // UploadTask to finally upload image
+      UploadTask uploadTask = ref.putData(selectedImageInBytes, metadata);
+
+      // After successfully upload show SnackBar
+      await uploadTask.whenComplete(() => ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Image Uploaded"))));
+      return await ref.getDownloadURL();
+    } catch (e) {
+      // If an error occured while uploading, show SnackBar with error message
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+    return '';
   }
 }

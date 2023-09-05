@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
@@ -16,9 +18,8 @@ abstract class ArticlesRemoteDataSource {
   Future<List<Article>> getallArticles();
   Future<List<ArticleModel>> getmesArticles();
   Future<Unit> updateArticle(Article article);
-  Future<Unit> addArticle(XFile? image, Article article);
+  Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String collectionId, String id);
-  Future<String> imageArticle();
 }
 
 class ArticlesFirebase implements ArticlesRemoteDataSource {
@@ -30,8 +31,22 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   File? _image;
 
   @override
-  Future<Unit> addArticle(XFile? image, Article article) async {
+  Future<Unit> addArticle(Article article) async {
     try {
+      //! ////////////////////////////////
+      // This is referance where image uploaded in firebase storage bucket
+      Reference ref = FirebaseStorage.instance.ref().child('Images');
+
+      final metadata = SettableMetadata(contentType: 'images/jpeg');
+
+      UploadTask uploadTask =
+          ref.putData(article.selectedImageInBytes!, metadata);
+
+      String urlarticle = await ref.getDownloadURL();
+
+      print(urlarticle);
+      //! //////////////
+
       await _firestore.collection('Articles').doc(_auth!.email).set({
         'email': _auth!.email,
       });

@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,10 +26,9 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, Unit>> addArticle(
-      XFile? image, Article article) async {
+  Future<Either<Faillure, Unit>> addArticle(Article article) async {
     try {
-      await articlesFirebase.addArticle(image, article);
+      await articlesFirebase.addArticle(article);
       return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());

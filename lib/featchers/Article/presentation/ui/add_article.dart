@@ -72,7 +72,7 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
       appBar: AppBar(
         title: Text(isUpdate ? 'Update Poste' : 'Add Poste'),
       ),
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.black,
       body: _buildBody(context, user),
     );
   }
@@ -99,7 +99,6 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
           user: user,
           isUpdate: isUpdate,
           article: isUpdate ? article : null,
-          imagePicker: null,
         );
       },
     );

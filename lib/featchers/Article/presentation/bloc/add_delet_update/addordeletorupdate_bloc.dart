@@ -1,4 +1,6 @@
 // ignore: depend_on_referenced_packages
+import 'dart:typed_data';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,8 +32,7 @@ class AddordeletorupdateBloc
           emit(
               const ErrorAddDeleteUpdateState(message: SERVER_FAILURE_MESSAGE));
         } else {
-          final faillureOrDoneMessage =
-              await addArticle(event.image, event.article);
+          final faillureOrDoneMessage = await addArticle(event.article);
 
           faillureOrDoneMessage.fold(
             (faillure) {

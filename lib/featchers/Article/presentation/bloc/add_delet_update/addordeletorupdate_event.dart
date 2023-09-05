@@ -9,9 +9,8 @@ sealed class AddordeletorupdateEvent extends Equatable {
 
 class AddArticleEvent extends AddordeletorupdateEvent {
   final Article article;
-  final XFile? image;
 
-  const AddArticleEvent({required this.image, required this.article});
+  const AddArticleEvent({required this.article});
   @override
   List<Object> get props => [article];
 }
