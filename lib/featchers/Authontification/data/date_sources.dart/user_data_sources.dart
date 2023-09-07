@@ -76,5 +76,6 @@ class UserDataSourcesImpl1 implements UserDataSources {
     } catch (error) {
       print("Error signing in with Google: $error");
     }
+    return null;
   }
 }

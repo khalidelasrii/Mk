@@ -21,8 +21,8 @@ dependencies:
   firebase_database: ^10.2.4
   firebase_storage: ^11.2.6
   get_it: ^7.6.0
-  image_picker: ^1.0.2
   file_picker: 5.2.1
+  cached_network_image: ^3.2.3
 
 
 

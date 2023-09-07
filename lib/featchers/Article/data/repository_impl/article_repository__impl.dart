@@ -1,8 +1,4 @@
-import 'dart:typed_data';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
 import '../../../../core/errure/faillure.dart';
@@ -26,10 +22,10 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, Unit>> addArticle(Article article) async {
+  Future<Either<Faillure, String>> addArticle(Article article) async {
     try {
-      await articlesFirebase.addArticle(article);
-      return const Right(unit);
+      String url = await articlesFirebase.addArticle(article);
+      return Right(url);
     } on ServerException {
       return Left(ServerFailure());
     }

@@ -1,9 +1,7 @@
 // ignore: depend_on_referenced_packages
-import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:mk/core/messages.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/dellet_article_use_case.dart';
@@ -39,8 +37,7 @@ class AddordeletorupdateBloc
               emit(const ErrorAddDeleteUpdateState(
                   message: SERVER_FAILURE_MESSAGE));
             },
-            (_) => emit(const MessageAddDeleteUpdatePostState(
-                message: ADD_SUCCESS_MESSAGES)),
+            (url) => emit(MessageAddDeleteUpdatePostState(message: url)),
           );
         }
       } else if (event is DelletArticleEvent) {

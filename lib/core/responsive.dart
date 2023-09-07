@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mk/core/Widgets/core_widgets.dart';
 
 class ResponsiveLayote extends StatelessWidget {
   const ResponsiveLayote({
@@ -19,7 +20,7 @@ class ResponsiveLayote extends StatelessWidget {
         } else if (constraints.maxWidth <= 600) {
           return moubileSccafolde;
         }
-        return SizedBox();
+        return const CerclulareLodingWidget();
       },
     );
   }

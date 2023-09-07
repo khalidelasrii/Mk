@@ -3,14 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entitie/user.dart';
 import '../cubit/auth_cubit.dart';
-import '../ui/sing_up.dart';
 
-class SingInField extends StatelessWidget {
-  const SingInField({required this.isDisktop, super.key});
+class SingUpField extends StatelessWidget {
+  const SingUpField({required this.isDisktop, super.key});
   final bool isDisktop;
 
   @override
   Widget build(BuildContext context) {
+    final nameControllor = TextEditingController();
     final emailControllor = TextEditingController();
     final passwordControllor = TextEditingController();
 
@@ -27,8 +27,35 @@ class SingInField extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.all(20.0),
             child: Text(
-              'Connexion',
+              'Create Account',
               style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ),
+
+          /// .............................................Email TextField
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+            child: SizedBox(
+              child: TextField(
+                controller: nameControllor,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hoverColor: Colors.blue,
+                  hintText: 'User Name',
+                  hintStyle: TextStyle(color: Colors.white),
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 209, 194, 149),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                  ),
+                ),
+              ),
             ),
           ),
 
@@ -99,11 +126,12 @@ class SingInField extends StatelessWidget {
                         backgroundColor: Colors.green),
                     onPressed: () async {
                       Usr usr = Usr(
+                          name: nameControllor.text,
                           email: emailControllor.text,
                           password: passwordControllor.text);
-                      BlocProvider.of<AuthCubit>(context).singIn(usr);
+                      BlocProvider.of<AuthCubit>(context).singUp(usr);
                     },
-                    child: const Text('Connexion'),
+                    child: const Text('Create'),
                   ),
                   const SizedBox(
                     width: 20,
@@ -123,19 +151,6 @@ class SingInField extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              const Text(
-                'Try create a Conte',
-                style: TextStyle(color: Colors.white),
-              ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (_) => const SingUp()));
-                  },
-                  child: const Text(
-                    'Hire',
-                    style: TextStyle(color: Colors.amber),
-                  )),
             ],
           )
         ],

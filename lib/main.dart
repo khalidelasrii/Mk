@@ -45,7 +45,7 @@ class Maktabati extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            primaryColor: Color.fromARGB(255, 10, 32, 156),
+            primaryColor: const Color.fromARGB(255, 10, 32, 156),
             hintColor: Colors.orange,
             shadowColor: Colors.red,
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
+import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/core/responsive.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
@@ -40,22 +41,30 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-AppBar _buildAppbar(BuildContext context, Usr? user) {
+AppBar _buildAppbar(BuildContext context, Usr? user, bool isDiscktop) {
   return AppBar(
     toolbarHeight: 100,
-    backgroundColor: Colors.black,
+    backgroundColor: mybluebackgroundcolor,
     title: Row(
       children: [
         SizedBox(
           height: 40,
           child: Image.asset('images/MK.png'),
         ),
+        const Expanded(
+          child: SizedBox(),
+        ),
+        ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            onPressed: () {},
+            child: const Icon(Icons.search)),
         const SizedBox(
           width: 20,
         ),
-        user!.profile == null
-            ? SizedBox(child: Image.network('${user.profile}'))
-            : SizedBox(),
+        SizedBox(
+            child: user!.profile == null
+                ? Image.network('${user.profile}')
+                : Text(user.email)),
       ],
     ),
     actions: [
@@ -75,12 +84,11 @@ Widget _buildBody(BuildContext context, bool isDisktop, Usr user) {
     children: [
       isDisktop == true
           ? const Drawer(
-              backgroundColor: Colors.black,
-              width: 90,
+              backgroundColor: Color.fromARGB(213, 68, 137, 255),
+              width: 150,
             )
           : const SizedBox(),
-      BlocConsumer<ArticleBloc, ArticleState>(
-        listener: (context, state) {},
+      BlocBuilder<ArticleBloc, ArticleState>(
         builder: (context, state) {
           if (state is LodedAllarticles) {
             return GridViewBody(
@@ -129,8 +137,8 @@ class HomePageDesktop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: _buildAppbar(context, user),
+      backgroundColor: Colors.grey.shade300,
+      appBar: _buildAppbar(context, user, true),
       body: _buildBody(context, isDisktop, user),
       floatingActionButton: _floatingActionButton(context, user),
     );
@@ -155,7 +163,7 @@ class HomePageMobile extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.green,
-      appBar: _buildAppbar(context, user),
+      appBar: _buildAppbar(context, user, false),
       body: _buildBody(context, isDisktop, user),
       floatingActionButton: _floatingActionButton(context, user),
     );
