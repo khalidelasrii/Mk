@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -94,5 +96,34 @@ class _UploadImageToFirebaseState extends State<UploadImageToFirebase> {
           .showSnackBar(SnackBar(content: Text(e.toString())));
     }
     return '';
+  }
+}
+
+//! ..........................................................................
+
+class MyImageSlider extends StatelessWidget {
+  final List<String> imageUrls = [
+    'https://www.powertrafic.fr/wp-content/uploads/2023/04/image-ia-exemple.png',
+    'https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg',
+    'https://img.freepik.com/vecteurs-libre/rabat-maroc-ville-skyline-vector-illustration-ciel-fond-voyage-affaires-concept-tourisme-batiments-modernes-image-pour-site-web-banniere-presentation_596401-487.jpg?w=2000',
+    // Ajoutez autant d'URLs d'images que vous le souhaitez
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Image Slider'),
+      ),
+      body: PageView.builder(
+        itemCount: imageUrls.length,
+        itemBuilder: (context, index) {
+          return Image.network(
+            imageUrls[index],
+            fit: BoxFit.cover,
+          );
+        },
+      ),
+    );
   }
 }

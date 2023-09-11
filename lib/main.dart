@@ -5,6 +5,7 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen.dart';
+import 'package:mk/image_storage_test_web.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'injection_container.dart' as di;
 
@@ -57,7 +58,7 @@ class Maktabati extends StatelessWidget {
                   user: state.userId,
                 );
               }
-              return const WelcomeScreen();
+              return MyImageSlider();
             },
           ),
         ));

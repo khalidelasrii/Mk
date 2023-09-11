@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 
@@ -21,9 +23,33 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     );
   }
 
+  Color whiteColor = Colors.white;
+  Color textColor = Colors.amber;
 //! AppBar ///////////
   AppBar _buildAppbar() {
-    return AppBar();
+    int tiime;
+    Timer.periodic(const Duration(seconds: 1), (_) {
+      setState(() {
+        // Get the current time
+        DateTime now = DateTime.now();
+
+        // Extract the seconds part and format it as a string
+        tiime = now.second;
+        tiime % 2 == 0
+            ? (whiteColor = Colors.amber, textColor = Colors.white)
+            : (whiteColor = Colors.white, textColor = Colors.amber);
+      });
+    });
+
+    return AppBar(
+      backgroundColor: whiteColor,
+      title: Center(
+        child: Text(
+          'Welcom To MiloTech',
+          style: TextStyle(color: textColor),
+        ),
+      ),
+    );
   }
 
 //! Body ////////////////
