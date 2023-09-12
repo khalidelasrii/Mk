@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -59,6 +60,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
     Color textIconcolor = regeon == null ? Colors.white : Colors.black;
     List<int> allcatelist = [1, 11, 12, 13, 14, 15, 16, 17, 18];
+    List<String> imageSliderUrl = [
+      'images/slider/1.jpg',
+      'images/slider/2.jpg',
+      'images/slider/3.jpg',
+      'images/slider/4.jpg',
+    ];
 
     MouseRegion mouseRegion(int rrr, letext, bool isin) {
       return MouseRegion(
@@ -100,10 +107,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     }
 
     return SingleChildScrollView(
-      //! la prtie 3 ///////////////////////////////////
-
-      //! ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
       child: Column(
         children: [
           Stack(
@@ -320,37 +323,78 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               ],
                             ),
                           ))
-                  //! //// la partie de
                 ],
               )
             ],
           ),
+
+          //! Welcomme To MiloTech
           Container(
-            height: 150,
             color: Colors.grey,
+            constraints: const BoxConstraints(maxHeight: 100),
             child: Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: RichText(
-                    text: const TextSpan(
-                        text: 'Welcomme ',
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(text: 'to '),
-                          TextSpan(
-                              text: 'M', style: TextStyle(color: Colors.black)),
-                          TextSpan(
-                              text: 'ilo', style: TextStyle(color: Colors.red)),
-                          TextSpan(
-                              text: 'Tech',
-                              style: TextStyle(color: Colors.green))
-                        ]),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: RichText(
+                      text: const TextSpan(
+                          text: 'Welcomme ',
+                          style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                          children: [
+                            TextSpan(text: 'to '),
+                            TextSpan(
+                                text: 'M',
+                                style: TextStyle(color: Colors.white)),
+                            TextSpan(
+                                text: 'ilo',
+                                style: TextStyle(color: Colors.orange)),
+                            TextSpan(
+                                text: 'Te',
+                                style: TextStyle(color: Colors.red)),
+                            TextSpan(
+                                text: 'ch',
+                                style: TextStyle(color: Colors.deepPurple))
+                          ]),
+                    ),
                   ),
                 )
               ],
             ),
+          ),
+          //! Welcomme To MiloTech
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: CarouselSlider.builder(
+              itemCount: imageSliderUrl.length,
+              // les Option:
+              options: CarouselOptions(
+                autoPlay: true,
+                reverse: false,
+                viewportFraction: 1.0,
+              ),
+              // build Slider
+              itemBuilder: (context, index, realIndex) {
+                final urlImage = imageSliderUrl[index];
+                return Container(
+                  color: Colors.white,
+                  child: Image.asset(
+                    urlImage,
+                    filterQuality: FilterQuality.low,
+                  ),
+                );
+              },
+            ),
+          ),
+
+          Container(
+            color: Colors.red,
+            width: double.infinity,
+            height: 30,
           )
         ],
       ),

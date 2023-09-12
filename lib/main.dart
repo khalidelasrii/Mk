@@ -58,7 +58,7 @@ class Maktabati extends StatelessWidget {
                   user: state.userId,
                 );
               }
-              return MyImageSlider();
+              return WelcomeScreen();
             },
           ),
         ));

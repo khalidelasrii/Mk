@@ -23,6 +23,7 @@ dependencies:
   get_it: ^7.6.0
   file_picker: 5.2.1
   cached_network_image: ^3.2.3
+  carousel_slider: ^4.2.1
 
 
 
@@ -36,7 +37,7 @@ flutter:
   uses-material-design: true
   assets:
     - images/
-  #   - images/a_dot_ham.jpeg
+    - images/slider/
 
   # example:
   # fonts:
