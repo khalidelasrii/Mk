@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/mous_regeon.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -12,46 +13,52 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  int? regeon = null;
-  bool isin = true;
-
+  int? regeon;
+  bool isin1 = false;
+  bool isin2 = false;
+  bool isin3 = false;
+  bool isin4 = false;
+  bool isin5 = false;
+  bool isin6 = false;
+  bool isin7 = true;
+  Color whiteColor = Colors.white;
+  Color textColor = Colors.amber;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(183, 0, 0, 0),
-      appBar: _buildAppbar(),
+      // appBar: _buildAppbar(),
       body: _buildbody(),
     );
   }
 
-  Color whiteColor = Colors.white;
-  Color textColor = Colors.amber;
 //! AppBar ///////////
-  AppBar _buildAppbar() {
-    int tiime;
-    Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        // Get the current time
-        DateTime now = DateTime.now();
+  // AppBar _buildAppbar() {
 
-        // Extract the seconds part and format it as a string
-        tiime = now.second;
-        tiime % 2 == 0
-            ? (whiteColor = Colors.amber, textColor = Colors.white)
-            : (whiteColor = Colors.white, textColor = Colors.amber);
-      });
-    });
+  // int tiime;
+  // Timer.periodic(const Duration(seconds: 1), (_) {
+  //   setState(() {
+  //     // Get the current time
+  //     DateTime now = DateTime.now();
 
-    return AppBar(
-      backgroundColor: whiteColor,
-      title: Center(
-        child: Text(
-          'Welcom To MiloTech',
-          style: TextStyle(color: textColor),
-        ),
-      ),
-    );
-  }
+  //     // Extract the seconds part and format it as a string
+  //     tiime = now.second;
+  //     tiime % 2 == 0
+  //         ? (whiteColor = Colors.amber, textColor = Colors.white)
+  //         : (whiteColor = Colors.white, textColor = Colors.amber);
+  //   });
+  // });
+
+  // return AppBar(
+  //   backgroundColor: whiteColor,
+  //   title: Center(
+  //     child: Text(
+  //       'Welcom To MiloTech',
+  //       style: TextStyle(color: textColor),
+  //     ),
+  //   ),
+  // );
+  // }
 
 //! Body ////////////////
 
@@ -66,45 +73,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       'images/slider/3.jpg',
       'images/slider/4.jpg',
     ];
-
-    MouseRegion mouseRegion(int rrr, letext, bool isin) {
-      return MouseRegion(
-        onEnter: (_) {
-          setState(() {
-            conatinercolors = Colors.white;
-            textIconcolor = Colors.black;
-            regeon = rrr;
-            isin = true;
-          });
-        },
-        onExit: (_) {
-          setState(() {
-            isin = false;
-            conatinercolors = Colors.transparent;
-            textIconcolor = Colors.white;
-            regeon = null;
-          });
-        },
-        child: MaterialButton(
-          hoverColor: isin ? Colors.amber : conatinercolors,
-          color: conatinercolors,
-          elevation: 0,
-          onPressed: () {},
-          child: Row(
-            children: [
-              Icon(
-                Icons.list,
-                color: textIconcolor,
-              ),
-              Text(
-                letext,
-                style: TextStyle(color: textIconcolor),
-              )
-            ],
-          ),
-        ),
-      );
-    }
 
     return SingleChildScrollView(
       child: Column(
@@ -189,7 +157,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ],
                     ),
                   ),
-                  //! Partie 3 de l Appbar
+                  //! Partie 3 : l'entet qui admet tous les page et les option
                   Container(
                     color: conatinercolors,
                     width: double.infinity,
@@ -202,16 +170,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  mouseRegion(1, 'All Categorie', isin),
-                                  mouseRegion(2, 'Featured selections', isin),
-                                  mouseRegion(3, 'Trade Assurance', isin),
+                                  MousregionAllcategorie().mouseRegion1(false),
+                                  MousregionAllcategorie().mouseRegion2(false),
+                                  MousregionAllcategorie().mouseRegion3(false),
                                   const SizedBox(
                                     width: 150,
                                   ),
-                                  mouseRegion(4, 'Buyer Central', isin),
-                                  mouseRegion(5, 'Become a supplier', isin),
-                                  mouseRegion(6, 'Get the app', isin),
-                                  mouseRegion(7, 'Help Center', isin),
+                                  MousregionAllcategorie().mouseRegion4(false),
+                                  MousregionAllcategorie().mouseRegion5(false),
+                                  MousregionAllcategorie().mouseRegion6(false),
                                 ]),
                           ),
                         ]),
@@ -230,7 +197,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                               child: TextField(
                                 decoration: const InputDecoration(
                                   hintText:
-                                      '           What are you looking for?',
+                                      '           What are you looking for ?',
                                   filled: true,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
@@ -274,7 +241,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                           onEnter: (_) {
                             setState(() {
                               regeon = 1;
-                              isin = true;
+                              isin1 = true;
                             });
                           },
                           onExit: (_) {
@@ -291,16 +258,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                                 SizedBox(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      mouseRegion(11, 'All categorie', isin),
-                                      mouseRegion(12, 'All categorie', isin),
-                                      mouseRegion(13, 'All categorie', isin),
-                                      mouseRegion(14, 'All categorie', isin),
-                                      mouseRegion(15, 'All categorie', isin),
-                                      mouseRegion(16, 'All categorie', isin),
-                                      mouseRegion(17, 'All categorie', isin),
-                                      mouseRegion(18, 'All categorie', isin),
-                                    ],
+                                    children: [],
                                   ),
                                 ),
                                 if (regeon == 11 || regeon == 1)
@@ -368,34 +326,33 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
           //! Welcomme To MiloTech
           Padding(
-            padding: const EdgeInsets.all(20),
-            child: CarouselSlider.builder(
-              itemCount: imageSliderUrl.length,
-              // les Option:
-              options: CarouselOptions(
-                autoPlay: true,
-                reverse: false,
-                viewportFraction: 1.0,
-              ),
-              // build Slider
-              itemBuilder: (context, index, realIndex) {
-                final urlImage = imageSliderUrl[index];
-                return Container(
-                  color: Colors.white,
-                  child: Image.asset(
-                    urlImage,
-                    filterQuality: FilterQuality.low,
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: SizedBox(
+                width: double.infinity,
+                height: 200,
+                child: CarouselSlider.builder(
+                  itemCount: imageSliderUrl.length,
+                  // les Option:
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    viewportFraction: 1.0,
                   ),
-                );
-              },
-            ),
-          ),
+                  // build Slider
+                  itemBuilder: (context, index, realIndex) {
+                    final urlImage = imageSliderUrl[index];
+                    return Image.asset(
+                      urlImage,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+              )),
 
           Container(
             color: Colors.red,
             width: double.infinity,
             height: 30,
-          )
+          ),
         ],
       ),
     );
