@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:mk/featchers/Authontification/presentation/ui/sing_in.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:mk/featchers/welcome_screen/presentation/widgets/mous_regeon.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -14,13 +11,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   int? regeon;
-  bool isin1 = false;
-  bool isin2 = false;
-  bool isin3 = false;
-  bool isin4 = false;
-  bool isin5 = false;
-  bool isin6 = false;
-  bool isin7 = true;
+  bool isin = false;
   Color whiteColor = Colors.white;
   Color textColor = Colors.amber;
   @override
@@ -170,15 +161,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  MousregionAllcategorie().mouseRegion1(false),
-                                  MousregionAllcategorie().mouseRegion2(false),
-                                  MousregionAllcategorie().mouseRegion3(false),
-                                  const SizedBox(
-                                    width: 150,
-                                  ),
-                                  MousregionAllcategorie().mouseRegion4(false),
-                                  MousregionAllcategorie().mouseRegion5(false),
-                                  MousregionAllcategorie().mouseRegion6(false),
+                                  // MousregionAllcategorie()
+                                  //     .mouseRegion(false, 1),
+                                  // MousregionAllcategorie()
+                                  //     .mouseRegion(false, 2),
+                                  // MousregionAllcategorie()
+                                  //     .mouseRegion(false, 3),
+                                  // const SizedBox(
+                                  //   width: 150,
+                                  // ),
+                                  // MousregionAllcategorie()
+                                  //     .mouseRegion(false, 4),
+                                  // MousregionAllcategorie()
+                                  //     .mouseRegion(false, 5),
+                                  // MousregionAllcategorie()
+                                  //     .mouseRegion(false, 6),
                                 ]),
                           ),
                         ]),
@@ -187,100 +184,55 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
                   //! ///////// la bare  de recherche
                   if (regeon == null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Stack(
-                        alignment: AlignmentDirectional.centerEnd,
-                        children: [
-                          Container(
-                              constraints: const BoxConstraints(maxWidth: 900),
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                  hintText:
-                                      '           What are you looking for ?',
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(25))),
-                                ),
-                                onChanged: (value) {
-                                  // Gérer les modifications du texte de recherche ici
-                                },
-                              )),
-                          Container(
-                            height: 50,
-                            decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(25),
-                                    bottomRight: Radius.circular(25)),
-                                gradient: LinearGradient(
-                                    colors: [Colors.red, Colors.lightBlue])),
-                            child: MaterialButton(
-                              onPressed: () {
-                                setState(() {});
-                              },
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                child: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
 
-                  //! //////// LA partie de catégorie
-                  for (int x in allcatelist)
-                    if (regeon == x)
-                      MouseRegion(
-                          onEnter: (_) {
-                            setState(() {
-                              regeon = 1;
-                              isin1 = true;
-                            });
-                          },
-                          onExit: (_) {
-                            setState(() {
-                              regeon = null;
-                            });
-                          },
-                          child: Container(
-                            height: 600,
-                            color: Colors.white38,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [],
-                                  ),
-                                ),
-                                if (regeon == 11 || regeon == 1)
+                    //! //////// LA partie de catégorie
+                    for (int x in allcatelist)
+                      if (regeon == x)
+                        MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                regeon = 1;
+                                isin = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                regeon = null;
+                              });
+                            },
+                            child: Container(
+                              height: 600,
+                              color: Colors.white38,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   SizedBox(
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 233,
-                                          height: 339,
-                                          color: Colors.amber,
-                                        ),
-                                        Container(
-                                          width: 233,
-                                          height: 339,
-                                          color: Colors.red,
-                                        )
-                                      ],
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [],
                                     ),
-                                  )
-                              ],
-                            ),
-                          ))
+                                  ),
+                                  if (regeon == 11 || regeon == 1)
+                                    SizedBox(
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 233,
+                                            height: 339,
+                                            color: Colors.amber,
+                                          ),
+                                          Container(
+                                            width: 233,
+                                            height: 339,
+                                            color: Colors.red,
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                ],
+                              ),
+                            ))
                 ],
               )
             ],

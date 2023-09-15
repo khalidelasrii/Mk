@@ -1,39 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/categorie_cheldren2_cuibit/categoriercheld2_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class MousregionAllcategorie {
-  mouseRegion1(bool isin) {
+  mouseRegionfor1(bool isin, int bontonNembr, String textBoton, Color color1,
+      Color color2) {
     return StatefulBuilder(
       builder: (context, setState) {
-        setState(() {
-          isin;
-        });
         return MouseRegion(
           onEnter: (_) {
             setState(() {
               isin = true;
+              BlocProvider.of<ToolbarCubit>(context).categorie1(bontonNembr);
             });
           },
           onExit: (_) {
             setState(() {
               isin = false;
+              BlocProvider.of<ToolbarCubit>(context).isInitial();
             });
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: MaterialButton(
-              color: isin ? Colors.amber : Colors.transparent,
+              color: color1,
               elevation: 0,
               onPressed: () {},
               child: Row(
                 children: [
                   Icon(
                     Icons.list,
-                    color: isin ? Colors.white : Colors.amber,
+                    color: color2,
                   ),
                   Text(
-                    'Hello World',
+                    textBoton,
                     style: TextStyle(
-                      color: isin ? Colors.white : Colors.amber,
+                      color: color2,
                     ),
                   )
                 ],
@@ -46,13 +50,18 @@ class MousregionAllcategorie {
   }
 
   ////
-  mouseRegion2(bool isin) {
+  mouseRegionfor2(bool isin, int bontonNembr, String textboton, Color color1,
+      Color color2) {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
           onEnter: (_) {
             setState(() {
               isin = true;
+              BlocProvider.of<CategoriecheldrenCubit>(context)
+                  .ferstCategorieEvent(bontonNembr);
+              BlocProvider.of<Categoriercheldren2Cubit>(context)
+                  .ferstCategorieEvent(1);
             });
           },
           onExit: (_) {
@@ -61,38 +70,44 @@ class MousregionAllcategorie {
             });
           },
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: MaterialButton(
-              color: Colors.amber,
-              elevation: 0,
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.list,
-                    color: Colors.amber,
+                color: color1,
+                elevation: 0,
+                onPressed: () {},
+                child: SizedBox(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.list,
+                        color: color2,
+                      ),
+                      Text(
+                        textboton,
+                        style: TextStyle(
+                          color: color2,
+                        ),
+                      )
+                    ],
                   ),
-                  Text(
-                    'Hello World',
-                    style: TextStyle(color: Colors.amberAccent),
-                  )
-                ],
-              ),
-            ),
+                )),
           ),
         );
       },
     );
   }
 
-  //!
-  mouseRegion3(bool isin) {
+  mouseRegionfor3(bool isin, int bontonNembr, String textBoton, Color color1,
+      Color color2) {
     return StatefulBuilder(
       builder: (context, setState) {
         return MouseRegion(
           onEnter: (_) {
             setState(() {
               isin = true;
+              BlocProvider.of<Categoriercheldren2Cubit>(context)
+                  .ferstCategorieEvent(bontonNembr);
             });
           },
           onExit: (_) {
@@ -101,184 +116,28 @@ class MousregionAllcategorie {
             });
           },
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(4.0),
             child: MaterialButton(
-              color: Colors.amber,
-              elevation: 0,
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.list,
-                    color: Colors.amber,
+                color: color1,
+                elevation: 0,
+                onPressed: () {},
+                child: SizedBox(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.list,
+                        color: color2,
+                      ),
+                      Text(
+                        textBoton,
+                        style: TextStyle(
+                          color: color2,
+                        ),
+                      )
+                    ],
                   ),
-                  Text(
-                    'Hello World',
-                    style: TextStyle(color: Colors.amberAccent),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  //!
-  mouseRegion4(bool isin) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) {
-            setState(() {
-              isin = true;
-            });
-          },
-          onExit: (_) {
-            setState(() {
-              isin = false;
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              color: Colors.amber,
-              elevation: 0,
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.list,
-                    color: Colors.amber,
-                  ),
-                  Text(
-                    'Hello World',
-                    style: TextStyle(color: Colors.amberAccent),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  //!
-  mouseRegion5(bool isin) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) {
-            setState(() {
-              isin = true;
-            });
-          },
-          onExit: (_) {
-            setState(() {
-              isin = false;
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              color: Colors.amber,
-              elevation: 0,
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.list,
-                    color: Colors.amber,
-                  ),
-                  Text(
-                    'Hello World',
-                    style: TextStyle(color: Colors.amberAccent),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  //!
-  mouseRegion7(bool isin) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) {
-            setState(() {
-              isin = true;
-            });
-          },
-          onExit: (_) {
-            setState(() {
-              isin = false;
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              color: Colors.amber,
-              elevation: 0,
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.list,
-                    color: Colors.amber,
-                  ),
-                  Text(
-                    'Hello World',
-                    style: TextStyle(color: Colors.amberAccent),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  //!
-  mouseRegion6(bool isin) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return MouseRegion(
-          onEnter: (_) {
-            setState(() {
-              isin = true;
-            });
-          },
-          onExit: (_) {
-            setState(() {
-              isin = false;
-            });
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              color: Colors.amber,
-              elevation: 0,
-              onPressed: () {},
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.list,
-                    color: Colors.amber,
-                  ),
-                  Text(
-                    'Hello World',
-                    style: TextStyle(color: Colors.amberAccent),
-                  )
-                ],
-              ),
-            ),
+                )),
           ),
         );
       },
