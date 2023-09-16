@@ -18,6 +18,7 @@ class CategoriecheldrenCubit extends Cubit<CategoriecheldrenState> {
   ferstCategorieEvent(int catNumbre) {
     if (catNumbre == 1) {
       emit(CategorieChidlState1(
+          groupIs: catNumbre,
           color1: amberColor,
           color2: transparenColor,
           color3: transparenColor,
@@ -25,7 +26,8 @@ class CategoriecheldrenCubit extends Cubit<CategoriecheldrenState> {
           color5: transparenColor,
           color6: transparenColor));
     } else if (catNumbre == 2) {
-      emit(CategorieChidlState2(
+      emit(CategorieChidlState1(
+        groupIs: catNumbre,
         color1: transparenColor,
         color2: amberColor,
         color3: transparenColor,
@@ -34,7 +36,8 @@ class CategoriecheldrenCubit extends Cubit<CategoriecheldrenState> {
         color6: transparenColor,
       ));
     } else if (catNumbre == 3) {
-      emit(CategorieChidlState3(
+      emit(CategorieChidlState1(
+          groupIs: catNumbre,
           color1: transparenColor,
           color2: transparenColor,
           color3: amberColor,
@@ -42,7 +45,8 @@ class CategoriecheldrenCubit extends Cubit<CategoriecheldrenState> {
           color5: transparenColor,
           color6: transparenColor));
     } else if (catNumbre == 4) {
-      emit(CategorieChidlState4(
+      emit(CategorieChidlState1(
+          groupIs: catNumbre,
           color1: transparenColor,
           color2: transparenColor,
           color3: transparenColor,
@@ -50,7 +54,8 @@ class CategoriecheldrenCubit extends Cubit<CategoriecheldrenState> {
           color5: transparenColor,
           color6: transparenColor));
     } else if (catNumbre == 5) {
-      emit(CategorieChidlState5(
+      emit(CategorieChidlState1(
+          groupIs: catNumbre,
           color1: transparenColor,
           color2: transparenColor,
           color3: transparenColor,
@@ -58,7 +63,8 @@ class CategoriecheldrenCubit extends Cubit<CategoriecheldrenState> {
           color5: amberColor,
           color6: transparenColor));
     } else if (catNumbre == 6) {
-      emit(CategorieChidlState6(
+      emit(CategorieChidlState1(
+          groupIs: catNumbre,
           color1: transparenColor,
           color2: transparenColor,
           color3: transparenColor,

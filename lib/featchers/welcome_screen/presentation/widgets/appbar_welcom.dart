@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Authontification/presentation/ui/sing_in.dart';
+import '../bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class AppbarWelcom {
+  appBarWidget() {
+    return BlocBuilder<ToolbarCubit, ToolbarState>(
+      builder: (context, state) {
+        if (state is AppbarfesrtState) {
+          return appbarwelcom(context, state.color1, state.color2);
+        } else if (state is CategorieState1 ||
+            state is CategorieState2 ||
+            state is CategorieState3 ||
+            state is CategorieState4 ||
+            state is CategorieState5 ||
+            state is CategorieState6) {
+          return appbarwelcom(context, Colors.white, Colors.amber);
+        }
+        return appbarwelcom(context, Colors.transparent, Colors.white);
+      },
+    );
+  }
+
   appbarwelcom(BuildContext context, Color color1, Color color2) {
     return Container(
       color: color1,
@@ -36,7 +56,7 @@ class AppbarWelcom {
                 onPressed: () {},
                 icon: Icon(
                   Icons.shopping_cart_rounded,
-                  color: color1,
+                  color: color2,
                 )),
           ),
           MaterialButton(

@@ -14,8 +14,8 @@ import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/categorie_cheldren2_cuibit/categoriercheld2_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/secondcont/secoundcont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
@@ -47,7 +47,7 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
-  sl.registerFactory(() => Categoriercheldren2Cubit());
+  sl.registerFactory(() => SecoundcontCubit());
 
   // Use cases
   sl.registerLazySingleton(() => SingInUseCase(sl()));
