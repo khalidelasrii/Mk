@@ -16,7 +16,7 @@ class AppbarWelcom {
             state is CategorieState4 ||
             state is CategorieState5 ||
             state is CategorieState6) {
-          return appbarwelcom(context, Colors.white, Colors.amber);
+          return appbarwelcom(context, Color(0x464CAF4F), Colors.amber);
         }
         return appbarwelcom(context, Colors.transparent, Colors.white);
       },

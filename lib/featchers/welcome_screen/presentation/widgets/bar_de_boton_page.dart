@@ -16,6 +16,7 @@ Color color5 = Colors.transparent;
 
 Color color6 = Colors.transparent;
 Color colortranst = Colors.white;
+Color greenColor = Color(0x464CAF4F);
 
 class BarDeBotonPage {
   secondBar() {
@@ -58,8 +59,8 @@ class BarDeBotonPage {
               state.color4,
               state.color5,
               state.color6,
-              Colors.black,
-              colortranst);
+              colortranst,
+              greenColor);
         } else if (state is CategorieState2) {
           return categorieIs(
               state.color1,
@@ -68,8 +69,8 @@ class BarDeBotonPage {
               state.color4,
               state.color5,
               state.color6,
-              Colors.black,
-              colortranst);
+              colortranst,
+              greenColor);
         } else if (state is CategorieState3) {
           return categorieIs(
               state.color1,
@@ -78,8 +79,8 @@ class BarDeBotonPage {
               state.color4,
               state.color5,
               state.color6,
-              Colors.black,
-              colortranst);
+              colortranst,
+              greenColor);
         } else if (state is CategorieState4) {
           return categorieIs(
               state.color1,
@@ -88,8 +89,8 @@ class BarDeBotonPage {
               state.color4,
               state.color5,
               state.color6,
-              Colors.black,
-              colortranst);
+              colortranst,
+              greenColor);
         } else if (state is CategorieState5) {
           return categorieIs(
               state.color1,
@@ -98,8 +99,8 @@ class BarDeBotonPage {
               state.color4,
               state.color5,
               state.color6,
-              Colors.black,
-              colortranst);
+              colortranst,
+              greenColor);
         } else if (state is CategorieState6) {
           return categorieIs(
               state.color1,
@@ -108,8 +109,8 @@ class BarDeBotonPage {
               state.color4,
               state.color5,
               state.color6,
-              Colors.black,
-              colortranst);
+              colortranst,
+              greenColor);
         }
         return categorieIs(color1, color2, color3, color4, color5, color6,
             colortranst, Colors.transparent);

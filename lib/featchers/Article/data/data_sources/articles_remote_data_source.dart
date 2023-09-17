@@ -15,6 +15,7 @@ abstract class ArticlesRemoteDataSource {
   Future<Unit> updateArticle(Article article);
   Future<String> addArticle(Article article);
   Future<Unit> delletArticle(String collectionId, String id);
+  Future<Unit> addoorableArticle(Article article);
 }
 
 class ArticlesFirebase implements ArticlesRemoteDataSource {
@@ -153,6 +154,23 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       return allArticles;
     } catch (e) {
       return [];
+    }
+  }
+
+  @override
+  Future<Unit> addoorableArticle(Article article) async {
+    try {
+      await _firestore.collection('ArticleAdor').add({
+        'id': article.id,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': article.email,
+        'articleUrl': article.articleUrl,
+      });
+      return Future.value(unit);
+    } catch (e) {
+      return Future.value(unit);
     }
   }
 }

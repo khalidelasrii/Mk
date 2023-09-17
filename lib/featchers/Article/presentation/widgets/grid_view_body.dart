@@ -36,8 +36,6 @@ class _GridViewBodyState extends State<GridViewBody> {
               padding: const EdgeInsets.all(4.0),
               child: Container(
                 decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        colors: [Colors.amber, Colors.blueAccent]),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: GridTile(
                   footer: SizedBox(child: Text(article.email)),
@@ -45,7 +43,7 @@ class _GridViewBodyState extends State<GridViewBody> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       DropdownButton<String>(
-                        underline: Container(),
+                        underline: const SizedBox(),
                         isDense: true,
                         icon: const Icon(Icons.more_horiz),
                         elevation: 0,
@@ -93,15 +91,18 @@ class _GridViewBodyState extends State<GridViewBody> {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20, left: 10, right: 10, bottom: 30),
-                    child: Container(
-                      child: Image.network(
-                        article.articleUrl!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                      padding: const EdgeInsets.only(
+                          top: 20, left: 10, right: 10, bottom: 30),
+                      child: MaterialButton(
+                        onPressed: () {
+                          BlocProvider.of<ArticleBloc>(context)
+                              .add(AddoorlableArticlesEvent(article));
+                        },
+                        child: Image.network(
+                          article.articleUrl!,
+                          fit: BoxFit.cover,
+                        ),
+                      )),
                 ),
               ),
             );

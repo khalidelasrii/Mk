@@ -63,7 +63,15 @@ class ContainerBotons {
                     style: TextStyle(
                       color: color2,
                     ),
-                  )
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                  )),
+                  Icon(
+                    Icons.trending_neutral_sharp,
+                    color: color2,
+                  ),
                 ],
               ),
             ),
@@ -107,7 +115,15 @@ class ContainerBotons {
                     style: TextStyle(
                       color: color2,
                     ),
-                  )
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                  )),
+                  Icon(
+                    Icons.trending_neutral_sharp,
+                    color: color2,
+                  ),
                 ],
               ),
             ),
@@ -151,7 +167,15 @@ class ContainerBotons {
                     style: TextStyle(
                       color: color2,
                     ),
-                  )
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                  )),
+                  Icon(
+                    Icons.trending_neutral_sharp,
+                    color: color2,
+                  ),
                 ],
               ),
             ),
@@ -195,7 +219,15 @@ class ContainerBotons {
                     style: TextStyle(
                       color: color2,
                     ),
-                  )
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                  )),
+                  Icon(
+                    Icons.trending_neutral_sharp,
+                    color: color2,
+                  ),
                 ],
               ),
             ),
@@ -239,7 +271,15 @@ class ContainerBotons {
                     style: TextStyle(
                       color: color2,
                     ),
-                  )
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                  )),
+                  Icon(
+                    Icons.trending_neutral_sharp,
+                    color: color2,
+                  ),
                 ],
               ),
             ),
@@ -283,7 +323,15 @@ class ContainerBotons {
                     style: TextStyle(
                       color: color2,
                     ),
-                  )
+                  ),
+                  Expanded(
+                      child: Container(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                  )),
+                  Icon(
+                    Icons.trending_neutral_sharp,
+                    color: color2,
+                  ),
                 ],
               ),
             ),

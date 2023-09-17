@@ -7,19 +7,19 @@ import '../widget_boton/container_botons.dart';
 ferstContainer() {
   fonctionResum(Color color1, Color color2, Color color3, Color color4,
       Color color5, Color transpa) {
-    const Color blackColor = Colors.black;
+    const Color whiteColor = Colors.white;
     return SingleChildScrollView(
       child: Column(children: [
         ContainerBotons()
-            .ferstContainerBoton(false, 1, 'group1b1', color1, blackColor),
+            .ferstContainerBoton(false, 1, 'group1b1', color1, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 2, 'group1b2', color2, blackColor),
+            .ferstContainerBoton(false, 2, 'group1b2', color2, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 3, 'group1b3', color3, blackColor),
+            .ferstContainerBoton(false, 3, 'group1b3', color3, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 4, 'group1b4', color4, blackColor),
+            .ferstContainerBoton(false, 4, 'group1b4', color4, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 5, 'group1b5', color5, blackColor)
+            .ferstContainerBoton(false, 5, 'group1b5', color5, whiteColor)
       ]),
     );
   }
@@ -27,7 +27,6 @@ ferstContainer() {
   return Expanded(
     child: Container(
       constraints: const BoxConstraints(maxWidth: 1000),
-      color: Colors.blue,
       height: double.infinity,
       child: BlocBuilder<CategoriecheldrenCubit, CategoriecheldrenState>(
         builder: (context, state) {

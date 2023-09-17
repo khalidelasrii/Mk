@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
 import 'package:mk/featchers/Article/domain/repository/repository_articles.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/addoorable_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
@@ -30,8 +31,10 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
-  sl.registerFactory(
-      () => ArticleBloc(getArticles: sl(), getAllArticleUseCase: sl()));
+  sl.registerFactory(() => ArticleBloc(
+      getArticles: sl(),
+      getAllArticleUseCase: sl(),
+      addoorableArticlesUseCase: sl()));
   sl.registerFactory(() => AddordeletorupdateBloc(
         addArticle: sl(),
         delletArticle: sl(),
@@ -59,6 +62,7 @@ Future<void> init() async {
 
   sl.registerLazySingleton(() => GetAllArticleUseCase(sl()));
   sl.registerLazySingleton(() => GetArticlesUseCase(sl()));
+  sl.registerLazySingleton(() => AddoorableArticlesUseCase(sl()));
   sl.registerLazySingleton(() => AddArticleUseCase(sl()));
   sl.registerLazySingleton(() => DelletArticleUseCase(sl()));
   sl.registerLazySingleton(() => UpdateArticleUseCase(sl()));

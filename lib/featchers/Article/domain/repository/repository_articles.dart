@@ -13,4 +13,5 @@ abstract class RepositoryArticles {
   Future<Either<Faillure, String>> addArticle(Article article);
 
   Future<Either<Faillure, Unit>> delletArticle(String collectionId, String id);
+  Future<Either<Faillure, Unit>> addoorableArticle(Article article);
 }

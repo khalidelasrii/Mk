@@ -60,4 +60,14 @@ class ArticleRepositoryImpl implements RepositoryArticles {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Faillure, Unit>> addoorableArticle(Article article) async {
+    try {
+      await articlesFirebase.addoorableArticle(article);
+      return const Right(unit);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }

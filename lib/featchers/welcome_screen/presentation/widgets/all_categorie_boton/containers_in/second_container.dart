@@ -99,7 +99,6 @@ secondContainer(BuildContext context) {
       onEnter: (_) {},
       child: Container(
         constraints: const BoxConstraints(maxWidth: 1000),
-        color: Colors.red,
         height: double.infinity,
         child: BlocBuilder<SecoundcontCubit, SecoundcontState>(
           builder: (context, state) {
