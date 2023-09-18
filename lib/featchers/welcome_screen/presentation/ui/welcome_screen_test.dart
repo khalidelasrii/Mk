@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/secondcont/secoundcont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/appbar_welcom.dart';
 import 'package:mk/injection_container.dart' as di;
 
+import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 import '../widgets/bar_de_recherche.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
@@ -25,6 +26,7 @@ class _WelcomeScreenTestState extends State<WelcomeScreenTest> {
           BlocProvider(create: (context) => di.sl<ToolbarCubit>()),
           BlocProvider(create: (context) => di.sl<CategoriecheldrenCubit>()),
           BlocProvider(create: (context) => di.sl<SecoundcontCubit>()),
+          BlocProvider(create: (context) => di.sl<AdoorArticlesCubit>()),
         ],
         child: Scaffold(
             backgroundColor: const Color.fromARGB(183, 0, 0, 0),

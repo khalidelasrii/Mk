@@ -13,12 +13,15 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
     final querySnapshote = await _firestore.collection('ArticleAdor').get();
     return querySnapshote.docs.map((artcle) {
       final data = artcle.data();
-      final articleId = artcle.id;
       return WelcomeArticleModel(
-          typearticle: data['typearticle'],
-          name: data['name'],
-          prixArticle: data['prixArticle'],
-          articleId: articleId);
+        email: data['email'],
+        typearticle: 1,
+        name: data['name'],
+        prixArticle: data['prix'],
+        article: data['article'],
+        id: data['id'],
+        imageUrl: data['articleUrl'],
+      );
     }).toList();
   }
 }

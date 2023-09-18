@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
+import '../../../bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
+
 class BarBotonsAllPages {
   categoriePageBoton(BuildContext context, bool isin, int bontonNembr,
       String textBoton, Color color1, Color color2) {
     return MouseRegion(
       onEnter: (_) {
         isin = true;
+        bontonNembr == 1
+            ? BlocProvider.of<AdoorArticlesCubit>(context)
+                .adoorArticlesloadingEvent()
+            : null;
+
         BlocProvider.of<ToolbarCubit>(context).categorie1(bontonNembr);
       },
       onExit: (_) {

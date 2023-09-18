@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/secondcont/secoundcont_cubit.dart';
+
+import '../../../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 
 class ContainerBotons {
   ferstContainerBoton(bool isin, int bontonNembr, String textBoton,
@@ -91,6 +93,9 @@ class ContainerBotons {
               isin = true;
               BlocProvider.of<SecoundcontCubit>(context)
                   .ferstGroupEvent(bontonNembr);
+              //!
+              BlocProvider.of<AdoorArticlesCubit>(context)
+                  .adoorArticlesloadingEvent();
             });
           },
           onExit: (_) {

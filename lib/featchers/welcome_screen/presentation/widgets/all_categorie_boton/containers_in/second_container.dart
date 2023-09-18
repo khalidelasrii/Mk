@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/secondcont/secoundcont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/all_categorie_boton/widget_boton/container_botons.dart';
+
+import '../../../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 
 secondContainer(BuildContext context) {
   ferstGroupResum(

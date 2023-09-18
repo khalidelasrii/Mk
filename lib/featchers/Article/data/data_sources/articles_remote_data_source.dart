@@ -160,7 +160,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   @override
   Future<Unit> addoorableArticle(Article article) async {
     try {
-      await _firestore.collection('ArticleAdor').add({
+      await _firestore.collection('ArticleAdor').doc(article.id).set({
         'id': article.id,
         'article': article.article,
         'name': article.name,
@@ -168,6 +168,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'email': article.email,
         'articleUrl': article.articleUrl,
       });
+
       return Future.value(unit);
     } catch (e) {
       return Future.value(unit);
