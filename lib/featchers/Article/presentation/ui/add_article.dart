@@ -10,7 +10,8 @@ import '../../../Authontification/domain/entitie/user.dart';
 import '../bloc/article/article_bloc.dart';
 import '../widgets/form_widget.dart';
 
-Article article = Article(article: '', name: '', prix: '', id: '', email: '');
+Article article =
+    const Article(article: '', name: '', prix: '', id: '', email: '', type: '');
 final TextEditingController _nameController = TextEditingController();
 final TextEditingController _articleController = TextEditingController();
 final TextEditingController _prixController = TextEditingController();

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
+import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 
 import '../models/article_model.dart';
 
@@ -58,8 +59,9 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       await _firestore
           .collection('Articles')
           .doc(userId)
-          .collection(userId)
+          .collection(article.type)
           .add({
+        'type': article.type,
         'id': uniqueImageId,
         'article': article.article,
         'name': article.name,
@@ -98,6 +100,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       final usrid = alluser.id;
 
       return ArticleModel(
+        type: data['type'],
         email: data['email'],
         id: usrid,
         name: data['name'],
@@ -124,31 +127,41 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
   @override
   Future<List<Article>> getallArticles() async {
-    final articlesCollection = _firestore.collection('Articles');
+    List<String> collectionName = [
+      'Forniture',
+      'Livres',
+      'Cartables',
+      'Stylo',
+      'Autre'
+    ];
     List<Article> allArticles = [];
+    final articlesCollection = _firestore.collection('Articles');
 
     try {
       QuerySnapshot snapshot = await articlesCollection.get();
-
       for (QueryDocumentSnapshot documentSnapshot in snapshot.docs) {
-        final articleId = documentSnapshot.id;
+        for (String collection in collectionName) {
+          final subCollectionSnapshot = await articlesCollection
+              .doc(documentSnapshot.id)
+              .collection(collection)
+              .get();
 
-        final subCollectionSnapshot =
-            await articlesCollection.doc(articleId).collection(articleId).get();
+          final subCollectionArticles =
+              subCollectionSnapshot.docs.map((subDoc) {
+            final subArticleData = subDoc.data();
 
-        final subCollectionArticles = subCollectionSnapshot.docs.map((subDoc) {
-          final subArticleData = subDoc.data();
+            return Article(
+                type: subArticleData['type'],
+                email: subArticleData['email'],
+                article: subArticleData['article'],
+                name: subArticleData['name'],
+                prix: subArticleData['prix'],
+                id: subDoc.id,
+                articleUrl: subArticleData['articleUrl']);
+          }).toList();
 
-          return Article(
-              email: subArticleData['email'],
-              article: subArticleData['article'],
-              name: subArticleData['name'],
-              prix: subArticleData['prix'],
-              id: subDoc.id,
-              articleUrl: subArticleData['articleUrl']);
-        }).toList();
-
-        allArticles.addAll(subCollectionArticles);
+          allArticles.addAll(subCollectionArticles);
+        }
       }
 
       return allArticles;

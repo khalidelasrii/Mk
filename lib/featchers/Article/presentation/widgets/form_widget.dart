@@ -27,9 +27,10 @@ class _FormWidgetState extends State<FormWidget> {
   final TextEditingController _prixControlor = TextEditingController();
   final TextEditingController _nameControlor = TextEditingController();
   final TextEditingController _idControlor = TextEditingController();
+
   String _imageFile = ''; // Variable to hold the selected image file
   Uint8List? selectedImageInBytes;
-
+  String typeArticle = '';
   @override
   void initState() {
     widget.user;
@@ -42,8 +43,10 @@ class _FormWidgetState extends State<FormWidget> {
     super.initState();
   }
 
-  void validateFormthenUpdateOrAddArticle(Uint8List? selectedImageInBytes) {
+  void validateFormthenUpdateOrAddArticle(
+      Uint8List? selectedImageInBytes, String type) {
     final article = Article(
+        type: type, //! add the type of objet her
         email: widget.user.email,
         article: _articleControlor.text,
         name: _nameControlor.text,
@@ -112,6 +115,45 @@ class _FormWidgetState extends State<FormWidget> {
                         )),
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              //! Drope Down boton
+              DropdownButton<String>(
+                underline: const SizedBox(),
+                isDense: true,
+                icon: const Icon(Icons.more_horiz),
+                elevation: 0,
+                dropdownColor: const Color.fromARGB(101, 77, 61, 61),
+                iconEnabledColor: Colors.white,
+                items: const [
+                  DropdownMenuItem(
+                    value: 'Forniture',
+                    child: Center(
+                        child: Text(
+                      'Forniture',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Livres',
+                    child: Text('Livres'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Stylo',
+                    child: Text('Stylo'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Cartables',
+                    child: Text('Cartables'),
+                  ),
+                ],
+                onChanged: (newValue) {
+                  setState(() {
+                    typeArticle = newValue!;
+                  });
+                },
               ),
               const SizedBox(
                 height: 20,
@@ -218,7 +260,7 @@ class _FormWidgetState extends State<FormWidget> {
                               context: context);
                         } else {
                           validateFormthenUpdateOrAddArticle(
-                              selectedImageInBytes);
+                              selectedImageInBytes, typeArticle);
                         }
                       },
                       child: widget.isUpdate

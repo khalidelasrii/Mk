@@ -1,8 +1,8 @@
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
-  ArticleModel(
-      {super.selectedImageInBytes,
+  const ArticleModel(
+      {required super.type,
       required super.email,
       required super.article,
       required super.name,
@@ -11,6 +11,7 @@ class ArticleModel extends Article {
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
+      type: map['type'] ?? '',
       email: map['email'] ?? '',
       id: map['id'] ?? '',
       article: map['article'] ?? '',

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
@@ -10,9 +11,11 @@ class Article extends Equatable {
   final String email;
   final Uint8List? selectedImageInBytes;
   final String? articleUrl;
+  final String type;
 
-  Article(
-      {this.articleUrl,
+  const Article(
+      {required this.type,
+      this.articleUrl,
       this.selectedImageInBytes,
       required this.email,
       required this.article,
@@ -21,5 +24,14 @@ class Article extends Equatable {
       required this.id});
 
   @override
-  List<Object?> get props => [article, name, prix];
+  List<Object?> get props => [
+        article,
+        name,
+        prix,
+        id,
+        article,
+        name,
+        email,
+        selectedImageInBytes,
+      ];
 }

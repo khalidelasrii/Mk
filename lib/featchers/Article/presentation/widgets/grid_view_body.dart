@@ -6,6 +6,7 @@ import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 
 import '../../../Authontification/domain/entitie/user.dart';
 import '../../domain/entitie/article.dart';
+import '../ui/article_produit.dart';
 
 class GridViewBody extends StatefulWidget {
   const GridViewBody(
@@ -97,6 +98,12 @@ class _GridViewBodyState extends State<GridViewBody> {
                         onPressed: () {
                           BlocProvider.of<ArticleBloc>(context)
                               .add(AddoorlableArticlesEvent(article));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => ArticleProduit(
+                                        article: article,
+                                      )));
                         },
                         child: Image.network(
                           article.articleUrl!,

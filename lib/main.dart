@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
-import 'featchers/Article/presentation/ui/article_produit.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'featchers/welcome_screen/presentation/ui/welcome_screen_test.dart';
 import 'injection_container.dart' as di;
@@ -58,7 +57,7 @@ class Maktabati extends StatelessWidget {
                   user: state.userId,
                 );
               }
-              return ArticleProduit();
+              return WelcomeScreenTest();
             },
           ),
         ));
