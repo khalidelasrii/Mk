@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class WelcomeArticle extends Equatable {
-  final int typearticle;
   final String name;
   final String prixArticle;
   final String article;
   final String imageUrl;
   final String id;
   final String email;
+  final String type;
 
   const WelcomeArticle(
-      {required this.typearticle,
+      {required this.type,
       required this.name,
       required this.prixArticle,
       required this.article,
@@ -19,5 +19,10 @@ class WelcomeArticle extends Equatable {
       required this.email});
 
   @override
-  List<Object?> get props => [typearticle, name, prixArticle, article];
+  List<Object?> get props => [
+        name,
+        prixArticle,
+        article,
+        type,
+      ];
 }

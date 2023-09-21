@@ -124,9 +124,8 @@ class _FormWidgetState extends State<FormWidget> {
                 underline: const SizedBox(),
                 isDense: true,
                 icon: const Icon(Icons.more_horiz),
-                elevation: 0,
-                dropdownColor: const Color.fromARGB(101, 77, 61, 61),
-                iconEnabledColor: Colors.white,
+                dropdownColor: Colors.red,
+                iconEnabledColor: Colors.amber,
                 items: const [
                   DropdownMenuItem(
                     value: 'Forniture',
@@ -147,6 +146,10 @@ class _FormWidgetState extends State<FormWidget> {
                   DropdownMenuItem(
                     value: 'Cartables',
                     child: Text('Cartables'),
+                  ),
+                  DropdownMenuItem(
+                    value: 'Autres',
+                    child: Text('Autres'),
                   ),
                 ],
                 onChanged: (newValue) {

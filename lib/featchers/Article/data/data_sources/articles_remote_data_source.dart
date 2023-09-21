@@ -131,7 +131,8 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       'Livres',
       'Cartables',
       'Stylo',
-      'Autre'
+      'Cartables',
+      'Autres',
     ];
     List<Article> allArticles = [];
     final articlesCollection = _firestore.collection('Articles');

@@ -12,15 +12,35 @@ class ContainerAllCategorie {
         if (state is CategorieState1) {
           return sousListeCategorie(context, 1, const Color(0x464CAF4F));
         } else if (state is CategorieState2) {
-          return sousListeCategorie(context, 2, Colors.red);
+          return Container(
+            color: Colors.red,
+            height: 300,
+            width: double.infinity,
+          );
         } else if (state is CategorieState3) {
-          return sousListeCategorie(context, 3, Colors.green);
+          return Container(
+            color: Colors.purple,
+            height: 300,
+            width: double.infinity,
+          );
         } else if (state is CategorieState4) {
-          return sousListeCategorie(context, 4, Colors.blue);
+          return Container(
+            color: Colors.orange,
+            height: 300,
+            width: double.infinity,
+          );
         } else if (state is CategorieState5) {
-          return sousListeCategorie(context, 5, Colors.pink);
+          return Container(
+            color: Colors.green,
+            height: 300,
+            width: double.infinity,
+          );
         } else if (state is CategorieState6) {
-          return sousListeCategorie(context, 6, Colors.deepOrange);
+          return Container(
+            color: Colors.blue,
+            height: 300,
+            width: double.infinity,
+          );
         }
         return const SizedBox();
       },

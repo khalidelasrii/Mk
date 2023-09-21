@@ -5,7 +5,7 @@ import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/core/responsive.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_test.dart';
+import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_test_page.dart';
 
 import '../../../Authontification/domain/entitie/user.dart';
 import '../widgets/grid_view_body.dart';

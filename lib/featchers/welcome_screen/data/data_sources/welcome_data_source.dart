@@ -7,21 +7,49 @@ abstract class WelcomeDataSource {
 
 class WelcomeDataSourcesImpl implements WelcomeDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   @override
   Future<List<WelcomeArticleModel>> getAllArticle() async {
-    final querySnapshote = await _firestore.collection('ArticleAdor').get();
-    return querySnapshote.docs.map((artcle) {
-      final data = artcle.data();
-      return WelcomeArticleModel(
-        email: data['email'],
-        typearticle: 1,
-        name: data['name'],
-        prixArticle: data['prix'],
-        article: data['article'],
-        id: data['id'],
-        imageUrl: data['articleUrl'],
-      );
-    }).toList();
+    List<String> collectionName = [
+      'Forniture',
+      'Livres',
+      'Cartables',
+      'Stylo',
+      'Cartables',
+      'Autres',
+    ];
+    List<WelcomeArticleModel> allArticles = [];
+    final articlesCollection = _firestore.collection('Articles');
+
+    try {
+      QuerySnapshot snapshot = await articlesCollection.get();
+      for (QueryDocumentSnapshot documentSnapshot in snapshot.docs) {
+        for (String collection in collectionName) {
+          final subCollectionSnapshot = await articlesCollection
+              .doc(documentSnapshot.id)
+              .collection(collection)
+              .get();
+
+          final subCollectionArticles =
+              subCollectionSnapshot.docs.map((subDoc) {
+            final subArticleData = subDoc.data();
+
+            return WelcomeArticleModel(
+                type: subArticleData['type'],
+                email: subArticleData['email'],
+                article: subArticleData['article'],
+                name: subArticleData['name'],
+                prixArticle: subArticleData['prix'],
+                id: subDoc.id,
+                imageUrl: subArticleData['articleUrl']);
+          }).toList();
+
+          allArticles.addAll(subCollectionArticles);
+        }
+      }
+
+      return allArticles;
+    } catch (e) {
+      return [];
+    }
   }
 }

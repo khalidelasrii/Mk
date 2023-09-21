@@ -2,8 +2,8 @@ import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart'
 
 class WelcomeArticleModel extends WelcomeArticle {
   const WelcomeArticleModel({
+    required super.type,
     required super.email,
-    required super.typearticle,
     required super.name,
     required super.prixArticle,
     required super.article,
@@ -13,8 +13,8 @@ class WelcomeArticleModel extends WelcomeArticle {
 
   factory WelcomeArticleModel.fromeMap(Map<String, dynamic> map) {
     return WelcomeArticleModel(
+      type: map['type'],
       email: map['email'],
-      typearticle: map['typearticle'] ?? 0,
       name: map['name'] ?? '',
       prixArticle: map['prix'] ?? '',
       article: map['article'] ?? '',
@@ -25,7 +25,6 @@ class WelcomeArticleModel extends WelcomeArticle {
 
   Map<String, dynamic> toMap() {
     return {
-      'typearticle': typearticle,
       'name': name,
       'prixArticle': prixArticle,
       'articleId': article,
