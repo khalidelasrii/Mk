@@ -9,7 +9,7 @@ class CerclulareLodingWidget extends StatelessWidget {
       child: SizedBox(
           height: 40,
           child: CircularProgressIndicator(
-            color: Colors.amber,
+            color: Colors.green,
           )),
     );
   }

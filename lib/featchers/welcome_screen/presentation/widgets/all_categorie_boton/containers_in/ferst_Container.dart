@@ -11,15 +11,15 @@ ferstContainer() {
     return SingleChildScrollView(
       child: Column(children: [
         ContainerBotons()
-            .ferstContainerBoton(false, 1, 'group1b1', color1, whiteColor),
+            .ferstContainerBoton(false, 1, 'All Categorie', color1, whiteColor),
+        ContainerBotons().ferstContainerBoton(
+            false, 2, 'Fournitures Scolaires', color2, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 2, 'group1b2', color2, whiteColor),
+            .ferstContainerBoton(false, 3, 'Librerie', color3, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 3, 'group1b3', color3, whiteColor),
+            .ferstContainerBoton(false, 4, 'Jeux', color4, whiteColor),
         ContainerBotons()
-            .ferstContainerBoton(false, 4, 'group1b4', color4, whiteColor),
-        ContainerBotons()
-            .ferstContainerBoton(false, 5, 'group1b5', color5, whiteColor)
+            .ferstContainerBoton(false, 5, 'Electronique', color5, whiteColor)
       ]),
     );
   }

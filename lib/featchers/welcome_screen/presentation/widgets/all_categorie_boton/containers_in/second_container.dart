@@ -10,15 +10,15 @@ secondContainer(BuildContext context) {
     return Column(
       children: [
         ContainerBotons().secoundContainerBotonFerstGroup(
-            false, 1, 'Ferst Group B1', color1, Colors.white),
+            false, 1, 'Tout Categorie', color1, Colors.white),
         ContainerBotons().secoundContainerBotonFerstGroup(
-            false, 2, 'Ferst Group B2', color2, Colors.white),
+            false, 2, 'Équipement de bureau ', color2, Colors.white),
         ContainerBotons().secoundContainerBotonFerstGroup(
-            false, 3, 'Ferst Group B3', color3, Colors.white),
+            false, 3, 'Electronique', color3, Colors.white),
         ContainerBotons().secoundContainerBotonFerstGroup(
-            false, 4, 'Ferst Group B4', color4, Colors.white),
+            false, 4, 'Jeux', color4, Colors.white),
         ContainerBotons().secoundContainerBotonFerstGroup(
-            false, 5, 'Ferst Group B5', color5, Colors.white)
+            false, 5, 'Livres', color5, Colors.white)
       ],
     );
   }

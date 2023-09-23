@@ -3,10 +3,13 @@ import 'package:mk/featchers/welcome_screen/data/models/welcome_article_model.da
 
 abstract class WelcomeDataSource {
   Future<List<WelcomeArticleModel>> getAllArticle();
+  Future<List<WelcomeArticleModel>> articlePartype(String collection);
 }
 
 class WelcomeDataSourcesImpl implements WelcomeDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  List<WelcomeArticleModel> allArticles = [], articleParCategorie = [];
+
   @override
   Future<List<WelcomeArticleModel>> getAllArticle() async {
     List<String> collectionName = [
@@ -50,6 +53,45 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
       return allArticles;
     } catch (e) {
       return [];
+    }
+  }
+
+  @override
+  Future<List<WelcomeArticleModel>> articlePartype(String collection) async {
+    final articlesCollection = _firestore.collection('Articles');
+    try {
+      QuerySnapshot querySnapshot = await articlesCollection.get();
+      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        final subCollectionSnapshot = await articlesCollection
+            .doc(documentSnapshot.id)
+            .collection(collection)
+            .get();
+
+        final subCollectionArticles = subCollectionSnapshot.docs.map((docdoc) {
+          final subArticleData = docdoc.data();
+          return WelcomeArticleModel(
+              type: subArticleData['type'],
+              email: subArticleData['email'],
+              name: subArticleData['name'],
+              prixArticle: subArticleData['prix'],
+              article: subArticleData['article'],
+              id: docdoc.id,
+              imageUrl: subArticleData['articleUrl']);
+        }).toList();
+        articleParCategorie.addAll(subCollectionArticles);
+      }
+      return articleParCategorie;
+    } catch (e) {
+      return [
+        const WelcomeArticleModel(
+            type: '',
+            email: 'eroor',
+            name: 'eroor',
+            prixArticle: 'eroor',
+            article: 'eroor',
+            id: 'eroor',
+            imageUrl: 'eroor'),
+      ];
     }
   }
 }

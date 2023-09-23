@@ -17,4 +17,14 @@ class WelcomeRepositoryImpl implements WelcomeRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Faillure, List<WelcomeArticle>>> articleParCategorie(
+      String collection) async {
+    try {
+      return Right(await welcomeDataSource.articlePartype(collection));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }
