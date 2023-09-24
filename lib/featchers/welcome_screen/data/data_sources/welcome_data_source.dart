@@ -82,16 +82,7 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
       }
       return articleParCategorie;
     } catch (e) {
-      return [
-        const WelcomeArticleModel(
-            type: '',
-            email: 'eroor',
-            name: 'eroor',
-            prixArticle: 'eroor',
-            article: 'eroor',
-            id: 'eroor',
-            imageUrl: 'eroor'),
-      ];
+      return [];
     }
   }
 }

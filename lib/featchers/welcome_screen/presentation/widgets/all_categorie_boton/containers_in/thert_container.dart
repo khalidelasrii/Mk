@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/article_categorie_page.dart';
 
 thertContainer() {
@@ -27,6 +28,8 @@ thertContainer() {
                       header: Text(article.type),
                       child: MaterialButton(
                         onPressed: () {
+                          BlocProvider.of<ArticleParCategorieCubit>(context)
+                              .getarticleParCategorieEvent(article.type);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

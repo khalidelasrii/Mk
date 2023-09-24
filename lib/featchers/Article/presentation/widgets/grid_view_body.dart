@@ -43,6 +43,8 @@ class _GridViewBodyState extends State<GridViewBody> {
                   header: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      Text(article.name),
+                      Expanded(child: SizedBox()),
                       DropdownButton<String>(
                         underline: const SizedBox(),
                         isDense: true,

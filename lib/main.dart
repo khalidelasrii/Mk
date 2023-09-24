@@ -5,6 +5,7 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'featchers/welcome_screen/presentation/ui/welcome_screen_test_page.dart';
 import 'injection_container.dart' as di;
 
@@ -40,6 +41,9 @@ class Maktabati extends StatelessWidget {
           ),
           BlocProvider(
             create: (_) => di.sl<AuthCubit>()..appStart(),
+          ),
+          BlocProvider(
+            create: (context) => di.sl<ArticleParCategorieCubit>(),
           )
         ],
         child: MaterialApp(

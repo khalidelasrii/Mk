@@ -4,21 +4,18 @@ import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 
 import '../widgets/article_categorie_page_widget.dart/article_par_categorie.dart';
-import 'package:mk/injection_container.dart' as di;
 
 class ArticleCategoriePage extends StatelessWidget {
   const ArticleCategoriePage({super.key, required this.collection});
   final String collection;
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => di.sl<ArticleParCategorieCubit>()
-        ..getarticleParCategorieEvent(collection),
-      child: Row(
+    return Scaffold(
+      body: Row(
         children: [
           Container(
             color: Colors.amber,
-            constraints: const BoxConstraints(maxWidth: 200),
+            width: 200,
             child: ArticleParCategorieWidget().ferstContainer(),
           ),
           Expanded(

@@ -13,6 +13,7 @@ class ArticleParCategorieCubit extends Cubit<ArticleParCategorieState> {
   getarticleParCategorieEvent(String collection) async {
     emit(ArticleParcatigorieLoadingState());
     final articlesOrfaillure = await articleParTypeUseCase.call(collection);
+    print(collection);
 
     articlesOrfaillure.fold((_) {
       emit(const ArticleParCategorieErrorState(
