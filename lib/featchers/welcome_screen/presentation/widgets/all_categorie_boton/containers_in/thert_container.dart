@@ -33,9 +33,7 @@ thertContainer() {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => ArticleCategoriePage(
-                                        collection: article.type,
-                                      )));
+                                  builder: (_) => ArticleCategoriePage()));
                         },
                         child: ClipOval(
                           child: CachedNetworkImage(
