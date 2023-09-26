@@ -44,7 +44,7 @@ class Maktabati extends StatelessWidget {
             create: (_) => di.sl<AuthCubit>()..appStart(),
           ),
           BlocProvider(
-            create: (context) => di.sl<ArticleParCategorieCubit>()
+            create: (_) => di.sl<ArticleParCategorieCubit>()
               ..getarticleParCategorieEvent('Cartables'),
           )
         ],
