@@ -11,14 +11,14 @@ import '../widgets/bar_de_recherche.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
 
-class WelcomeScreenTest extends StatefulWidget {
-  const WelcomeScreenTest({super.key});
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
 
   @override
-  State<WelcomeScreenTest> createState() => _WelcomeScreenTestState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenTestState extends State<WelcomeScreenTest> {
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

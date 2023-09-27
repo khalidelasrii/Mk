@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
 import '../../../Authontification/presentation/ui/sing_in.dart';
 import '../bloc/toolbar_Cuibit/toolbar_cubit.dart';
@@ -30,7 +31,10 @@ class AppbarWelcom {
       child: Row(
         children: [
           MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => WelcomeScreen()));
+            },
             child: Row(
               children: [
                 Image.asset('images/MK.png'),

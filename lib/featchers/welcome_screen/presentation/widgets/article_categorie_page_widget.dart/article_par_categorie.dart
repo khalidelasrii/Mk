@@ -18,7 +18,6 @@ class ArticleParCategorieWidget {
     return ListView.builder(
       itemCount: articleList.length,
       itemBuilder: (context, index) {
-        final article = articleList[index];
         return Card(
             color: Colors.white,
             child: Row(
@@ -27,32 +26,30 @@ class ArticleParCategorieWidget {
                 Expanded(
                     child: Padding(
                   padding: const EdgeInsets.only(right: 20),
-                  child: Container(
-                    height: 200,
-                    color: Colors.blue,
-                    constraints: const BoxConstraints(maxWidth: 200),
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: MaterialButton(
-                        onPressed: () {
-                          final artic = Article(
-                              type: article.type,
-                              email: article.email,
-                              article: article.article,
-                              name: article.name,
-                              prix: article.prixArticle,
-                              id: article.id,
-                              articleUrl: article.imageUrl);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => ArticleProduit(
-                                        article: artic,
-                                      )));
-                        },
+                  child: SizedBox(
+                    child: MaterialButton(
+                      onPressed: () {
+                        final artic = Article(
+                            type: articleList[index].type,
+                            email: articleList[index].email,
+                            article: articleList[index].article,
+                            name: articleList[index].name,
+                            prix: articleList[index].prixArticle,
+                            id: articleList[index].id,
+                            articleUrl: articleList[index].imageUrl);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ArticleProduit(
+                                      article: artic,
+                                    )));
+                      },
+                      child: Card(
                         child: CachedNetworkImage(
-                          imageUrl: article.imageUrl,
+                          imageUrl: articleList[index].imageUrl,
                           fit: BoxFit.cover,
+                          height: 200,
+                          width: 200,
                         ),
                       ),
                     ),
@@ -68,12 +65,13 @@ class ArticleParCategorieWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            article.article,
+                            articleList[index].article,
                             style: const TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.bold),
                           ),
+                          Text(articleList[index].type),
                           Text(
-                            article.email,
+                            articleList[index].email,
                             style: TextStyle(
                               color: Colors.grey,
                             ),
@@ -81,7 +79,7 @@ class ArticleParCategorieWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             child: Text(
-                              article.prixArticle,
+                              articleList[index].prixArticle,
                               style: const TextStyle(
                                   color: Colors.blue, fontSize: 20),
                             ),
