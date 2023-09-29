@@ -14,6 +14,3 @@ class CerclulareLodingWidget extends StatelessWidget {
     );
   }
 }
-
-// MEssage display
-

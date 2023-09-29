@@ -20,6 +20,7 @@ import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_reposit
 import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
@@ -58,6 +59,8 @@ Future<void> init() async {
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
+  sl.registerFactory(() => AppbafontCubit());
+
   sl.registerFactory(
       () => AdoorArticlesCubit(getAllWelcomeArticleUseCase: sl()));
   sl.registerFactory(

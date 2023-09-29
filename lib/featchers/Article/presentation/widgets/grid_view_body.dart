@@ -4,18 +4,13 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 
-import '../../../Authontification/domain/entitie/user.dart';
 import '../../domain/entitie/article.dart';
 import '../ui/article_produit.dart';
 
 class GridViewBody extends StatefulWidget {
   const GridViewBody(
-      {super.key,
-      required this.articles,
-      required this.user,
-      required this.isDisktop});
+      {super.key, required this.articles, required this.isDisktop});
   final List<Article> articles;
-  final Usr user;
   final bool isDisktop;
 
   @override
@@ -30,11 +25,11 @@ class _GridViewBodyState extends State<GridViewBody> {
         child: GridView.builder(
           itemCount: widget.articles.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.isDisktop == true ? 4 : 3),
+              crossAxisCount: widget.isDisktop == true ? 6 : 3),
           itemBuilder: (context, index) {
             final article = widget.articles[index];
             return Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10))),
@@ -44,7 +39,7 @@ class _GridViewBodyState extends State<GridViewBody> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(article.name),
-                      Expanded(child: SizedBox()),
+                      const Expanded(child: SizedBox()),
                       DropdownButton<String>(
                         underline: const SizedBox(),
                         isDense: true,
@@ -77,7 +72,6 @@ class _GridViewBodyState extends State<GridViewBody> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => AddOrUpdateArticle(
-                                          user: widget.user,
                                           isUpdate: true,
                                           article: article,
                                         )));

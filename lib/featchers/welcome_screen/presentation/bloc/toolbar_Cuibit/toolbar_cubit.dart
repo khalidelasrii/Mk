@@ -12,10 +12,6 @@ class ToolbarCubit extends Cubit<ToolbarState> {
     emit(ToolbarInitial());
   }
 
-  appbarferstEvent() {
-    emit(const AppbarfesrtState(color1: Colors.white, color2: Colors.black));
-  }
-
   categorie1(int isin) {
     if (isin == 1) {
       emit(const CategorieState1(

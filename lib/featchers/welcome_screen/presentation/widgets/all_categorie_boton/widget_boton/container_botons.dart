@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 
+import '../../../../../Article/presentation/ui/home_page.dart';
 import '../../../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 
 class ContainerBotons {
@@ -53,7 +54,10 @@ class ContainerBotons {
             child: MaterialButton(
               color: color1,
               elevation: 0,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const HomePage()));
+              },
               child: Row(
                 children: [
                   Icon(
@@ -108,7 +112,10 @@ class ContainerBotons {
             child: MaterialButton(
               color: color1,
               elevation: 0,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => HomePage()));
+              },
               child: Row(
                 children: [
                   Icon(

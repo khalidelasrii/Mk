@@ -6,7 +6,6 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 
 import '../../../../core/Widgets/core_widgets.dart';
-import '../../../Authontification/domain/entitie/user.dart';
 import '../bloc/article/article_bloc.dart';
 import '../widgets/form_widget.dart';
 
@@ -23,18 +22,15 @@ void dispose() {
 }
 
 class AddOrUpdateArticle extends StatelessWidget {
-  const AddOrUpdateArticle(
-      {required this.user, super.key, this.article, required this.isUpdate});
+  const AddOrUpdateArticle({super.key, this.article, required this.isUpdate});
   final Article? article;
   final bool isUpdate;
-  final Usr user;
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayote(
         disktopScafolde: AddOrUpdateArticleDisktop(
           isUpdate: isUpdate,
           article: article,
-          user: user,
         ),
         moubileSccafolde: AddORUpdateArticleMobile(
           isUpdate: isUpdate,
@@ -63,9 +59,8 @@ class AddORUpdateArticleMobile extends StatelessWidget {
 class AddOrUpdateArticleDisktop extends StatelessWidget {
   final Article? article;
   final bool isUpdate;
-  final Usr user;
   const AddOrUpdateArticleDisktop(
-      {super.key, this.article, required this.isUpdate, required this.user});
+      {super.key, this.article, required this.isUpdate});
 
   @override
   Widget build(BuildContext context) {
@@ -74,13 +69,13 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
         title: Text(isUpdate ? 'Update Poste' : 'Add Poste'),
       ),
       backgroundColor: Colors.black,
-      body: _buildBody(context, user),
+      body: _buildBody(context),
     );
   }
 
   //! Build body ;
 
-  _buildBody(BuildContext context, Usr user) {
+  _buildBody(BuildContext context) {
     return BlocConsumer<AddordeletorupdateBloc, AddordeletorupdateState>(
       listener: (context, state) {
         if (state is MessageAddDeleteUpdatePostState) {
@@ -97,7 +92,6 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
           return const CerclulareLodingWidget();
         }
         return FormWidget(
-          user: user,
           isUpdate: isUpdate,
           article: isUpdate ? article : null,
         );

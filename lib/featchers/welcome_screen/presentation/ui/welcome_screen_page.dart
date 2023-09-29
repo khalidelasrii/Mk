@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/widgets/appbar_welcom.dart';
+import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/injection_container.dart' as di;
 
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
@@ -23,7 +24,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => di.sl<ToolbarCubit>()),
           BlocProvider(create: (context) => di.sl<CategoriecheldrenCubit>()),
           BlocProvider(create: (context) => di.sl<SecoundcontCubit>()),
           BlocProvider(create: (context) => di.sl<AdoorArticlesCubit>()),
@@ -37,7 +37,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   _buildbody() {
     return SingleChildScrollView(
         child: Column(children: [
-      Stack(children: [
+      Stack(alignment: AlignmentDirectional.topEnd, children: [
         Container(
           color: Colors.black,
           height: 500,
@@ -54,7 +54,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: [
             //! Appbar Widget
 
-            AppbarWelcom().appBarWidget(),
+            AppbarWelcom().appBarWidget(context),
             //! Les Boton de tous les categorie
 
             BarDeBotonPage().secondBar(),
@@ -64,7 +64,42 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             //! La bar de recherche :
             BarRocherche().barRocherche(),
           ],
-        )
+        ),
+        BlocBuilder<AppbafontCubit, AppbafontState>(
+          builder: (context, state) {
+            if (state is AppbafontInitial) {
+              return const SizedBox();
+            } else if (state is AppbarFontPressedState) {
+              return Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Container(
+                  height: 300,
+                  width: 200,
+                  color: Colors.amber,
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: Container(
+                        constraints: const BoxConstraints(maxHeight: 600),
+                      )),
+                      IconButton(
+                          onPressed: () {
+                            BlocProvider.of<AppbafontCubit>(context)
+                                .appBarIsExitEvent();
+                          },
+                          icon: const Icon(
+                            Icons.upload_outlined,
+                            color: Colors.white,
+                          ))
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return const SizedBox();
+            }
+          },
+        ),
       ]),
     ]));
   }

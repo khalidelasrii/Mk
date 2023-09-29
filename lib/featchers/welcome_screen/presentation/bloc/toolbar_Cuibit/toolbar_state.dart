@@ -9,14 +9,6 @@ sealed class ToolbarState extends Equatable {
 
 final class ToolbarInitial extends ToolbarState {}
 
-class AppbarfesrtState extends ToolbarState {
-  final Color color1;
-  final Color color2;
-  const AppbarfesrtState({required this.color1, required this.color2});
-  @override
-  List<Object> get props => [color1, color2];
-}
-
 class CategorieState1 extends ToolbarState {
   final Color color1;
   final Color color2;

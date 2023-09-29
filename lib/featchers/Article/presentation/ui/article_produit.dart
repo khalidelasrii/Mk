@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
-import 'package:mk/featchers/welcome_screen/presentation/widgets/appbar_welcom.dart';
+import 'package:mk/core/Widgets/appbar_welcom.dart';
 
 class ArticleProduit extends StatelessWidget {
   const ArticleProduit({super.key, required this.article});
@@ -21,7 +21,7 @@ buildbody(BuildContext context, Article article) {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            AppbarWelcom().appbarwelcom(context, Colors.white, Colors.green),
+            AppbarWelcom().appBarWidget(context),
             Container(
               color: Colors.green,
               width: double.infinity,

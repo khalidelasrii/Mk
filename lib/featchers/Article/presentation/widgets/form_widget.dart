@@ -5,18 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/snackbar_widget.dart';
 
-import '../../../Authontification/domain/entitie/user.dart';
 import '../../domain/entitie/article.dart';
 import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import '../bloc/article/article_bloc.dart';
 import '../ui/home_page.dart';
 
 class FormWidget extends StatefulWidget {
-  const FormWidget(
-      {super.key, required this.isUpdate, this.article, required this.user});
+  const FormWidget({super.key, required this.isUpdate, this.article});
   final bool isUpdate;
   final Article? article;
-  final Usr user;
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
@@ -33,7 +30,6 @@ class _FormWidgetState extends State<FormWidget> {
   String typeArticle = '';
   @override
   void initState() {
-    widget.user;
     if (widget.isUpdate) {
       _articleControlor.text = widget.article!.article;
       _prixControlor.text = widget.article!.prix.toString();
@@ -47,7 +43,7 @@ class _FormWidgetState extends State<FormWidget> {
       Uint8List? selectedImageInBytes, String type) {
     final article = Article(
         type: type, //! add the type of objet her
-        email: widget.user.email,
+        email: 'khalidox',
         article: _articleControlor.text,
         name: _nameControlor.text,
         prix: _prixControlor.text,
@@ -58,22 +54,12 @@ class _FormWidgetState extends State<FormWidget> {
       BlocProvider.of<AddordeletorupdateBloc>(context)
           .add(UpdatArticleEvent(article: article));
       BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => HomePage(
-                    user: widget.user,
-                  )));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
     } else {
       BlocProvider.of<AddordeletorupdateBloc>(context)
           .add(AddArticleEvent(article: article));
       BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => HomePage(
-                    user: widget.user,
-                  )));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
     }
   }
 

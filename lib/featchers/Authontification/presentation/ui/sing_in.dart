@@ -7,7 +7,6 @@ import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 
-import '../../domain/entitie/user.dart';
 import '../widget/sign_in_field.dart';
 
 class SingIn extends StatefulWidget {
@@ -71,26 +70,14 @@ Widget _mybody(BuildContext context, bool isDisktop) {
       SnackBarMessage()
           .showErrorSnackBar(message: state.message, context: context);
     } else if (state is IsSingInState) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (_) => HomePage(user: state.userId)));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
     }
   }, builder: (context, state) {
     if (state is LodingAuthState) {
       FirebaseAuth.instance.authStateChanges().listen((User? usr) {
         if (usr != null) {
-          final Usr user = Usr(
-              email: usr.email!,
-              password: '',
-              profile: usr.photoURL,
-              phoneNumber: usr.phoneNumber,
-              name: usr.displayName,
-              uid: usr.uid);
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => HomePage(
-                        user: user,
-                      )));
+              context, MaterialPageRoute(builder: (_) => HomePage()));
         }
       });
       return const CerclulareLodingWidget();
