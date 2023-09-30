@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
-import '../../../../Article/presentation/ui/article_produit.dart';
+import '../../ui/article_produit.dart';
 import '../../../domain/entitie/welcome_article.dart';
 
 class ArticleParCategorieWidget {

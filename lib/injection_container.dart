@@ -19,10 +19,12 @@ import 'package:mk/featchers/welcome_screen/data/data_sources/welcome_data_sourc
 import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_repository_impl.dart';
 import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
+import 'package:mk/featchers/welcome_screen/domain/use_case/get_search_results_use_case.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
@@ -56,6 +58,8 @@ Future<void> init() async {
         getUserIdUSecase: sl(),
         singInGoogleUseCase: sl(),
       ));
+  sl.registerFactory(() => RecherchCubit(getSearchResultsUseCase: sl()));
+
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
@@ -67,6 +71,8 @@ Future<void> init() async {
       () => ArticleParCategorieCubit(articleParTypeUseCase: sl()));
 
   // Use cases
+  sl.registerLazySingleton(() => GetSearchResultsUseCase(sl()));
+
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));
   sl.registerLazySingleton(() => SingOutUseCase(sl()));

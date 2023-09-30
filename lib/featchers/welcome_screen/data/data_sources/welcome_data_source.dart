@@ -4,11 +4,22 @@ import 'package:mk/featchers/welcome_screen/data/models/welcome_article_model.da
 abstract class WelcomeDataSource {
   Future<List<WelcomeArticleModel>> getAllArticle();
   Future<List<WelcomeArticleModel>> articlePartype(String collection);
+  Stream<QuerySnapshot> getSearchResults(String query);
 }
 
 class WelcomeDataSourcesImpl implements WelcomeDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<WelcomeArticleModel> allArticles = [], articleParCategorie = [];
+
+  @override
+  Stream<QuerySnapshot> getSearchResults(String query) {
+    return FirebaseFirestore.instance
+        .collection('Articles')
+        .doc('khalidelasri@gmail.com')
+        .collection('Cartables')
+        .where('name', isGreaterThanOrEqualTo: query)
+        .snapshots();
+  }
 
   @override
   Future<List<WelcomeArticleModel>> getAllArticle() async {

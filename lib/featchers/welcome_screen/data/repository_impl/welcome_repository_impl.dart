@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/core/errure/faillure.dart';
@@ -26,5 +27,10 @@ class WelcomeRepositoryImpl implements WelcomeRepository {
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Stream<QuerySnapshot<Object?>> getSearchResults(String query) {
+    return welcomeDataSource.getSearchResults(query);
   }
 }

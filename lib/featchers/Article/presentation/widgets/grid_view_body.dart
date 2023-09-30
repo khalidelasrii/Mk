@@ -5,7 +5,7 @@ import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart
 import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 
 import '../../domain/entitie/article.dart';
-import '../ui/article_produit.dart';
+import '../../../welcome_screen/presentation/ui/article_produit.dart';
 
 class GridViewBody extends StatefulWidget {
   const GridViewBody(
