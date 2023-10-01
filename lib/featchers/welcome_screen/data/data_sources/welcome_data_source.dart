@@ -10,27 +10,24 @@ abstract class WelcomeDataSource {
 class WelcomeDataSourcesImpl implements WelcomeDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   List<WelcomeArticleModel> allArticles = [], articleParCategorie = [];
-
+  List<String> collectionName = [
+    'Forniture',
+    'Livres',
+    'Cartables',
+    'Stylo',
+    'Cartables',
+    'Autres',
+  ];
   @override
   Stream<QuerySnapshot> getSearchResults(String query) {
     return FirebaseFirestore.instance
-        .collection('Articles')
-        .doc('khalidelasri@gmail.com')
-        .collection('Cartables')
+        .collection('ArticleSearche')
         .where('name', isGreaterThanOrEqualTo: query)
         .snapshots();
   }
 
   @override
   Future<List<WelcomeArticleModel>> getAllArticle() async {
-    List<String> collectionName = [
-      'Forniture',
-      'Livres',
-      'Cartables',
-      'Stylo',
-      'Cartables',
-      'Autres',
-    ];
     List<WelcomeArticleModel> allArticles = [];
     final articlesCollection = _firestore.collection('Articles');
 

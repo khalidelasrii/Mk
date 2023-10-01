@@ -10,10 +10,10 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import '../models/article_model.dart';
 
 abstract class ArticlesRemoteDataSource {
-  Future<List<Article>> getallArticles();
+  Future<List<Article>> getAllArticles();
   Future<List<ArticleModel>> getmesArticles();
   Future<Unit> updateArticle(Article article);
-  Future<String> addArticle(Article article);
+  Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String collectionId, String id);
   Future<Unit> addoorableArticle(Article article);
 }
@@ -23,13 +23,22 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   final _auth = FirebaseAuth.instance.currentUser;
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;
+  List<String> collectionName = [
+    'Forniture',
+    'Livres',
+    'Cartables',
+    'Stylo',
+    'Cartables',
+    'Autres',
+  ];
+  List<Article> allArticles = [];
 
   @override
-  Future<String> addArticle(Article article) async {
+  Future<Unit> addArticle(Article article) async {
     try {
       // Récupérer l'ID de l'utilisateur (vous devez avoir un moyen de l'obtenir)
       final String userId =
-          _auth!.email!; // Changez cela pour obtenir l'ID de l'utilisateur
+          article.email; // Changez cela pour obtenir l'ID de l'utilisateur
 
       // Créez un ID unique pour le fichier image
       String uniqueImageId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -51,9 +60,6 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       String imageUrl = await imageRef.getDownloadURL();
 
       // Enregistrez les informations de l'image dans la base de données Firestore
-      await _firestore.collection('Articles').doc(userId).set({
-        'email': userId,
-      });
 
       await _firestore
           .collection('Articles')
@@ -69,9 +75,21 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'articleUrl': imageUrl,
       });
 
-      return imageUrl;
+      await _firestore.collection('ArticleSearche').doc(uniqueImageId).set({
+        'type': article.type,
+        'id': uniqueImageId,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': article.email,
+        'articleUrl': imageUrl,
+      });
+      await _firestore.collection('Articles').doc(userId).set({
+        'email': userId,
+      });
+      return unit;
     } catch (error) {
-      return '';
+      return unit;
     }
   }
 
@@ -125,44 +143,26 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<List<Article>> getallArticles() async {
-    List<String> collectionName = [
-      'Forniture',
-      'Livres',
-      'Cartables',
-      'Stylo',
-      'Cartables',
-      'Autres',
-    ];
-    List<Article> allArticles = [];
-    final articlesCollection = _firestore.collection('Articles');
-
+  Future<List<Article>> getAllArticles() async {
+    final articlesCollection = _firestore.collection('ArticleSearche');
     try {
-      QuerySnapshot snapshot = await articlesCollection.get();
-      for (QueryDocumentSnapshot documentSnapshot in snapshot.docs) {
-        for (String collection in collectionName) {
-          final subCollectionSnapshot = await articlesCollection
-              .doc(documentSnapshot.id)
-              .collection(collection)
-              .get();
+      QuerySnapshot<Map<String, dynamic>> snapshot =
+          await articlesCollection.get();
 
-          final subCollectionArticles =
-              subCollectionSnapshot.docs.map((subDoc) {
-            final subArticleData = subDoc.data();
+      List<Article> subCollectionArticles = snapshot.docs.map((subDoc) {
+        Map<String, dynamic> subArticleData = subDoc.data();
 
-            return Article(
-                type: subArticleData['type'],
-                email: subArticleData['email'],
-                article: subArticleData['article'],
-                name: subArticleData['name'],
-                prix: subArticleData['prix'],
-                id: subDoc.id,
-                articleUrl: subArticleData['articleUrl']);
-          }).toList();
+        return Article(
+            type: subArticleData['type'],
+            email: subArticleData['email'],
+            article: subArticleData['article'],
+            name: subArticleData['name'],
+            prix: subArticleData['prix'],
+            id: subDoc.id,
+            articleUrl: subArticleData['articleUrl']);
+      }).toList();
 
-          allArticles.addAll(subCollectionArticles);
-        }
-      }
+      allArticles.addAll(subCollectionArticles);
 
       return allArticles;
     } catch (e) {

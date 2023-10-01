@@ -22,10 +22,10 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, String>> addArticle(Article article) async {
+  Future<Either<Faillure, Unit>> addArticle(Article article) async {
     try {
-      String url = await articlesFirebase.addArticle(article);
-      return Right(url);
+      await articlesFirebase.addArticle(article);
+      return const Right(unit);
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -55,7 +55,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   @override
   Future<Either<Faillure, List<Article>>> getallArticles() async {
     try {
-      return Right(await articlesFirebase.getallArticles());
+      return Right(await articlesFirebase.getAllArticles());
     } on ServerException {
       return Left(ServerFailure());
     }

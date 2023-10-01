@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/core/responsive.dart';
 import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
@@ -68,7 +69,7 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
       appBar: AppBar(
         title: Text(isUpdate ? 'Update Poste' : 'Add Poste'),
       ),
-      backgroundColor: Colors.black,
+      backgroundColor: mybluebackgroundcolor,
       body: _buildBody(context),
     );
   }

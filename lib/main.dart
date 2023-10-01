@@ -1,16 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/ui/article_produit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
+import 'featchers/Article/presentation/ui/add_article.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
-import 'featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'injection_container.dart' as di;
 
 void main() async {
@@ -56,24 +54,15 @@ class Maktabati extends StatelessWidget {
           BlocProvider(create: (context) => di.sl<RecherchCubit>()),
         ],
         child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            cardColor: Colors.green,
-            primaryColor: Colors.pink,
-            hintColor: Colors.red,
-            shadowColor: Colors.white,
-          ),
-          home: ArticleProduit(
-            article: Article(
-                type: 'Fournitures',
-                email: 'khalidelasri@gmail.com',
-                article: 'article',
-                name: 'name',
-                prix: 'prix',
-                id: 'id',
-                articleUrl:
-                    'https://imgv3.fotor.com/images/blog-cover-image/part-blurry-image.jpg'),
-          ),
-        ));
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              cardColor: Colors.green,
+              primaryColor: Colors.pink,
+              hintColor: Colors.red,
+              shadowColor: Colors.white,
+            ),
+            home: AddOrUpdateArticle(
+              isUpdate: false,
+            )));
   }
 }

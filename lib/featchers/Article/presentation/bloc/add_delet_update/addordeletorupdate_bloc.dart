@@ -37,7 +37,8 @@ class AddordeletorupdateBloc
               emit(const ErrorAddDeleteUpdateState(
                   message: SERVER_FAILURE_MESSAGE));
             },
-            (url) => emit(MessageAddDeleteUpdatePostState(message: url)),
+            (_) => emit(
+                const MessageAddDeleteUpdatePostState(message: 'Add Seccess')),
           );
         }
       } else if (event is DelletArticleEvent) {

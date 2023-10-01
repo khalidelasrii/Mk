@@ -8,7 +8,7 @@ class AddArticleUseCase {
 
   AddArticleUseCase(this.repositoryArticles);
 
-  Future<Either<Faillure, String>> call(Article article) async {
+  Future<Either<Faillure, Unit>> call(Article article) async {
     return await repositoryArticles.addArticle(article);
   }
 }

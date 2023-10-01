@@ -72,26 +72,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             } else if (state is AppbarFontPressedState) {
               return Padding(
                 padding: const EdgeInsets.only(top: 50),
-                child: Container(
-                  height: 300,
-                  width: 200,
-                  color: Colors.amber,
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        constraints: const BoxConstraints(maxHeight: 600),
-                      )),
-                      IconButton(
-                          onPressed: () {
-                            BlocProvider.of<AppbafontCubit>(context)
-                                .appBarIsExitEvent();
-                          },
-                          icon: const Icon(
-                            Icons.upload_outlined,
-                            color: Colors.white,
-                          ))
-                    ],
+                child: MouseRegion(
+                  onExit: (_) {
+                    BlocProvider.of<AppbafontCubit>(context)
+                        .appBarIsExitEvent();
+                  },
+                  child: Container(
+                    height: 300,
+                    width: 200,
+                    color: Colors.amber,
                   ),
                 ),
               );
