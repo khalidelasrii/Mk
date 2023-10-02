@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/snackbar_widget.dart';
@@ -24,10 +25,11 @@ class _FormWidgetState extends State<FormWidget> {
   final TextEditingController _prixControlor = TextEditingController();
   final TextEditingController _nameControlor = TextEditingController();
   final TextEditingController _idControlor = TextEditingController();
-
+  String typeArticle = 'Le Type de larticle';
+  String? emailuser;
   String _imageFile = ''; // Variable to hold the selected image file
   Uint8List? selectedImageInBytes;
-  String typeArticle = '';
+
   @override
   void initState() {
     if (widget.isUpdate) {
@@ -43,7 +45,7 @@ class _FormWidgetState extends State<FormWidget> {
       Uint8List? selectedImageInBytes, String type) {
     final article = Article(
         type: type, //! add the type of objet her
-        email: 'khalidox',
+        email: emailuser != null ? '' : emailuser!,
         article: _articleControlor.text,
         name: _nameControlor.text,
         prix: _prixControlor.text,
@@ -67,13 +69,20 @@ class _FormWidgetState extends State<FormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        setState(() {
+          emailuser = user.email!;
+        });
+      }
+    });
     return Form(
       key: _formKey,
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // TextField article ;
 
         Padding(
-          padding: const EdgeInsets.only(top: 100),
+          padding: const EdgeInsets.only(top: 70, left: 20),
           child: Container(
             constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
             child: MaterialButton(
@@ -83,18 +92,22 @@ class _FormWidgetState extends State<FormWidget> {
                 pickImage();
               },
               child: (_imageFile.isNotEmpty || _imageFile != '')
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: SizedBox(
-                        height: 400,
-                        child: Image.memory(selectedImageInBytes!),
-                      ),
+                  ? SizedBox(
+                      height: 400,
+                      width: 400,
+                      child: Image.memory(selectedImageInBytes!),
                     )
-                  : SizedBox(
-                      height: 100,
-                      child: Image.asset(
-                        'images/Ins.png',
-                        fit: BoxFit.cover,
+                  : Container(
+                      color: Colors.amber,
+                      width: 200,
+                      height: 200,
+                      child: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image.asset(
+                          'images/Ins.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
             ),
@@ -110,23 +123,23 @@ class _FormWidgetState extends State<FormWidget> {
                   padding: const EdgeInsets.all(25.0),
                   child: Container(
                     color: Colors.white,
-                    constraints: BoxConstraints(maxWidth: 300),
+                    constraints: const BoxConstraints(maxWidth: 300),
                     child: Center(
                       child: DropdownButton<String>(
                         icon: const Icon(
                           Icons.abc,
                           color: Colors.transparent,
                         ),
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
-                                'Le Type de larticle',
+                                typeArticle,
                                 style: TextStyle(color: Colors.red),
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.arrow_drop_down_circle_outlined,
                               color: Colors.amber,
                             ),

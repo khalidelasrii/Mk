@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
@@ -8,26 +9,41 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/re
 
 import '../../../../core/Widgets/bar_de_recherche.dart';
 
-class ArticleProduit extends StatelessWidget {
+class ArticleProduit extends StatefulWidget {
   const ArticleProduit({super.key, required this.article});
   final Article article;
 
   @override
+  State<ArticleProduit> createState() => _ArticleProduitState();
+}
+
+class _ArticleProduitState extends State<ArticleProduit> {
+  User? user;
+  @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? userr) {
+        if (userr != null) {
+          setState(() {
+            user = userr;
+          });
+        }
+      },
+    );
     return Scaffold(
       backgroundColor: mybluebackgroundcolor,
-      body: buildbody(context, article),
+      body: buildbody(context, widget.article, user),
     );
   }
 }
 
-buildbody(BuildContext context, Article article) {
+buildbody(BuildContext context, Article article, User? user) {
   return StatefulBuilder(builder: ((context, setState) {
     return SizedBox(
       child: SingleChildScrollView(
         child: Column(
           children: [
-            AppbarWelcom().appBarWidget(context),
+            AppbarWelcom().appBarWidget(context, user),
             BardeRocherche().bardeRocherche(context),
             Stack(
               alignment: AlignmentDirectional.topCenter,

@@ -6,7 +6,6 @@ import 'package:mk/featchers/Article/domain/repository/repository_articles.dart'
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/addoorable_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dart';
-import 'package:mk/featchers/Article/domain/use_case/get_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
@@ -15,6 +14,11 @@ import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
+import 'package:mk/featchers/profile/data/data_sources/profile_data_sources.dart';
+import 'package:mk/featchers/profile/data/repository_impl/profile_repository_impl.dart';
+import 'package:mk/featchers/profile/domain/profile_use_case/get_mes_article_use_case.dart';
+import 'package:mk/featchers/profile/domain/repository/profile_repository.dart';
+import 'package:mk/featchers/profile/presentation/bloc/get_mes_articles_cuibit/get_mes_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/data/data_sources/welcome_data_source.dart';
 import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_repository_impl.dart';
 import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
@@ -41,10 +45,8 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
-  sl.registerFactory(() => ArticleBloc(
-      getArticles: sl(),
-      getAllArticleUseCase: sl(),
-      addoorableArticlesUseCase: sl()));
+  sl.registerFactory(() =>
+      ArticleBloc(getAllArticleUseCase: sl(), addoorableArticlesUseCase: sl()));
   sl.registerFactory(() => AddordeletorupdateBloc(
         addArticle: sl(),
         delletArticle: sl(),
@@ -59,6 +61,7 @@ Future<void> init() async {
         singInGoogleUseCase: sl(),
       ));
   sl.registerFactory(() => RecherchCubit(getSearchResultsUseCase: sl()));
+  sl.registerFactory(() => GetMesArticlesCubit(getMesArticlesUSeCase: sl()));
 
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
@@ -82,12 +85,12 @@ Future<void> init() async {
   sl.registerLazySingleton(() => ArticleParTypeUseCase(sl()));
 
   sl.registerLazySingleton(() => GetAllArticleUseCase(sl()));
-  sl.registerLazySingleton(() => GetArticlesUseCase(sl()));
   sl.registerLazySingleton(() => AddoorableArticlesUseCase(sl()));
   sl.registerLazySingleton(() => AddArticleUseCase(sl()));
   sl.registerLazySingleton(() => DelletArticleUseCase(sl()));
   sl.registerLazySingleton(() => UpdateArticleUseCase(sl()));
   sl.registerLazySingleton(() => GetAllWelcomeArticleUseCase(sl()));
+  sl.registerLazySingleton(() => GetMesArticlesUSeCase(sl()));
 
   // Repository
 
@@ -97,11 +100,14 @@ Future<void> init() async {
       () => UserRepositooryImpl(userDataSources: sl()));
   sl.registerLazySingleton<WelcomeRepository>(
       () => WelcomeRepositoryImpl(welcomeDataSource: sl()));
+  sl.registerLazySingleton<ProfileRepository>(
+      () => ProfileRepositoryImpl(profileDataSources: sl()));
 
   // Data sources
   sl.registerLazySingleton<ArticlesRemoteDataSource>(() => ArticlesFirebase());
   sl.registerLazySingleton<UserDataSources>(() => UserDataSourcesImpl1());
   sl.registerLazySingleton<WelcomeDataSource>(() => WelcomeDataSourcesImpl());
+  sl.registerLazySingleton<ProfileDataSources>(() => ProfileDataSourcesImpl());
 
   // Other dependencies or services can be registered here
 

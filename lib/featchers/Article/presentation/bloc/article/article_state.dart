@@ -11,15 +11,6 @@ final class ArticleInitial extends ArticleState {}
 
 class LodingArticlesState extends ArticleState {}
 
-class LodedArticlesState extends ArticleState {
-  final List<Article> articles;
-
-  const LodedArticlesState({required this.articles});
-
-  @override
-  List<Object> get props => [articles];
-}
-
 class LodedAllarticles extends ArticleState {
   final List<Article> articles;
   const LodedAllarticles({required this.articles});

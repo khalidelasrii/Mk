@@ -4,22 +4,11 @@ import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_sour
 import '../../../../core/errure/faillure.dart';
 import '../../domain/entitie/article.dart';
 import '../../domain/repository/repository_articles.dart';
-import '../models/article_model.dart';
 
 class ArticleRepositoryImpl implements RepositoryArticles {
   final ArticlesRemoteDataSource articlesFirebase;
 
   ArticleRepositoryImpl({required this.articlesFirebase});
-
-  @override
-  Future<Either<Faillure, List<ArticleModel>>> getmesArticles() async {
-    try {
-      final remoteArticle = await articlesFirebase.getmesArticles();
-      return Right(remoteArticle);
-    } on ServerException {
-      return Left(ServerFailure());
-    }
-  }
 
   @override
   Future<Either<Faillure, Unit>> addArticle(Article article) async {

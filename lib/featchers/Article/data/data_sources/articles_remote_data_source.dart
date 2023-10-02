@@ -7,11 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
-import '../models/article_model.dart';
-
 abstract class ArticlesRemoteDataSource {
   Future<List<Article>> getAllArticles();
-  Future<List<ArticleModel>> getmesArticles();
   Future<Unit> updateArticle(Article article);
   Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String collectionId, String id);
@@ -31,7 +28,6 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
     'Cartables',
     'Autres',
   ];
-  List<Article> allArticles = [];
 
   @override
   Future<Unit> addArticle(Article article) async {
@@ -105,29 +101,6 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<List<ArticleModel>> getmesArticles() async {
-    final querysnapshot = await _firestore
-        .collection('Articles')
-        .doc(_auth!.email)
-        .collection(_auth!.uid)
-        .get();
-
-    return querysnapshot.docs.map((alluser) {
-      final data = alluser.data();
-      final usrid = alluser.id;
-
-      return ArticleModel(
-        type: data['type'],
-        email: data['email'],
-        id: usrid,
-        name: data['name'],
-        prix: data['prix'],
-        article: data['article'],
-      );
-    }).toList();
-  }
-
-  @override
   Future<Unit> updateArticle(Article article) async {
     await _firestore
         .collection('Articles')
@@ -145,29 +118,23 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   @override
   Future<List<Article>> getAllArticles() async {
     final articlesCollection = _firestore.collection('ArticleSearche');
-    try {
-      QuerySnapshot<Map<String, dynamic>> snapshot =
-          await articlesCollection.get();
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await articlesCollection.get();
 
-      List<Article> subCollectionArticles = snapshot.docs.map((subDoc) {
-        Map<String, dynamic> subArticleData = subDoc.data();
+    List<Article> subCollectionArticles = snapshot.docs.map((subDoc) {
+      Map<String, dynamic> subArticleData = subDoc.data();
 
-        return Article(
-            type: subArticleData['type'],
-            email: subArticleData['email'],
-            article: subArticleData['article'],
-            name: subArticleData['name'],
-            prix: subArticleData['prix'],
-            id: subDoc.id,
-            articleUrl: subArticleData['articleUrl']);
-      }).toList();
+      return Article(
+          type: subArticleData['type'],
+          email: subArticleData['email'],
+          article: subArticleData['article'],
+          name: subArticleData['name'],
+          prix: subArticleData['prix'],
+          id: subDoc.id,
+          articleUrl: subArticleData['articleUrl']);
+    }).toList();
 
-      allArticles.addAll(subCollectionArticles);
-
-      return allArticles;
-    } catch (e) {
-      return [];
-    }
+    return subCollectionArticles;
   }
 
   @override

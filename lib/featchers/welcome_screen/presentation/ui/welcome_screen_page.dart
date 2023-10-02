@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/injection_container.dart' as di;
 
@@ -20,8 +20,18 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  User? user;
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? userr) {
+        if (userr != null) {
+          setState(() {
+            user = userr;
+          });
+        }
+      },
+    );
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => di.sl<CategoriecheldrenCubit>()),
@@ -54,7 +64,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: [
             //! Appbar Widget
 
-            AppbarWelcom().appBarWidget(context),
+            AppbarWelcom().appBarWidget(context, user),
             //! Les Boton de tous les categorie
 
             BarDeBotonPage().secondBar(),

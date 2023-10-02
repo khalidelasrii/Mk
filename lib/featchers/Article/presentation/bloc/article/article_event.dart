@@ -9,8 +9,6 @@ sealed class ArticleEvent extends Equatable {
 
 class GetAllArticlesEvent extends ArticleEvent {}
 
-class GetMesArticleEvent extends ArticleEvent {}
-
 class AddoorlableArticlesEvent extends ArticleEvent {
   final Article article;
 

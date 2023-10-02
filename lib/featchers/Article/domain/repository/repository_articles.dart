@@ -4,8 +4,6 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import '../../../../core/errure/faillure.dart';
 
 abstract class RepositoryArticles {
-  Future<Either<Faillure, List<Article>>> getmesArticles();
-
   Future<Either<Faillure, List<Article>>> getallArticles();
 
   Future<Either<Faillure, Unit>> updateArticle(Article article);
