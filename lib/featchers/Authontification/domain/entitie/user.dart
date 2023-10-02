@@ -7,9 +7,13 @@ class Usr extends Equatable {
   final String? profile;
   final String? name;
   final String? phoneNumber;
+  final String adress;
+  final String payes;
 
   const Usr(
-      {this.phoneNumber,
+      {required this.adress,
+      required this.payes,
+      this.phoneNumber,
       required this.email,
       required this.password,
       this.profile,

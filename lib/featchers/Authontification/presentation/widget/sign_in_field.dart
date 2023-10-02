@@ -100,7 +100,9 @@ class SingInField extends StatelessWidget {
                     onPressed: () async {
                       Usr usr = Usr(
                           email: emailControllor.text,
-                          password: passwordControllor.text);
+                          password: passwordControllor.text,
+                          adress: '',
+                          payes: '');
                       BlocProvider.of<AuthCubit>(context).singIn(usr);
                     },
                     child: const Text('Connexion'),

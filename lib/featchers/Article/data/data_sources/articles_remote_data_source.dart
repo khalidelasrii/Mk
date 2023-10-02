@@ -127,10 +127,10 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       return Article(
           type: subArticleData['type'],
           email: subArticleData['email'],
-          article: subArticleData['article'],
+          id: subDoc.id,
           name: subArticleData['name'],
           prix: subArticleData['prix'],
-          id: subDoc.id,
+          article: subArticleData['article'],
           articleUrl: subArticleData['articleUrl']);
     }).toList();
 

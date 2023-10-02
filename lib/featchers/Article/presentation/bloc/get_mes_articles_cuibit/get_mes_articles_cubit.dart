@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
-import 'package:mk/featchers/profile/domain/profile_use_case/get_mes_article_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/get_mes_article_use_case.dart';
 
 part 'get_mes_articles_state.dart';
 
@@ -13,9 +13,12 @@ class GetMesArticlesCubit extends Cubit<GetMesArticlesState> {
   mesArticleLoding(String email) async {
     emit(LodingMesArticlesState());
 
-    final mesArticlesOrFaillure = await getMesArticlesUSeCase.call(email);
+    final mesArticlesOrFaillure = await getMesArticlesUSeCase(email);
 
-    mesArticlesOrFaillure.fold((_) => emit(ErrorMesArticlesState()),
-        (artii) => emit(LodidMesArticlesState(articles: artii)));
+    mesArticlesOrFaillure.fold((_) {
+      emit(ErrorMesArticlesState());
+    }, (artii) {
+      emit(LodidMesArticlesState(articles: artii));
+    });
   }
 }

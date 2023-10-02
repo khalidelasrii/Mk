@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/faillure.dart';
 
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
-import 'package:mk/featchers/profile/data/data_sources/profile_data_sources.dart';
+import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart';
 
 import '../../domain/repository/profile_repository.dart';
 

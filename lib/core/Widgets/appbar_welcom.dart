@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/profile/presentation/ui/profile_screen.dart';
+import 'package:mk/featchers/Article/presentation/ui/profile_screen.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
@@ -89,7 +89,9 @@ class AppbarWelcom {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => const ProfileScreen()));
+                            builder: (_) => ProfileScreen(
+                                  user: user,
+                                )));
                   },
                   child: user.photoURL != null
                       ? SizedBox(

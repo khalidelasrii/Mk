@@ -128,7 +128,9 @@ class SingUpField extends StatelessWidget {
                       Usr usr = Usr(
                           name: nameControllor.text,
                           email: emailControllor.text,
-                          password: passwordControllor.text);
+                          password: passwordControllor.text,
+                          adress: '',
+                          payes: '');
                       BlocProvider.of<AuthCubit>(context).singUp(usr);
                     },
                     child: const Text('Create'),

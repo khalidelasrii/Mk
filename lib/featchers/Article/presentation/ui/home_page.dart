@@ -39,8 +39,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: mybluebackgroundcolor,
       body: _buildBody(context, true, userconnect),
-      floatingActionButton:
-          userconnect != null ? _floatingActionButton(context) : null,
+      floatingActionButton: userconnect != null
+          ? _floatingActionButton(context, userconnect)
+          : null,
     );
   }
 }
@@ -55,6 +56,7 @@ Widget _buildBody(BuildContext context, bool isDisktop, User? user) {
             return GridViewBody(
               articles: state.articles,
               isDisktop: isDisktop,
+              user: user,
             );
           } else {
             return const Expanded(
@@ -69,7 +71,7 @@ Widget _buildBody(BuildContext context, bool isDisktop, User? user) {
   );
 }
 
-Widget _floatingActionButton(BuildContext context) {
+Widget _floatingActionButton(BuildContext context, User? user) {
   return FloatingActionButton(
     onPressed: () {
       Navigator.push(
@@ -77,6 +79,7 @@ Widget _floatingActionButton(BuildContext context) {
           MaterialPageRoute(
               builder: (_) => AddOrUpdateArticle(
                     isUpdate: false,
+                    user: user,
                   )));
     },
     child: const Icon(Icons.add),

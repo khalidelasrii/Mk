@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
@@ -23,15 +24,18 @@ void dispose() {
 }
 
 class AddOrUpdateArticle extends StatelessWidget {
-  const AddOrUpdateArticle({super.key, this.article, required this.isUpdate});
+  const AddOrUpdateArticle(
+      {super.key, this.article, required this.user, required this.isUpdate});
   final Article? article;
   final bool isUpdate;
+  final User? user;
   @override
   Widget build(BuildContext context) {
     return ResponsiveLayote(
         disktopScafolde: AddOrUpdateArticleDisktop(
           isUpdate: isUpdate,
           article: article,
+          user: user,
         ),
         moubileSccafolde: AddORUpdateArticleMobile(
           isUpdate: isUpdate,
@@ -60,8 +64,9 @@ class AddORUpdateArticleMobile extends StatelessWidget {
 class AddOrUpdateArticleDisktop extends StatelessWidget {
   final Article? article;
   final bool isUpdate;
+  final User? user;
   const AddOrUpdateArticleDisktop(
-      {super.key, this.article, required this.isUpdate});
+      {super.key, this.article, required this.isUpdate, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +75,13 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
         title: Text(isUpdate ? 'Update Poste' : 'Add Poste'),
       ),
       backgroundColor: mybluebackgroundcolor,
-      body: _buildBody(context),
+      body: _buildBody(context, user),
     );
   }
 
   //! Build body ;
 
-  _buildBody(BuildContext context) {
+  _buildBody(BuildContext context, User? user) {
     return BlocConsumer<AddordeletorupdateBloc, AddordeletorupdateState>(
       listener: (context, state) {
         if (state is MessageAddDeleteUpdatePostState) {
@@ -95,6 +100,7 @@ class AddOrUpdateArticleDisktop extends StatelessWidget {
         return FormWidget(
           isUpdate: isUpdate,
           article: isUpdate ? article : null,
+          user: user,
         );
       },
     );

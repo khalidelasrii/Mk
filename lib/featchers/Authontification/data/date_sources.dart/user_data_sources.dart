@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +19,7 @@ abstract class UserDataSources {
 
 class UserDataSourcesImpl1 implements UserDataSources {
   final _auth = FirebaseAuth.instance;
+  final _firebase = FirebaseFirestore.instance;
 
   @override
   Future<Unit> signIn(Usr usr) async {
@@ -28,6 +30,12 @@ class UserDataSourcesImpl1 implements UserDataSources {
 
   @override
   Future<Unit> signUp(Usr usr) async {
+    UserModel usermodel = UserModel(
+        adress: usr.adress,
+        payes: usr.payes,
+        email: usr.email,
+        password: usr.password);
+    await _firebase.collection('Users').doc(usr.email).set(usermodel.toMap());
     await _auth.createUserWithEmailAndPassword(
       email: usr.email,
       password: usr.password,
@@ -49,6 +57,8 @@ class UserDataSourcesImpl1 implements UserDataSources {
   Future<UserModel> getUserId() async {
     final user = _auth.currentUser;
     return UserModel(
+        adress: '',
+        payes: '',
         password: '',
         uid: user!.uid,
         name: user.displayName ?? 'Best User',

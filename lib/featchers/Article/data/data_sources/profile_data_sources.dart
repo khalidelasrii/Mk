@@ -29,13 +29,13 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
         final usrid = alluser.id;
 
         return Article(
-          type: data['type'],
-          email: data['email'],
-          id: usrid,
-          name: data['name'],
-          prix: data['prix'],
-          article: data['article'],
-        );
+            type: data['type'],
+            email: data['email'],
+            id: usrid,
+            name: data['name'],
+            prix: data['prix'],
+            article: data['article'],
+            articleUrl: data['articleUrl']);
       }).toList();
       articlesList.addAll(xx);
     }

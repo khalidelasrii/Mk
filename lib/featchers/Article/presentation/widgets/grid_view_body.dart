@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
@@ -9,9 +10,13 @@ import '../../../welcome_screen/presentation/ui/article_produit.dart';
 
 class GridViewBody extends StatefulWidget {
   const GridViewBody(
-      {super.key, required this.articles, required this.isDisktop});
+      {super.key,
+      required this.articles,
+      required this.isDisktop,
+      required this.user});
   final List<Article> articles;
   final bool isDisktop;
+  final User? user;
 
   @override
   State<GridViewBody> createState() => _GridViewBodyState();
@@ -74,6 +79,7 @@ class _GridViewBodyState extends State<GridViewBody> {
                                     builder: (_) => AddOrUpdateArticle(
                                           isUpdate: true,
                                           article: article,
+                                          user: widget.user,
                                         )));
                           } else if (newValue == '2') {
                             BlocProvider.of<AddordeletorupdateBloc>(context)

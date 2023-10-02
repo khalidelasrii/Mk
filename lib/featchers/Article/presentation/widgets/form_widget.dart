@@ -12,9 +12,11 @@ import '../bloc/article/article_bloc.dart';
 import '../ui/home_page.dart';
 
 class FormWidget extends StatefulWidget {
-  const FormWidget({super.key, required this.isUpdate, this.article});
+  const FormWidget(
+      {super.key, required this.isUpdate, this.article, required this.user});
   final bool isUpdate;
   final Article? article;
+  final User? user;
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
@@ -26,7 +28,6 @@ class _FormWidgetState extends State<FormWidget> {
   final TextEditingController _nameControlor = TextEditingController();
   final TextEditingController _idControlor = TextEditingController();
   String typeArticle = 'Le Type de larticle';
-  String? emailuser;
   String _imageFile = ''; // Variable to hold the selected image file
   Uint8List? selectedImageInBytes;
 
@@ -38,6 +39,7 @@ class _FormWidgetState extends State<FormWidget> {
       _nameControlor.text = widget.article!.name;
       _idControlor.text = widget.article!.id;
     }
+
     super.initState();
   }
 
@@ -45,7 +47,7 @@ class _FormWidgetState extends State<FormWidget> {
       Uint8List? selectedImageInBytes, String type) {
     final article = Article(
         type: type, //! add the type of objet her
-        email: emailuser != null ? '' : emailuser!,
+        email: widget.user!.email!,
         article: _articleControlor.text,
         name: _nameControlor.text,
         prix: _prixControlor.text,
@@ -69,13 +71,6 @@ class _FormWidgetState extends State<FormWidget> {
 
   @override
   Widget build(BuildContext context) {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user != null) {
-        setState(() {
-          emailuser = user.email!;
-        });
-      }
-    });
     return Form(
       key: _formKey,
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
