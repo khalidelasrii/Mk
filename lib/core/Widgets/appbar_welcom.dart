@@ -94,9 +94,12 @@ class AppbarWelcom {
                                 )));
                   },
                   child: user.photoURL != null
-                      ? SizedBox(
-                          height: 50,
-                          child: Image.network(user.photoURL!),
+                      ? ClipOval(
+                          child: Image.network(
+                            user.photoURL!,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
                         )
                       : Icon(Icons.person, color: color2),
                 )
