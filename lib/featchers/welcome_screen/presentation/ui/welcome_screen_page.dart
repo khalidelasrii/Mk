@@ -5,10 +5,10 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cui
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/injection_container.dart' as di;
-
+import '../../../../core/Widgets/bar_de_recherche.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
-import '../widgets/bar_de_recherche.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
 
@@ -72,7 +72,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
             ContainerAllCategorie().containerAllCategorie(),
             //! La bar de recherche :
-            BarRocherche().barRocherche(),
+
+            BlocBuilder<ToolbarCubit, ToolbarState>(
+              builder: (context, state) {
+                if (state is ToolbarInitial) {
+                  return BardeRocherche().bardeRocherche(context);
+                } else {
+                  return const SizedBox();
+                }
+              },
+            )
           ],
         ),
         BlocBuilder<AppbafontCubit, AppbafontState>(

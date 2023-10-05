@@ -9,8 +9,6 @@ sealed class ArticleParCategorieState extends Equatable {
 
 final class ArticleParCategorieInitial extends ArticleParCategorieState {}
 
-class ArticleParcatigorieLoadingState extends ArticleParCategorieState {}
-
 class ArticleParCategorieIsLoadidState extends ArticleParCategorieState {
   final List<WelcomeArticle> articleList;
   const ArticleParCategorieIsLoadidState({required this.articleList});

@@ -11,7 +11,7 @@ class ArticleParCategorieCubit extends Cubit<ArticleParCategorieState> {
       : super(ArticleParCategorieInitial());
 
   getarticleParCategorieEvent(String collection) async {
-    emit(ArticleParcatigorieLoadingState());
+    emit(ArticleParCategorieInitial());
     final articlesOrfaillure = await articleParTypeUseCase.call(collection);
     print(collection);
 
