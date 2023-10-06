@@ -67,7 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             AppbarWelcom().appBarWidget(context, user),
             //! Les Boton de tous les categorie
 
-            BarDeBotonPage().secondBar(),
+            BarDeBotonPage().secondBar(context),
             //!   la Sous liste du Catégorie:
 
             ContainerAllCategorie().containerAllCategorie(),
