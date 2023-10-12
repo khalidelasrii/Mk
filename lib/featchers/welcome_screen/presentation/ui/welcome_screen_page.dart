@@ -6,6 +6,7 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/a
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.dart';
 import 'package:mk/injection_container.dart' as di;
 import '../../../../core/Widgets/bar_de_recherche.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
@@ -109,6 +110,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           },
         ),
       ]),
+      const SizedBox(
+        height: 20,
+      ),
+      SliderCrusur().slider()
     ]));
   }
 }
