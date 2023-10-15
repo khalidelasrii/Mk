@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
   Future<List<Article>> getmesArticles(String profile);
+  Future<Unit> sendMessage(String message);
 }
 
 class ProfileDataSourcesImpl implements ProfileDataSources {
@@ -40,5 +42,10 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
       articlesList.addAll(xx);
     }
     return articlesList;
+  }
+
+  @override
+  Future<Unit> sendMessage(String) {
+    return Future.value(unit);
   }
 }
