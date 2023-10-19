@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
+import 'package:mk/featchers/Article/presentation/bloc/message_cuibite/messag_cubit.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'package:mk/injection_container.dart' as di;
@@ -38,6 +39,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           BlocProvider(
             create: (_) => di.sl<GetMesArticlesCubit>()
               ..mesArticleLoding(widget.user!.email!),
+          ),
+          BlocProvider(
+            create: (_) => di.sl<MessagCubit>(),
           )
         ],
         child: Scaffold(
@@ -52,7 +56,7 @@ _buildBody(BuildContext context, User? user) {
   final List<Widget> pages = [
     profil(),
     articles(user),
-    message(),
+    message(context),
     info(context),
   ];
 
@@ -198,13 +202,26 @@ articles(User? user) {
   );
 }
 
-message() {
-  return Expanded(
-    child: Container(
-      constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
+message(BuildContext context) {
+  message(String text, String user) {
+    return Column(
+      children: [
+        Text(user),
+        Container(
+            constraints: const BoxConstraints(maxHeight: 60, minWidth: 200),
+            color: const Color.fromARGB(77, 244, 67, 54),
+            child: Text(text)),
+      ],
+    );
+  }
+
+  return Container(
       color: myteal,
-    ),
-  );
+      child: BlocBuilder<MessagCubit, MessagState>(
+        builder: (context, state) {
+          return 
+        },
+      ));
 }
 
 info(BuildContext context) {

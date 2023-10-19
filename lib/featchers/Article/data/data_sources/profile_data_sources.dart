@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mk/featchers/Article/data/models/profileModel.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
   Future<List<Article>> getmesArticles(String profile);
-  Future<Unit> sendMessage(String message);
+  Future<Unit> sendMessage(ProfileModel message);
+  Future<List<String>> getMessages();
 }
 
 class ProfileDataSourcesImpl implements ProfileDataSources {
   final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   List<String> collectionName = [
     'Forniture',
     'Livres',
@@ -45,7 +49,24 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   }
 
   @override
-  Future<Unit> sendMessage(String) {
+  Future<Unit> sendMessage(ProfileModel profile) async {
+    final pro = ProfileModel(
+        email: profile.email,
+        id: '',
+        numberPhone: '',
+        payes: '',
+        message: profile.message);
+    await _firestore
+        .collection("Mesagerie")
+        .doc(_auth.currentUser!.email)
+        .set(pro.toMap());
+
     return Future.value(unit);
+  }
+
+  @override
+  Future<List<String>> getMessages() {
+    // TODO: implement getMessages
+    throw UnimplementedError();
   }
 }
