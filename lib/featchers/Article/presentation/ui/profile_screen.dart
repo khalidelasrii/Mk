@@ -27,21 +27,14 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
-  void initState() {
-    super.initState();
-    widget.user;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => di.sl<GetMesArticlesCubit>()
-              ..mesArticleLoding(widget.user!.email!),
+            create: (_) => di.sl<GetMesArticlesCubit>()..mesArticleLoding(),
           ),
           BlocProvider(
-            create: (_) => di.sl<MessagCubit>(),
+            create: (_) => di.sl<MessagCubit>()..getMessagesEvent(),
           )
         ],
         child: Scaffold(
@@ -219,7 +212,17 @@ message(BuildContext context) {
       color: myteal,
       child: BlocBuilder<MessagCubit, MessagState>(
         builder: (context, state) {
-          return 
+          if (state is LodidMessagesState) {
+            return ListView.builder(
+              itemCount: state.messages.length,
+              itemBuilder: (context, index) {
+                final mess = state.messages[index];
+                return message(mess.message!, mess.email);
+              },
+            );
+          } else {
+            return const CerclulareLodingWidget();
+          }
         },
       ));
 }

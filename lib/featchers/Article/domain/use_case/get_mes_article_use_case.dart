@@ -7,7 +7,7 @@ class GetMesArticlesUSeCase {
   final ProfileRepository _profileRepository;
   GetMesArticlesUSeCase(this._profileRepository);
 
-  Future<Either<Faillure, List<Article>>> call(String email) async {
-    return await _profileRepository.getMesArticles(email);
+  Future<Either<Faillure, List<Article>>> call() async {
+    return await _profileRepository.getMesArticles();
   }
 }

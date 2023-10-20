@@ -10,10 +10,10 @@ class GetMesArticlesCubit extends Cubit<GetMesArticlesState> {
   GetMesArticlesCubit({required this.getMesArticlesUSeCase})
       : super(GetMesArticlesInitial());
 
-  mesArticleLoding(String email) async {
+  mesArticleLoding() async {
     emit(LodingMesArticlesState());
 
-    final mesArticlesOrFaillure = await getMesArticlesUSeCase(email);
+    final mesArticlesOrFaillure = await getMesArticlesUSeCase();
 
     mesArticlesOrFaillure.fold((_) {
       emit(ErrorMesArticlesState());

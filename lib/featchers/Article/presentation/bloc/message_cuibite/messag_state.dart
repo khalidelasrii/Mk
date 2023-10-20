@@ -10,7 +10,7 @@ sealed class MessagState extends Equatable {
 final class MessagInitial extends MessagState {}
 
 class LodidMessagesState extends MessagState {
-  final List<String> messages;
+  final List<ProfileModel> messages;
   const LodidMessagesState({required this.messages});
 }
 

@@ -5,9 +5,9 @@ import 'package:mk/featchers/Article/data/models/profileModel.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
-  Future<List<Article>> getmesArticles(String profile);
+  Future<List<Article>> getmesArticles();
   Future<Unit> sendMessage(ProfileModel message);
-  Future<List<String>> getMessages();
+  Future<List<ProfileModel>> getMessages();
 }
 
 class ProfileDataSourcesImpl implements ProfileDataSources {
@@ -23,11 +23,11 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   ];
   final List<Article> articlesList = [];
   @override
-  Future<List<Article>> getmesArticles(String? email) async {
+  Future<List<Article>> getmesArticles() async {
     for (var collection in collectionName) {
       final querysnapshot = await _firestore
           .collection('Articles')
-          .doc(email)
+          .doc(_auth.currentUser!.email)
           .collection(collection)
           .get();
       final xx = querysnapshot.docs.map((alluser) {
@@ -50,23 +50,26 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
 
   @override
   Future<Unit> sendMessage(ProfileModel profile) async {
-    final pro = ProfileModel(
-        email: profile.email,
-        id: '',
-        numberPhone: '',
-        payes: '',
-        message: profile.message);
-    await _firestore
-        .collection("Mesagerie")
-        .doc(_auth.currentUser!.email)
-        .set(pro.toMap());
+    await _firestore.collection("Mesagerie").add({
+      'email': _auth.currentUser!.email,
+      'message': profile.message,
+    });
 
     return Future.value(unit);
   }
 
   @override
-  Future<List<String>> getMessages() {
-    // TODO: implement getMessages
-    throw UnimplementedError();
+  Future<List<ProfileModel>> getMessages() async {
+    final messages = await _firestore.collection('Mesagerie').get();
+    return messages.docs.map((data) {
+      final subData = data.data();
+
+      return ProfileModel(
+          email: subData['email'],
+          id: subData['messageId'],
+          numberPhone: '',
+          payes: '',
+          message: subData['message']);
+    }).toList();
   }
 }

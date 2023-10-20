@@ -13,9 +13,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   ProfileDataSources profileDataSources;
   ProfileRepositoryImpl({required this.profileDataSources});
   @override
-  Future<Either<Faillure, List<Article>>> getMesArticles(String profile) async {
+  Future<Either<Faillure, List<Article>>> getMesArticles() async {
     try {
-      return Right(await profileDataSources.getmesArticles(profile));
+      return Right(await profileDataSources.getmesArticles());
     } on ServerFailure {
       return Left(ServerFailure());
     }
@@ -32,7 +32,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Either<Faillure, List<String>>> getMessages() async {
+  Future<Either<Faillure, List<ProfileModel>>> getMessages() async {
     try {
       return Right(await profileDataSources.getMessages());
     } on ServerException {
