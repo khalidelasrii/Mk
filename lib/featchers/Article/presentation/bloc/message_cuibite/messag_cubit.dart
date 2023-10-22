@@ -23,7 +23,7 @@ class MessagCubit extends Cubit<MessagState> {
     });
   }
 
-  sendMessageEvent(Map<String, String> message) async {
+  sendMessageEvent(String message) async {
     await sendMessageUseCase.call(message);
   }
 }

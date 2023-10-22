@@ -196,35 +196,80 @@ articles(User? user) {
 }
 
 message(BuildContext context) {
-  message(String text, String user) {
-    return Column(
-      children: [
-        Text(user),
-        Container(
-            constraints: const BoxConstraints(maxHeight: 60, minWidth: 200),
-            color: const Color.fromARGB(77, 244, 67, 54),
-            child: Text(text)),
-      ],
-    );
-  }
+  TextEditingController textEditingController = TextEditingController();
+  String messagevalue = '';
+  // message(String text, String user) {
+  //   return Column(
+  //     children: [
+  //       Text(user),
+  //       Container(
+  //           constraints: const BoxConstraints(maxHeight: 60, minWidth: 200),
+  //           color: const Color.fromARGB(77, 244, 67, 54),
+  //           child: Text(text)),
+  //     ],
+  //   );
+  // }
 
-  return Container(
-      color: myteal,
-      child: BlocBuilder<MessagCubit, MessagState>(
-        builder: (context, state) {
-          if (state is LodidMessagesState) {
-            return ListView.builder(
-              itemCount: state.messages.length,
-              itemBuilder: (context, index) {
-                final mess = state.messages[index];
-                return message(mess.message!, mess.email);
-              },
-            );
-          } else {
-            return const CerclulareLodingWidget();
-          }
-        },
-      ));
+  return StatefulBuilder(
+    builder: (context, setState) {
+      return Expanded(
+        child: Container(
+          constraints: const BoxConstraints(maxHeight: 500),
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  color: myteal,
+                ),
+              ),
+              Container(
+                constraints: const BoxConstraints(minHeight: 50, maxHeight: 60),
+                decoration: const BoxDecoration(
+                    gradient:
+                        LinearGradient(colors: [Colors.blue, Colors.orange])),
+                child: Stack(
+                  alignment: AlignmentDirectional.centerEnd,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50),
+                      child: TextField(
+                        controller: textEditingController,
+                        onChanged: (value) {
+                          setState(() {
+                            messagevalue = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 20,
+                          ),
+                          hintText: 'Écrire un message....',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    MaterialButton(
+                      hoverColor: Colors.red,
+                      onPressed: () {
+                        textEditingController.clear();
+                        BlocProvider.of<MessagCubit>(context)
+                            .sendMessageEvent(messagevalue);
+                      },
+                      child: const Text(
+                        'Send',
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
 
 info(BuildContext context) {

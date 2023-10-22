@@ -22,7 +22,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Either<Faillure, Unit>> sendMessage(ProfileModel message) async {
+  Future<Either<Faillure, Unit>> sendMessage(String message) async {
     try {
       await profileDataSources.sendMessage(message);
       return const Right(unit);

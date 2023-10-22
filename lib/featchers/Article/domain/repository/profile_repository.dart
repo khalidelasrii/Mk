@@ -5,6 +5,6 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileRepository {
   Future<Either<Faillure, List<Article>>> getMesArticles();
-  Future<Either<Faillure, Unit>> sendMessage(ProfileModel message);
+  Future<Either<Faillure, Unit>> sendMessage(String message);
   Future<Either<Faillure, List<ProfileModel>>> getMessages();
 }

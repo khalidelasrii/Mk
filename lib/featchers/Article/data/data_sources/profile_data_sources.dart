@@ -6,7 +6,7 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
   Future<List<Article>> getmesArticles();
-  Future<Unit> sendMessage(ProfileModel message);
+  Future<Unit> sendMessage(String message);
   Future<List<ProfileModel>> getMessages();
 }
 
@@ -49,12 +49,11 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   }
 
   @override
-  Future<Unit> sendMessage(ProfileModel profile) async {
+  Future<Unit> sendMessage(String profile) async {
     await _firestore.collection("Mesagerie").add({
-      'email': _auth.currentUser!.email,
-      'message': profile.message,
+      "message": profile,
+      "email": _auth.currentUser!.email,
     });
-
     return Future.value(unit);
   }
 
