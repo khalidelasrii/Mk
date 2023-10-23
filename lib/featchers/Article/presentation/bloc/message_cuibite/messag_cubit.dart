@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mk/featchers/Article/data/models/profileModel.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_message_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/send_message_use_case.dart';
 

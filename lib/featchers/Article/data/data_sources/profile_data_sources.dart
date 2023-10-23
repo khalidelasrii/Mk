@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mk/featchers/Article/data/models/profileModel.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
   Future<List<Article>> getmesArticles();
   Future<Unit> sendMessage(String message);
-  Future<List<ProfileModel>> getMessages();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages();
 }
 
 class ProfileDataSourcesImpl implements ProfileDataSources {
@@ -58,17 +57,7 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   }
 
   @override
-  Future<List<ProfileModel>> getMessages() async {
-    final messages = await _firestore.collection('Mesagerie').get();
-    return messages.docs.map((data) {
-      final subData = data.data();
-
-      return ProfileModel(
-          email: subData['email'],
-          id: subData['messageId'],
-          numberPhone: '',
-          payes: '',
-          message: subData['message']);
-    }).toList();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages() {
+    return _firestore.collection('Mesagerie').snapshots();
   }
 }

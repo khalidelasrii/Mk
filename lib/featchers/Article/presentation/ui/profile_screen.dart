@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -198,17 +199,6 @@ articles(User? user) {
 message(BuildContext context) {
   TextEditingController textEditingController = TextEditingController();
   String messagevalue = '';
-  // message(String text, String user) {
-  //   return Column(
-  //     children: [
-  //       Text(user),
-  //       Container(
-  //           constraints: const BoxConstraints(maxHeight: 60, minWidth: 200),
-  //           color: const Color.fromARGB(77, 244, 67, 54),
-  //           child: Text(text)),
-  //     ],
-  //   );
-  // }
 
   return StatefulBuilder(
     builder: (context, setState) {
@@ -220,6 +210,29 @@ message(BuildContext context) {
               Expanded(
                 child: Container(
                   color: myteal,
+                  child: BlocBuilder<MessagCubit, MessagState>(
+                    builder: (context, state) {
+                      if (state is LodidMessagesState) {
+                        return StreamBuilder<QuerySnapshot>(
+                          stream: state.messages,
+                          builder: (context, snapshot) {
+                            final List<String> mess = [];
+                            if (snapshot.hasData) {
+                              final messages = snapshot.data!.docs;
+                              for (var message in messages) {
+                                mess.add(message['message']);
+                              }
+                              print(mess);
+                              return Text('Hello');
+                            } else {
+                              return const CerclulareLodingWidget();
+                            }
+                          },
+                        );
+                      }
+                      return const CerclulareLodingWidget();
+                    },
+                  ),
                 ),
               ),
               Container(

@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 
 import 'package:mk/core/errure/faillure.dart';
-import 'package:mk/featchers/Article/data/models/profileModel.dart';
 
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart';
@@ -32,7 +32,8 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Either<Faillure, List<ProfileModel>>> getMessages() async {
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getMessages() async {
     try {
       return Right(await profileDataSources.getMessages());
     } on ServerException {

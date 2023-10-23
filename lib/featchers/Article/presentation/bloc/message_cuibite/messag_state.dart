@@ -10,8 +10,10 @@ sealed class MessagState extends Equatable {
 final class MessagInitial extends MessagState {}
 
 class LodidMessagesState extends MessagState {
-  final List<ProfileModel> messages;
+  final Stream<QuerySnapshot<Map<String, dynamic>>> messages;
   const LodidMessagesState({required this.messages});
+  @override
+  List<Object> get props => [messages];
 }
 
 class ErrorMessagesState extends MessagState {}
