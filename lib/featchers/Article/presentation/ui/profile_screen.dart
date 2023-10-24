@@ -216,14 +216,45 @@ message(BuildContext context) {
                         return StreamBuilder<QuerySnapshot>(
                           stream: state.messages,
                           builder: (context, snapshot) {
-                            final List<String> mess = [];
+                            final List<Map<String,String>> mess = [];
                             if (snapshot.hasData) {
                               final messages = snapshot.data!.docs;
                               for (var message in messages) {
-                                mess.add(message['message']);
+                                mess.add({
+                                  "message":message['message'],
+                                  "email":message['email'],
+                                });
                               }
-                              print(mess);
-                              return Text('Hello');
+                              return ListView.builder(
+                                itemCount: mess.length,
+                                itemBuilder:(context, index) {
+                                  final messageMap =mess[index];
+                                  
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 8 ,left: 8,right: 150,bottom: 8),
+                                  
+                                      child: Container( 
+
+                                          decoration:const BoxDecoration(
+                                        color: Color.fromARGB(255, 9, 76, 109),
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(25),
+                                          bottomLeft: Radius.circular(25),
+                                          bottomRight: Radius.circular(25)
+                                          )
+                                      ), child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,children: [
+                                          Text(messageMap['email']!,style: const TextStyle(color: Colors.grey,fontSize: 10),),
+                                          Text(messageMap['message']!,style: const TextStyle(color: Colors.white,fontSize: 14),),
+                                        ],),
+                                      )),
+                                    
+                                  ); 
+                                },
+                                
+                                );
                             } else {
                               return const CerclulareLodingWidget();
                             }
@@ -246,6 +277,7 @@ message(BuildContext context) {
                     Padding(
                       padding: const EdgeInsets.only(right: 50),
                       child: TextField(
+                        style: const TextStyle(color: Colors.white),
                         controller: textEditingController,
                         onChanged: (value) {
                           setState(() {
