@@ -48,16 +48,24 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   }
 
   @override
-  Future<Unit> sendMessage(String profile) async {
-    await _firestore.collection("Mesagerie").add({
-      "message": profile,
+  Future<Unit> sendMessage(String message) async {
+    final collection = _firestore.collection("Descusion");
+    collection.add({"userId": _auth.currentUser!.uid});
+    collection.doc(_auth.currentUser!.uid).collection("MyMessages").add({
+      "message": message,
       "email": _auth.currentUser!.email,
+      "temp": Timestamp.now(),
+      "userid": _auth.currentUser!.uid,
     });
     return Future.value(unit);
   }
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessages() {
-    return _firestore.collection('Mesagerie').snapshots();
+    return _firestore
+        .collection('Descusion')
+        .doc(_auth.currentUser!.uid)
+        .collection("MyMessages")
+        .snapshots();
   }
 }
