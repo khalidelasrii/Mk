@@ -50,7 +50,7 @@ _buildBody(BuildContext context, User? user) {
   final List<Widget> pages = [
     profil(),
     articles(user),
-    message(context),
+    MessageCour(),
     info(context),
   ];
 
@@ -161,7 +161,144 @@ _buildBody(BuildContext context, User? user) {
   );
 }
 
-profil() {
+class MessageCour extends StatefulWidget {
+  const MessageCour({super.key});
+
+  @override
+  State<MessageCour> createState() => _MessageCourState();
+}
+
+class _MessageCourState extends State<MessageCour> {
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController textEditingController = TextEditingController();
+    String messagevalue = "";
+    return Expanded(
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 500),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: myteal,
+                child: BlocBuilder<MessagCubit, MessagState>(
+                  builder: (context, state) {
+                    if (state is LodidMessagesState) {
+                      return StreamBuilder<QuerySnapshot>(
+                        stream: state.messages,
+                        builder: (context, snapshot) {
+                          final List<Map<String, String>> mess = [];
+                          if (snapshot.hasData) {
+                            final messages = snapshot.data!.docs;
+                            for (var message in messages) {
+                              mess.add({
+                                "message": message['message'],
+                                "email": message['email'],
+                              });
+                            }
+                            return ListView.builder(
+                              itemCount: mess.length,
+                              itemBuilder: (context, index) {
+                                final messageMap = mess[index];
+
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8, left: 8, right: 150, bottom: 8),
+                                  child: Container(
+                                      decoration: const BoxDecoration(
+                                          color:
+                                              Color.fromARGB(255, 9, 76, 109),
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(25),
+                                              bottomLeft: Radius.circular(25),
+                                              bottomRight:
+                                                  Radius.circular(25))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              messageMap['email']!,
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 10),
+                                            ),
+                                            Text(
+                                              messageMap['message']!,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                );
+                              },
+                            );
+                          } else {
+                            return const CerclulareLodingWidget();
+                          }
+                        },
+                      );
+                    }
+                    return const CerclulareLodingWidget();
+                  },
+                ),
+              ),
+            ),
+            Container(
+              constraints: const BoxConstraints(minHeight: 50, maxHeight: 60),
+              decoration: const BoxDecoration(
+                  gradient:
+                      LinearGradient(colors: [Colors.blue, Colors.orange])),
+              child: Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 50),
+                    child: TextField(
+                      style: const TextStyle(color: Colors.white),
+                      controller: textEditingController,
+                      onChanged: (value) {
+                        setState(() {
+                          messagevalue = value;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 20,
+                        ),
+                        hintText: 'Écrire un message....',
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  MaterialButton(
+                    hoverColor: Colors.red,
+                    onPressed: () {
+                      textEditingController.clear();
+                      BlocProvider.of<MessagCubit>(context)
+                          .sendMessageEvent(messagevalue);
+                    },
+                    child: const Text(
+                      'Send',
+                      style: TextStyle(fontSize: 14, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+Widget profil() {
   return Expanded(
     child: Container(
       constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
@@ -170,7 +307,7 @@ profil() {
   );
 }
 
-articles(User? user) {
+Widget articles(User? user) {
   return Expanded(
     child: Container(
       constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
@@ -193,127 +330,6 @@ articles(User? user) {
         },
       ),
     ),
-  );
-}
-
-message(BuildContext context) {
-  TextEditingController textEditingController = TextEditingController();
-  String messagevalue = '';
-
-  return StatefulBuilder(
-    builder: (context, setState) {
-      return Expanded(
-        child: Container(
-          constraints: const BoxConstraints(maxHeight: 500),
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  color: myteal,
-                  child: BlocBuilder<MessagCubit, MessagState>(
-                    builder: (context, state) {
-                      if (state is LodidMessagesState) {
-                        return StreamBuilder<QuerySnapshot>(
-                          stream: state.messages,
-                          builder: (context, snapshot) {
-                            final List<Map<String,String>> mess = [];
-                            if (snapshot.hasData) {
-                              final messages = snapshot.data!.docs;
-                              for (var message in messages) {
-                                mess.add({
-                                  "message":message['message'],
-                                  "email":message['email'],
-                                });
-                              }
-                              return ListView.builder(
-                                itemCount: mess.length,
-                                itemBuilder:(context, index) {
-                                  final messageMap =mess[index];
-                                  
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 8 ,left: 8,right: 150,bottom: 8),
-                                  
-                                      child: Container( 
-
-                                          decoration:const BoxDecoration(
-                                        color: Color.fromARGB(255, 9, 76, 109),
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(25),
-                                          bottomLeft: Radius.circular(25),
-                                          bottomRight: Radius.circular(25)
-                                          )
-                                      ), child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,children: [
-                                          Text(messageMap['email']!,style: const TextStyle(color: Colors.grey,fontSize: 10),),
-                                          Text(messageMap['message']!,style: const TextStyle(color: Colors.white,fontSize: 14),),
-                                        ],),
-                                      )),
-                                    
-                                  ); 
-                                },
-                                
-                                );
-                            } else {
-                              return const CerclulareLodingWidget();
-                            }
-                          },
-                        );
-                      }
-                      return const CerclulareLodingWidget();
-                    },
-                  ),
-                ),
-              ),
-              Container(
-                constraints: const BoxConstraints(minHeight: 50, maxHeight: 60),
-                decoration: const BoxDecoration(
-                    gradient:
-                        LinearGradient(colors: [Colors.blue, Colors.orange])),
-                child: Stack(
-                  alignment: AlignmentDirectional.centerEnd,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 50),
-                      child: TextField(
-                        style: const TextStyle(color: Colors.white),
-                        controller: textEditingController,
-                        onChanged: (value) {
-                          setState(() {
-                            messagevalue = value;
-                          });
-                        },
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 20,
-                          ),
-                          hintText: 'Écrire un message....',
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    MaterialButton(
-                      hoverColor: Colors.red,
-                      onPressed: () {
-                        textEditingController.clear();
-                        BlocProvider.of<MessagCubit>(context)
-                            .sendMessageEvent(messagevalue);
-                      },
-                      child: const Text(
-                        'Send',
-                        style: TextStyle(fontSize: 14, color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    },
   );
 }
 
