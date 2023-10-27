@@ -173,6 +173,18 @@ class _MessageCourState extends State<MessageCour> {
   Widget build(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
     String messagevalue = "";
+    bool core = false;
+    var x;
+
+    return core == false
+        ? desscusionCore(textEditingController, messagevalue, context)
+        : Container(
+            color: Colors.amber,
+          );
+  }
+
+  Expanded desscusionCore(TextEditingController textEditingController,
+      String messagevalue, BuildContext context) {
     return Expanded(
       child: Container(
         constraints: const BoxConstraints(maxHeight: 500),
