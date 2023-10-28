@@ -8,6 +8,7 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart';
 
 import '../../domain/repository/profile_repository.dart';
+import '../models/message.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
   ProfileDataSources profileDataSources;
@@ -22,7 +23,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<Either<Faillure, Unit>> sendMessage(String message) async {
+  Future<Either<Faillure, Unit>> sendMessage(Message message) async {
     try {
       await profileDataSources.sendMessage(message);
       return const Right(unit);
@@ -35,7 +36,17 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getMessages() async {
     try {
-      return Right(await profileDataSources.getMessages());
+      return Right(profileDataSources.getMessages());
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getDescusion() async {
+    try {
+      return Right(profileDataSources.getDescusion());
     } on ServerException {
       return Left(ServerFailure());
     }

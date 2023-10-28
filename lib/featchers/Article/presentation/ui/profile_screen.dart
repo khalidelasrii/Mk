@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
+import 'package:mk/featchers/Article/data/models/message.dart';
 import 'package:mk/featchers/Article/presentation/bloc/message_cuibite/messag_cubit.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
@@ -169,22 +170,28 @@ class MessageCour extends StatefulWidget {
 }
 
 class _MessageCourState extends State<MessageCour> {
+  bool coreMessage = false;
+  String messageTo = '';
   @override
   Widget build(BuildContext context) {
-    TextEditingController textEditingController = TextEditingController();
-    String messagevalue = "";
-    bool core = false;
-    var x;
-
-    return core == false
-        ? desscusionCore(textEditingController, messagevalue, context)
-        : Container(
-            color: Colors.amber,
-          );
+    return coreMessage == false
+        ? descusionList(context)
+        : desscusionCore(context, messageTo);
   }
 
-  Expanded desscusionCore(TextEditingController textEditingController,
-      String messagevalue, BuildContext context) {
+  Widget descusionList(BuildContext context) {
+    return Expanded(
+      child: Container(
+        child: BlocBuilder<MessagCubit, MessagState>(
+          builder: (context, state) {},
+        ),
+      ),
+    );
+  }
+
+  Expanded desscusionCore(BuildContext context, String messageTo) {
+    TextEditingController textEditingController = TextEditingController();
+    Message messagevalue = Message(message: '', recupererEmail: '');
     return Expanded(
       child: Container(
         constraints: const BoxConstraints(maxHeight: 500),
@@ -275,7 +282,8 @@ class _MessageCourState extends State<MessageCour> {
                       controller: textEditingController,
                       onChanged: (value) {
                         setState(() {
-                          messagevalue = value;
+                          messagevalue = Message(
+                              message: value, recupererEmail: messageTo);
                         });
                       },
                       decoration: const InputDecoration(

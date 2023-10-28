@@ -6,6 +6,7 @@ import 'package:mk/featchers/Article/domain/repository/repository_articles.dart'
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/addoorable_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dart';
+import 'package:mk/featchers/Article/domain/use_case/get_descusion_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_message_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/send_message_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
@@ -82,6 +83,7 @@ Future<void> init() async {
 
   // Use cases
   sl.registerLazySingleton(() => GetSearchResultsUseCase(sl()));
+  sl.registerLazySingleton(() => GetDescusionUseCase(sl()));
 
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));

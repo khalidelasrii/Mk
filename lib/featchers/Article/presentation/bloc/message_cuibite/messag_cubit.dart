@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_message_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/send_message_use_case.dart';
 
+import '../../../data/models/message.dart';
+
 part 'messag_state.dart';
 
 class MessagCubit extends Cubit<MessagState> {
@@ -23,7 +25,7 @@ class MessagCubit extends Cubit<MessagState> {
     });
   }
 
-  sendMessageEvent(String message) async {
+  sendMessageEvent(Message message) async {
     await sendMessageUseCase.call(message);
   }
 }

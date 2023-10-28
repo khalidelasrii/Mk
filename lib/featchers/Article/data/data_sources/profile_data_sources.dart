@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mk/featchers/Article/data/models/message.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
   Future<List<Article>> getmesArticles();
-  Future<Unit> sendMessage(String message);
+  Future<Unit> sendMessage(Message message);
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessages();
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDescusion();
 }
 
 class ProfileDataSourcesImpl implements ProfileDataSources {
@@ -48,14 +50,18 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   }
 
   @override
-  Future<Unit> sendMessage(String message) async {
+  Future<Unit> sendMessage(Message message) async {
     final collection = _firestore.collection("Descusion");
-    collection.add({"userId": _auth.currentUser!.uid});
-    collection.doc(_auth.currentUser!.uid).collection("MyMessages").add({
-      "message": message,
-      "email": _auth.currentUser!.email,
+
+    collection
+        .doc(_auth.currentUser!.email)
+        .collection(message.recupererEmail + _auth.currentUser!.email!)
+        .add({
+      "message": message.message,
+      "senderEmail": _auth.currentUser!.email,
       "temp": Timestamp.now(),
       "userid": _auth.currentUser!.uid,
+      "recupererEmail": message.recupererEmail
     });
     return Future.value(unit);
   }
@@ -67,5 +73,10 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
         .doc(_auth.currentUser!.uid)
         .collection("MyMessages")
         .snapshots();
+  }
+
+  @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> getDescusion() {
+    return _firestore.collection("collectionPath").snapshots();
   }
 }
