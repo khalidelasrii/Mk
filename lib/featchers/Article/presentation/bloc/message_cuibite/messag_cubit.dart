@@ -28,4 +28,6 @@ class MessagCubit extends Cubit<MessagState> {
   sendMessageEvent(Message message) async {
     await sendMessageUseCase.call(message);
   }
+
+  getDescusionsEvent() {}
 }

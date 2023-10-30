@@ -51,11 +51,14 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
 
   @override
   Future<Unit> sendMessage(Message message) async {
+    //!collection
     final collection = _firestore.collection("Descusion");
+    //! creation de second collection
+    collection.add({"userId": _auth.currentUser!.uid});
 
     collection
         .doc(_auth.currentUser!.email)
-        .collection(message.recupererEmail + _auth.currentUser!.email!)
+        .collection(_auth.currentUser!.uid)
         .add({
       "message": message.message,
       "senderEmail": _auth.currentUser!.email,

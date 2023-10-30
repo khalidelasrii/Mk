@@ -175,15 +175,33 @@ class _MessageCourState extends State<MessageCour> {
   @override
   Widget build(BuildContext context) {
     return coreMessage == false
-        ? descusionList(context)
-        : desscusionCore(context, messageTo);
+        ? desscusionCore(context, messageTo)
+        : descusionList(context);
   }
 
   Widget descusionList(BuildContext context) {
     return Expanded(
       child: Container(
         child: BlocBuilder<MessagCubit, MessagState>(
-          builder: (context, state) {},
+          builder: (context, state) {
+            if (state is DescusionListState) {
+              return StreamBuilder<QuerySnapshot>(
+                stream: state.descusions,
+                builder: (context, snapshot) {
+                  // if (snapshot.hasData) {
+
+                  //   return ListView.builder(
+                  //     itemCount: ,
+                  //     itemBuilder: (context, index) {},
+                  //   );
+                  // } else {
+                  return const CerclulareLodingWidget();
+                  // }
+                },
+              );
+            }
+            return const CerclulareLodingWidget();
+          },
         ),
       ),
     );

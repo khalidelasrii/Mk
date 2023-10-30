@@ -10,4 +10,6 @@ abstract class ProfileRepository {
   Future<Either<Faillure, Unit>> sendMessage(Message message);
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getMessages();
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getDescusion();
 }
