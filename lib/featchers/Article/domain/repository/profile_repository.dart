@@ -9,7 +9,7 @@ abstract class ProfileRepository {
   Future<Either<Faillure, List<Article>>> getMesArticles();
   Future<Either<Faillure, Unit>> sendMessage(Message message);
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      getMessages();
+      getMessages(String userRecuper);
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getDescusion();
 }

@@ -8,8 +8,8 @@ class GetMessageUseCase {
 
   GetMessageUseCase(this.profileRepository);
 
-  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      call() async {
-    return await profileRepository.getMessages();
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>> call(
+      String userRecuper) async {
+    return await profileRepository.getMessages(userRecuper);
   }
 }

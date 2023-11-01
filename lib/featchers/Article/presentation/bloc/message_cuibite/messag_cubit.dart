@@ -15,8 +15,8 @@ class MessagCubit extends Cubit<MessagState> {
       {required this.sendMessageUseCase, required this.getmessagesUseCase})
       : super(MessagInitial());
 
-  getMessagesEvent() async {
-    final messagesOrfallure = await getmessagesUseCase.call();
+  getMessagesEvent(String userRecuper) async {
+    final messagesOrfallure = await getmessagesUseCase.call(userRecuper);
 
     messagesOrfallure.fold((_) {
       emit(ErrorMessagesState());

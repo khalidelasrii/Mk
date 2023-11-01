@@ -1,11 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
-import 'package:mk/featchers/Article/data/models/message.dart';
 import 'package:mk/featchers/Article/presentation/bloc/message_cuibite/messag_cubit.dart';
+import 'package:mk/featchers/Article/presentation/widgets/message_core.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'package:mk/injection_container.dart' as di;
@@ -19,15 +18,10 @@ Color myteal = const Color.fromARGB(129, 0, 150, 135);
 Color myblue = const Color.fromARGB(121, 33, 149, 243);
 Color profilcolor = const Color.fromARGB(84, 0, 0, 0);
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key, required this.user});
   final User? user;
 
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -36,12 +30,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             create: (_) => di.sl<GetMesArticlesCubit>()..mesArticleLoding(),
           ),
           BlocProvider(
-            create: (_) => di.sl<MessagCubit>()..getMessagesEvent(),
+            create: (_) => di.sl<MessagCubit>(),
           )
         ],
         child: Scaffold(
           backgroundColor: mybluebackgroundcolor,
-          body: _buildBody(context, widget.user),
+          body: _buildBody(context, user),
         ));
   }
 }
@@ -49,10 +43,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 _buildBody(BuildContext context, User? user) {
   int currentIndex = 0;
   final List<Widget> pages = [
-    profil(),
-    articles(user),
-    MessageCour(),
-    info(context),
+    const ProfileInfo(),
+    MesArticlesDeProfile(user: user),
+    const MessageCour(),
+    const AboutNous(),
   ];
 
   return StatefulBuilder(
@@ -162,245 +156,99 @@ _buildBody(BuildContext context, User? user) {
   );
 }
 
-class MessageCour extends StatefulWidget {
+//! le Core de Descusion
+class MessageCour extends StatelessWidget {
   const MessageCour({super.key});
 
   @override
-  State<MessageCour> createState() => _MessageCourState();
+  Widget build(BuildContext context) {
+    String messageTo = '';
+    return MessageCore(messageTo: messageTo);
+  }
 }
 
-class _MessageCourState extends State<MessageCour> {
-  bool coreMessage = false;
-  String messageTo = '';
+//! About Nous
+class AboutNous extends StatelessWidget {
+  const AboutNous({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return coreMessage == false
-        ? desscusionCore(context, messageTo)
-        : descusionList(context);
-  }
-
-  Widget descusionList(BuildContext context) {
     return Expanded(
       child: Container(
-        child: BlocBuilder<MessagCubit, MessagState>(
-          builder: (context, state) {
-            if (state is DescusionListState) {
-              return StreamBuilder<QuerySnapshot>(
-                stream: state.descusions,
-                builder: (context, snapshot) {
-                  // if (snapshot.hasData) {
+        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
+        color: myblue,
+        child: MaterialButton(
+            onPressed: () {
+              BlocProvider.of<AuthCubit>(context).singOut();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+            },
+            child: Container(
+                color: Colors.amber,
+                constraints: const BoxConstraints(maxWidth: 200),
+                child: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Deconection',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 8),
+                      child: Icon(
+                        Icons.exit_to_app,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ))),
+      ),
+    );
+  }
+}
 
-                  //   return ListView.builder(
-                  //     itemCount: ,
-                  //     itemBuilder: (context, index) {},
-                  //   );
-                  // } else {
-                  return const CerclulareLodingWidget();
-                  // }
-                },
+//! Profile Info
+class ProfileInfo extends StatelessWidget {
+  const ProfileInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
+        color: profilcolor,
+      ),
+    );
+  }
+}
+
+class MesArticlesDeProfile extends StatelessWidget {
+  const MesArticlesDeProfile({super.key, required this.user});
+  final User? user;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
+        color: mygreen,
+        child: BlocBuilder<GetMesArticlesCubit, GetMesArticlesState>(
+          builder: (context, state) {
+            if (state is LodidMesArticlesState) {
+              return GridViewBody(
+                articles: state.articles,
+                isDisktop: true,
+                user: user,
+              );
+            } else {
+              return const SizedBox(
+                child: Center(
+                  child: CerclulareLodingWidget(),
+                ),
               );
             }
-            return const CerclulareLodingWidget();
           },
         ),
       ),
     );
   }
-
-  Expanded desscusionCore(BuildContext context, String messageTo) {
-    TextEditingController textEditingController = TextEditingController();
-    Message messagevalue = Message(message: '', recupererEmail: '');
-    return Expanded(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 500),
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                color: myteal,
-                child: BlocBuilder<MessagCubit, MessagState>(
-                  builder: (context, state) {
-                    if (state is LodidMessagesState) {
-                      return StreamBuilder<QuerySnapshot>(
-                        stream: state.messages,
-                        builder: (context, snapshot) {
-                          final List<Map<String, String>> mess = [];
-                          if (snapshot.hasData) {
-                            final messages = snapshot.data!.docs;
-                            for (var message in messages) {
-                              mess.add({
-                                "message": message['message'],
-                                "email": message['email'],
-                              });
-                            }
-                            return ListView.builder(
-                              itemCount: mess.length,
-                              itemBuilder: (context, index) {
-                                final messageMap = mess[index];
-
-                                return Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8, left: 8, right: 150, bottom: 8),
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                          color:
-                                              Color.fromARGB(255, 9, 76, 109),
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(25),
-                                              bottomLeft: Radius.circular(25),
-                                              bottomRight:
-                                                  Radius.circular(25))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              messageMap['email']!,
-                                              style: const TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 10),
-                                            ),
-                                            Text(
-                                              messageMap['message']!,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                );
-                              },
-                            );
-                          } else {
-                            return const CerclulareLodingWidget();
-                          }
-                        },
-                      );
-                    }
-                    return const CerclulareLodingWidget();
-                  },
-                ),
-              ),
-            ),
-            Container(
-              constraints: const BoxConstraints(minHeight: 50, maxHeight: 60),
-              decoration: const BoxDecoration(
-                  gradient:
-                      LinearGradient(colors: [Colors.blue, Colors.orange])),
-              child: Stack(
-                alignment: AlignmentDirectional.centerEnd,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 50),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.white),
-                      controller: textEditingController,
-                      onChanged: (value) {
-                        setState(() {
-                          messagevalue = Message(
-                              message: value, recupererEmail: messageTo);
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        hintText: 'Écrire un message....',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                  MaterialButton(
-                    hoverColor: Colors.red,
-                    onPressed: () {
-                      textEditingController.clear();
-                      BlocProvider.of<MessagCubit>(context)
-                          .sendMessageEvent(messagevalue);
-                    },
-                    child: const Text(
-                      'Send',
-                      style: TextStyle(fontSize: 14, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-Widget profil() {
-  return Expanded(
-    child: Container(
-      constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-      color: profilcolor,
-    ),
-  );
-}
-
-Widget articles(User? user) {
-  return Expanded(
-    child: Container(
-      constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-      color: mygreen,
-      child: BlocBuilder<GetMesArticlesCubit, GetMesArticlesState>(
-        builder: (context, state) {
-          if (state is LodidMesArticlesState) {
-            return GridViewBody(
-              articles: state.articles,
-              isDisktop: true,
-              user: user,
-            );
-          } else {
-            return const SizedBox(
-              child: Center(
-                child: CerclulareLodingWidget(),
-              ),
-            );
-          }
-        },
-      ),
-    ),
-  );
-}
-
-info(BuildContext context) {
-  return Expanded(
-    child: Container(
-      constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-      color: myblue,
-      child: MaterialButton(
-          onPressed: () {
-            BlocProvider.of<AuthCubit>(context).singOut();
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const WelcomeScreen()));
-          },
-          child: Container(
-              color: Colors.amber,
-              constraints: const BoxConstraints(maxWidth: 200),
-              child: const Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Deconection',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Icon(
-                      Icons.exit_to_app,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ))),
-    ),
-  );
 }

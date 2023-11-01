@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mk/featchers/Article/data/models/message.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ProfileDataSources {
   Future<List<Article>> getmesArticles();
-  Future<Unit> sendMessage(Message message);
-  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages();
+  Future<void> sendMessage(Message message);
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String userRecuper);
   Stream<QuerySnapshot<Map<String, dynamic>>> getDescusion();
 }
 
@@ -50,31 +49,44 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   }
 
   @override
-  Future<Unit> sendMessage(Message message) async {
-    //!collection
-    final collection = _firestore.collection("Descusion");
-    //! creation de second collection
-    collection.add({"userId": _auth.currentUser!.uid});
+  Future<void> sendMessage(Message message) async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final collection = _firestore.collection("Descusion");
 
-    collection
-        .doc(_auth.currentUser!.email)
-        .collection(_auth.currentUser!.uid)
-        .add({
-      "message": message.message,
-      "senderEmail": _auth.currentUser!.email,
-      "temp": Timestamp.now(),
-      "userid": _auth.currentUser!.uid,
-      "recupererEmail": message.recupererEmail
-    });
-    return Future.value(unit);
+      // Créez un identifiant unique pour le document de conversation
+      final conversationId = _generateUniqueConversationId(
+          currentUser.uid, message.recupererEmail);
+
+      // Ajoutez le message à la collection "Messages" de la conversation
+      await collection.doc(conversationId).collection('Messages').add({
+        "message": message.message,
+        "senderEmail": currentUser.email,
+        "timestamp": FieldValue.serverTimestamp(),
+        "userId": currentUser.uid,
+        "recipientEmail": message.recupererEmail,
+      });
+    }
+  }
+
+// Fonction pour générer un identifiant de conversation unique basé sur les deux utilisateurs
+  String _generateUniqueConversationId(String userId1, String userId2) {
+    // Vous pouvez trier les deux ID d'utilisateur et les concaténer pour créer un ID unique
+    final List<String> users = [userId1, userId2];
+    users.sort();
+    return users.join("_");
   }
 
   @override
-  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages() {
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String userRecuper) {
+    final conversationId =
+        _generateUniqueConversationId(_auth.currentUser!.uid, userRecuper);
     return _firestore
         .collection('Descusion')
-        .doc(_auth.currentUser!.uid)
-        .collection("MyMessages")
+        .doc(conversationId)
+        .collection("Messages")
+        .orderBy("timestamp",
+            descending: false) // Vous pouvez trier les messages par horodatage
         .snapshots();
   }
 

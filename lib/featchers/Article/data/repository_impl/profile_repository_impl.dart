@@ -34,9 +34,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      getMessages() async {
+      getMessages(String userRecuper) async {
     try {
-      return Right(profileDataSources.getMessages());
+      return Right(profileDataSources.getMessages(userRecuper));
     } on ServerException {
       return Left(ServerFailure());
     }
