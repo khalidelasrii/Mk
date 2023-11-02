@@ -45,7 +45,7 @@ _buildBody(BuildContext context, User? user) {
   final List<Widget> pages = [
     const ProfileInfo(),
     MesArticlesDeProfile(user: user),
-    const MessageCour(),
+    const MessageCore(),
     const AboutNous(),
   ];
 
@@ -85,7 +85,7 @@ _buildBody(BuildContext context, User? user) {
                 BottomNavigationBarItem(
                   backgroundColor: myblue,
                   icon: const Icon(Icons.info),
-                  label: 'Info',
+                  label: 'About Nous',
                 ),
               ],
             ),
@@ -157,13 +157,13 @@ _buildBody(BuildContext context, User? user) {
 }
 
 //! le Core de Descusion
-class MessageCour extends StatelessWidget {
-  const MessageCour({super.key});
+class MessageCore extends StatelessWidget {
+  const MessageCore({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String messageTo = '';
-    return MessageCore(messageTo: messageTo);
+    String messageTo = 'khalidelasri@gmail.com';
+    return MessageCoreWidget(messageTo: messageTo);
   }
 }
 

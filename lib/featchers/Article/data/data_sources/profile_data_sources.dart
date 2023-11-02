@@ -51,22 +51,48 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   @override
   Future<void> sendMessage(Message message) async {
     final currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      final collection = _firestore.collection("Descusion");
+    // Créez un identifiant unique pour le document de conversation
+    final conversationId = _generateUniqueConversationId(
+        currentUser!.email!, message.recupererEmail);
+    //! ecrer les champs de de descusion
+     _firestore
+        .collection("Descusion")
+        .doc(currentUser.email)
+        .set({
+          "convertatin": conversationId,
+          "emailsend":_auth.currentUser!.email,
+          "emailrecup":message.recupererEmail,
 
-      // Créez un identifiant unique pour le document de conversation
-      final conversationId = _generateUniqueConversationId(
-          currentUser.uid, message.recupererEmail);
-
-      // Ajoutez le message à la collection "Messages" de la conversation
-      await collection.doc(conversationId).collection('Messages').add({
-        "message": message.message,
-        "senderEmail": currentUser.email,
-        "timestamp": FieldValue.serverTimestamp(),
-        "userId": currentUser.uid,
-        "recipientEmail": message.recupererEmail,
-      });
-    }
+        });
+  
+    //! en premier on ajout le message a ma collection
+    _firestore
+        .collection("Descusion")
+        .doc(currentUser.email)
+        .collection(currentUser.email!)
+        .doc(conversationId)
+        .collection("Messages")
+        .add({
+      "message": message.message,
+      "senderEmail": currentUser.email,
+      "timestamp": FieldValue.serverTimestamp(),
+      "userId": currentUser.uid,
+      "recipientEmail": message.recupererEmail,
+    });
+    //! en deuxieme on ajoute le message a la collection de second itulisateur
+    _firestore
+        .collection("Descusion")
+        .doc(message.recupererEmail)
+        .collection(message.recupererEmail)
+        .doc(conversationId)
+        .collection("Messages")
+        .add({
+      "message": message.message,
+      "senderEmail": currentUser.email,
+      "timestamp": FieldValue.serverTimestamp(),
+      "userId": currentUser.uid,
+      "recipientEmail": message.recupererEmail,
+    });
   }
 
 // Fonction pour générer un identifiant de conversation unique basé sur les deux utilisateurs
@@ -80,18 +106,19 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String userRecuper) {
     final conversationId =
-        _generateUniqueConversationId(_auth.currentUser!.uid, userRecuper);
+        _generateUniqueConversationId(_auth.currentUser!.email!, userRecuper);
     return _firestore
         .collection('Descusion')
+        .doc(_auth.currentUser!.email)
+        .collection(_auth.currentUser!.email!)
         .doc(conversationId)
         .collection("Messages")
-        .orderBy("timestamp",
-            descending: false) // Vous pouvez trier les messages par horodatage
+        .orderBy("timestamp", descending: false)
         .snapshots();
   }
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getDescusion() {
-    return _firestore.collection("collectionPath").snapshots();
+    return _firestore.collection("Descusion").doc(_auth.currentUser!.email).collection(_auth.currentUser!.email!).snapshots();
   }
 }

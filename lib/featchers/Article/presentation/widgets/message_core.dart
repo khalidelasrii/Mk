@@ -6,14 +6,14 @@ import '../../../../core/Widgets/core_widgets.dart';
 import '../../data/models/message.dart';
 import '../bloc/message_cuibite/messag_cubit.dart';
 
-class MessageCore extends StatefulWidget {
-  const MessageCore({super.key, required this.messageTo});
+class MessageCoreWidget extends StatefulWidget {
+  const MessageCoreWidget({super.key, required this.messageTo});
   final String messageTo;
   @override
-  State<MessageCore> createState() => _MessageCoreState();
+  State<MessageCoreWidget> createState() => _MessageCoreWidgetState();
 }
 
-class _MessageCoreState extends State<MessageCore> {
+class _MessageCoreWidgetState extends State<MessageCoreWidget> {
   Color mygreen = const Color.fromARGB(115, 76, 175, 79);
   Color myteal = const Color.fromARGB(129, 0, 150, 135);
   Color myblue = const Color.fromARGB(121, 33, 149, 243);
@@ -49,7 +49,7 @@ class _MessageCoreState extends State<MessageCore> {
                             for (var message in messages) {
                               mess.add({
                                 "message": message['message'],
-                                "email": message['email'],
+                                "senderEmail": message['senderEmail'],
                               });
                             }
                             return ListView.builder(
@@ -76,7 +76,7 @@ class _MessageCoreState extends State<MessageCore> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              messageMap['email']!,
+                                              messageMap['senderEmail']!,
                                               style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 10),
