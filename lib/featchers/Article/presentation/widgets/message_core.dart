@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,13 +21,24 @@ class _MessageCoreWidgetState extends State<MessageCoreWidget> {
   Color profilcolor = const Color.fromARGB(84, 0, 0, 0);
   TextEditingController textEditingController = TextEditingController();
   Message messagevalue = Message(message: '', recupererEmail: '');
-
+   final _auth = FirebaseAuth.instance;
+   User? useer;
   @override
   void initState() {
     super.initState();
     BlocProvider.of<MessagCubit>(context).getMessagesEvent(widget.messageTo);
-  }
+    _auth.authStateChanges().listen((User? user) {
 
+      if(user !=null){
+        setState(() {
+          useer=user;
+        });
+      }
+     });
+
+  }
+  
+     
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -53,17 +65,53 @@ class _MessageCoreWidgetState extends State<MessageCoreWidget> {
                               });
                             }
                             return ListView.builder(
+                              reverse: true,
                               itemCount: mess.length,
                               itemBuilder: (context, index) {
                                 final messageMap = mess[index];
 
-                                return Padding(
+                                return messageMap['senderEmail'] == useer!.email?
+
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 8, right: 8, left: 150, bottom: 8),
+                                  child: Container(
+                                      decoration: const BoxDecoration(
+                                          color:
+                                              Colors.green,
+                                          borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(25),
+                                              bottomLeft: Radius.circular(25),
+                                              bottomRight:
+                                                  Radius.circular(25))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              messageMap['senderEmail']!,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10),
+                                            ),
+                                            Text(
+                                              messageMap['message']!,
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14),
+                                            ),
+                                          ],
+                                        ),
+                                      )),
+                                ): Padding(
                                   padding: const EdgeInsets.only(
                                       top: 8, left: 8, right: 150, bottom: 8),
                                   child: Container(
                                       decoration: const BoxDecoration(
                                           color:
-                                              Color.fromARGB(255, 9, 76, 109),
+                                              Colors.blueGrey,
                                           borderRadius: BorderRadius.only(
                                               topRight: Radius.circular(25),
                                               bottomLeft: Radius.circular(25),
@@ -78,7 +126,7 @@ class _MessageCoreWidgetState extends State<MessageCoreWidget> {
                                             Text(
                                               messageMap['senderEmail']!,
                                               style: const TextStyle(
-                                                  color: Colors.grey,
+                                                  color: Colors.white,
                                                   fontSize: 10),
                                             ),
                                             Text(

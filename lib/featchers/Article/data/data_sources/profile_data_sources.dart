@@ -113,7 +113,7 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
         .collection(_auth.currentUser!.email!)
         .doc(conversationId)
         .collection("Messages")
-        .orderBy("timestamp", descending: false)
+        .orderBy("timestamp", descending: true)
         .snapshots();
   }
 

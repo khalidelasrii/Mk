@@ -157,13 +157,26 @@ _buildBody(BuildContext context, User? user) {
 }
 
 //! le Core de Descusion
-class MessageCore extends StatelessWidget {
+class MessageCore extends StatefulWidget {
   const MessageCore({super.key});
 
   @override
+  State<MessageCore> createState() => _MessageCoreState();
+}
+
+class _MessageCoreState extends State<MessageCore> {
+  bool discus = false;
+  @override
   Widget build(BuildContext context) {
-    String messageTo = 'khalidelasri@gmail.com';
-    return MessageCoreWidget(messageTo: messageTo);
+    String messageTo = 'khalidelasri534@gmail.com';
+    return discus==false? descusionCoreWidget(): MessageCoreWidget(messageTo: messageTo);
+  }
+
+  descusionCoreWidget(){
+    return  Expanded(child: Container(color: Colors.amber,child: BlocBuilder<MessagCubit,MessagState>(builder:(context, state) {
+      return CerclulareLodingWidget();
+      
+    },),)) ;
   }
 }
 
@@ -221,6 +234,7 @@ class ProfileInfo extends StatelessWidget {
     );
   }
 }
+//! Articles
 
 class MesArticlesDeProfile extends StatelessWidget {
   const MesArticlesDeProfile({super.key, required this.user});
