@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -167,16 +168,53 @@ class MessageCore extends StatefulWidget {
 class _MessageCoreState extends State<MessageCore> {
   bool discus = false;
   @override
-  Widget build(BuildContext context) {
-    String messageTo = 'khalidelasri534@gmail.com';
-    return discus==false? descusionCoreWidget(): MessageCoreWidget(messageTo: messageTo);
+  void initState() {
+    super.initState();
+    BlocProvider.of<MessagCubit>(context).getDescusionsEvent();
   }
 
-  descusionCoreWidget(){
-    return  Expanded(child: Container(color: Colors.amber,child: BlocBuilder<MessagCubit,MessagState>(builder:(context, state) {
-      return CerclulareLodingWidget();
-      
-    },),)) ;
+  @override
+  Widget build(BuildContext context) {
+    String messageTo = 'khalidelasri534@gmail.com';
+    return discus == false
+        ? descusionCoreWidget()
+        : MessageCoreWidget(messageTo: messageTo);
+  }
+
+  descusionCoreWidget() {
+    return Expanded(
+        child: Container(
+      color: Colors.amber,
+      child: BlocBuilder<MessagCubit, MessagState>(
+        builder: (context, state) {
+          if (state is DescusionListState) {
+            return StreamBuilder<QuerySnapshot>(
+              stream: state.descusions,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final snap = snapshot.data!.docs;
+                  return ListView.builder(
+                    itemCount: snap.length,
+                    itemBuilder: (context, index) {
+                      final item = snap[index];
+
+                      return MaterialButton(
+                        onPressed: () {},
+                        child: ListTile(title: item["emailsend"]),
+                      );
+                    },
+                  );
+                } else {
+                  return CerclulareLodingWidget();
+                }
+              },
+            );
+          }
+
+          return CerclulareLodingWidget();
+        },
+      ),
+    ));
   }
 }
 
