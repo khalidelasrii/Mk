@@ -173,48 +173,129 @@ class _MessageCoreState extends State<MessageCore> {
     BlocProvider.of<MessagCubit>(context).getDescusionsEvent();
   }
 
+  String _messageTo = '';
   @override
   Widget build(BuildContext context) {
-    String messageTo = 'khalidelasri534@gmail.com';
     return discus == false
-        ? descusionCoreWidget()
-        : MessageCoreWidget(messageTo: messageTo);
+        ? descusionCoreWidget(context)
+        : MessageCoreWidget(messageTo: _messageTo);
   }
 
-  descusionCoreWidget() {
-    return Expanded(
-        child: Container(
-      color: Colors.amber,
-      child: BlocBuilder<MessagCubit, MessagState>(
-        builder: (context, state) {
-          if (state is DescusionListState) {
-            return StreamBuilder<QuerySnapshot>(
-              stream: state.descusions,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final snap = snapshot.data!.docs;
-                  return ListView.builder(
-                    itemCount: snap.length,
-                    itemBuilder: (context, index) {
-                      final item = snap[index];
+  descusionCoreWidget(BuildContext context) {
+    TextEditingController textEditingController = TextEditingController();
+    return Column(
+      children: [
+        Container(
+          constraints:
+              BoxConstraints(maxWidth: 400, maxHeight: 70, minHeight: 50),
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(colors: [Colors.blue, Colors.orange])),
+          child: Stack(
+            alignment: AlignmentDirectional.centerEnd,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 50),
+                child: TextField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: textEditingController,
+                  onChanged: (value) {
+                    setState(() {
+                      _messageTo = value;
+                    });
+                  },
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
+                    hintText: 'email@adress.com',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+              MaterialButton(
+                hoverColor: Colors.red,
+                onPressed: () {
+                  textEditingController.clear();
 
-                      return MaterialButton(
-                        onPressed: () {},
-                        child: ListTile(title: item["emailsend"]),
+                  setState(() {
+                    discus = true;
+                  });
+                },
+                child: const Text(
+                  'Go',
+                  style: TextStyle(fontSize: 14, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 400),
+          color: Colors.amber,
+          child: BlocBuilder<MessagCubit, MessagState>(
+            builder: (context, state) {
+              if (state is DescusionListState) {
+                return StreamBuilder<QuerySnapshot>(
+                  stream: state.descusions,
+                  builder: (context, snapshot) {
+                    List<Map<String, String>> items = [];
+                    if (snapshot.hasData) {
+                      final snap = snapshot.data!.docs;
+                      for (var ite in snap) {
+                        items.add({
+                          "convertatin": ite["convertatin"],
+                          "emailsend": ite["emailsend"],
+                          "emailrecup": ite["emailrecup"],
+                        });
+                      }
+
+                      // return Text("Hello World");
+                      return ListView.builder(
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final userDescut = items[index];
+                          return MaterialButton(
+                            onPressed: () {
+                              FirebaseAuth.instance.authStateChanges().listen(
+                                (User? user) {
+                                  if (user != null) {
+                                    if (user == userDescut['emailsend']) {
+                                      setState(() {
+                                        _messageTo = userDescut['emailsend']!;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        _messageTo = userDescut['emailrecup']!;
+                                      });
+                                    }
+                                  }
+                                },
+                              );
+                              setState(() {
+                                discus = true;
+                              });
+                            },
+                            child: ListTile(
+                                title: Text(
+                              userDescut['emailrecup']!,
+                            )),
+                          );
+                        },
                       );
-                    },
-                  );
-                } else {
-                  return CerclulareLodingWidget();
-                }
-              },
-            );
-          }
+                    } else {
+                      return const CerclulareLodingWidget();
+                    }
+                  },
+                );
+              }
 
-          return CerclulareLodingWidget();
-        },
-      ),
-    ));
+              return const CerclulareLodingWidget();
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
 

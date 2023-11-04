@@ -55,16 +55,27 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
     final conversationId = _generateUniqueConversationId(
         currentUser!.email!, message.recupererEmail);
     //! ecrer les champs de de descusion
-     _firestore
+    _firestore
         .collection("Descusion")
         .doc(currentUser.email)
+        .collection(currentUser.email!)
+        .doc(conversationId)
         .set({
-          "convertatin": conversationId,
-          "emailsend":_auth.currentUser!.email,
-          "emailrecup":message.recupererEmail,
+      "convertatin": conversationId,
+      "emailsend": _auth.currentUser!.email,
+      "emailrecup": message.recupererEmail,
+    });
+    _firestore
+        .collection("Descusion")
+        .doc(message.recupererEmail)
+        .collection(message.recupererEmail)
+        .doc(conversationId)
+        .set({
+      "convertatin": conversationId,
+      "emailsend": _auth.currentUser!.email,
+      "emailrecup": message.recupererEmail,
+    });
 
-        });
-  
     //! en premier on ajout le message a ma collection
     _firestore
         .collection("Descusion")
@@ -119,6 +130,10 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> getDescusion() {
-    return _firestore.collection("Descusion").doc(_auth.currentUser!.email).collection(_auth.currentUser!.email!).snapshots();
+    return _firestore
+        .collection("Descusion")
+        .doc(_auth.currentUser!.email)
+        .collection(_auth.currentUser!.email!)
+        .snapshots();
   }
 }

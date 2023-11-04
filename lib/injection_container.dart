@@ -77,6 +77,7 @@ Future<void> init() async {
   sl.registerFactory(
       () => ArticleParCategorieCubit(articleParTypeUseCase: sl()));
   sl.registerFactory(() => MessagCubit(
+        getDescusionUseCase: sl(),
         getmessagesUseCase: sl(),
         sendMessageUseCase: sl(),
       ));
