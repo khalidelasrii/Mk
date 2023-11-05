@@ -61,9 +61,7 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
         .collection(currentUser.email!)
         .doc(conversationId)
         .set({
-      "convertatin": conversationId,
-      "emailsend": _auth.currentUser!.email,
-      "emailrecup": message.recupererEmail,
+      "email": message.recupererEmail,
     });
     _firestore
         .collection("Descusion")
@@ -71,9 +69,7 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
         .collection(message.recupererEmail)
         .doc(conversationId)
         .set({
-      "convertatin": conversationId,
-      "emailsend": _auth.currentUser!.email,
-      "emailrecup": message.recupererEmail,
+      "email": currentUser.email,
     });
 
     //! en premier on ajout le message a ma collection

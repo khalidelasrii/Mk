@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,8 +7,10 @@ import '../../data/models/message.dart';
 import '../bloc/message_cuibite/messag_cubit.dart';
 
 class MessageCoreWidget extends StatefulWidget {
-  const MessageCoreWidget({super.key, required this.messageTo});
+  const MessageCoreWidget(
+      {super.key, required this.userEmail, required this.messageTo});
   final String messageTo;
+  final String userEmail;
   @override
   State<MessageCoreWidget> createState() => _MessageCoreWidgetState();
 }
@@ -21,24 +22,12 @@ class _MessageCoreWidgetState extends State<MessageCoreWidget> {
   Color profilcolor = const Color.fromARGB(84, 0, 0, 0);
   TextEditingController textEditingController = TextEditingController();
   Message messagevalue = Message(message: '', recupererEmail: '');
-   final _auth = FirebaseAuth.instance;
-   User? useer;
   @override
   void initState() {
     super.initState();
     BlocProvider.of<MessagCubit>(context).getMessagesEvent(widget.messageTo);
-    _auth.authStateChanges().listen((User? user) {
-
-      if(user !=null){
-        setState(() {
-          useer=user;
-        });
-      }
-     });
-
   }
-  
-     
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -70,75 +59,88 @@ class _MessageCoreWidgetState extends State<MessageCoreWidget> {
                               itemBuilder: (context, index) {
                                 final messageMap = mess[index];
 
-                                return messageMap['senderEmail'] == useer!.email?
-
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8, right: 8, left: 150, bottom: 8),
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                          color:
-                                              Colors.green,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(25),
-                                              bottomLeft: Radius.circular(25),
-                                              bottomRight:
-                                                  Radius.circular(25))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              messageMap['senderEmail']!,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 10),
-                                            ),
-                                            Text(
-                                              messageMap['message']!,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                ): Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 8, left: 8, right: 150, bottom: 8),
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                          color:
-                                              Colors.blueGrey,
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(25),
-                                              bottomLeft: Radius.circular(25),
-                                              bottomRight:
-                                                  Radius.circular(25))),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              messageMap['senderEmail']!,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 10),
-                                            ),
-                                            Text(
-                                              messageMap['message']!,
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                );
+                                return messageMap['senderEmail'] ==
+                                        widget.userEmail
+                                    ? Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8,
+                                            right: 8,
+                                            left: 150,
+                                            bottom: 8),
+                                        child: Container(
+                                            decoration: const BoxDecoration(
+                                                color: Colors.green,
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(25),
+                                                    bottomLeft:
+                                                        Radius.circular(25),
+                                                    bottomRight:
+                                                        Radius.circular(25))),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    messageMap['senderEmail']!,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10),
+                                                  ),
+                                                  Text(
+                                                    messageMap['message']!,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8,
+                                            left: 8,
+                                            right: 150,
+                                            bottom: 8),
+                                        child: Container(
+                                            decoration: const BoxDecoration(
+                                                color: Colors.blueGrey,
+                                                borderRadius: BorderRadius.only(
+                                                    topRight:
+                                                        Radius.circular(25),
+                                                    bottomLeft:
+                                                        Radius.circular(25),
+                                                    bottomRight:
+                                                        Radius.circular(25))),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    messageMap['senderEmail']!,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10),
+                                                  ),
+                                                  Text(
+                                                    messageMap['message']!,
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
+                                            )),
+                                      );
                               },
                             );
                           } else {

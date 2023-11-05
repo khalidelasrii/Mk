@@ -158,6 +158,7 @@ _buildBody(BuildContext context, User? user) {
 }
 
 //! le Core de Descusion
+
 class MessageCore extends StatefulWidget {
   const MessageCore({super.key});
 
@@ -167,18 +168,29 @@ class MessageCore extends StatefulWidget {
 
 class _MessageCoreState extends State<MessageCore> {
   bool discus = false;
+  String _messageTo = '';
+  String userEmail = '';
+
   @override
   void initState() {
     super.initState();
     BlocProvider.of<MessagCubit>(context).getDescusionsEvent();
+
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      setState(() {
+        userEmail = user!.email!;
+      });
+    });
   }
 
-  String _messageTo = '';
   @override
   Widget build(BuildContext context) {
     return discus == false
         ? descusionCoreWidget(context)
-        : MessageCoreWidget(messageTo: _messageTo);
+        : MessageCoreWidget(
+            messageTo: _messageTo,
+            userEmail: userEmail,
+          );
   }
 
   descusionCoreWidget(BuildContext context) {
@@ -187,7 +199,7 @@ class _MessageCoreState extends State<MessageCore> {
       children: [
         Container(
           constraints:
-              BoxConstraints(maxWidth: 400, maxHeight: 70, minHeight: 50),
+              const BoxConstraints(maxWidth: 500, maxHeight: 70, minHeight: 50),
           decoration: const BoxDecoration(
               gradient: LinearGradient(colors: [Colors.blue, Colors.orange])),
           child: Stack(
@@ -199,9 +211,7 @@ class _MessageCoreState extends State<MessageCore> {
                   style: const TextStyle(color: Colors.white),
                   controller: textEditingController,
                   onChanged: (value) {
-                    setState(() {
-                      _messageTo = value;
-                    });
+                    _messageTo = value;
                   },
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
@@ -217,9 +227,8 @@ class _MessageCoreState extends State<MessageCore> {
                 hoverColor: Colors.red,
                 onPressed: () {
                   textEditingController.clear();
-
                   setState(() {
-                    discus = true;
+                    _messageTo != userEmail ? discus = true : null;
                   });
                 },
                 child: const Text(
@@ -231,25 +240,20 @@ class _MessageCoreState extends State<MessageCore> {
           ),
         ),
         Container(
-          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 400),
-          color: Colors.amber,
+          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 500),
           child: BlocBuilder<MessagCubit, MessagState>(
             builder: (context, state) {
               if (state is DescusionListState) {
                 return StreamBuilder<QuerySnapshot>(
                   stream: state.descusions,
                   builder: (context, snapshot) {
-                    List<Map<String, String>> items = [];
+                    List<String> items = [];
                     if (snapshot.hasData) {
                       final snap = snapshot.data!.docs;
                       for (var ite in snap) {
-                        items.add({
-                          "convertatin": ite["convertatin"],
-                          "emailsend": ite["emailsend"],
-                          "emailrecup": ite["emailrecup"],
-                        });
+                        items.add(ite["email"]);
                       }
-
+                      print(items);
                       // return Text("Hello World");
                       return ListView.builder(
                         itemCount: items.length,
@@ -257,29 +261,12 @@ class _MessageCoreState extends State<MessageCore> {
                           final userDescut = items[index];
                           return MaterialButton(
                             onPressed: () {
-                              FirebaseAuth.instance.authStateChanges().listen(
-                                (User? user) {
-                                  if (user != null) {
-                                    if (user == userDescut['emailsend']) {
-                                      setState(() {
-                                        _messageTo = userDescut['emailsend']!;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        _messageTo = userDescut['emailrecup']!;
-                                      });
-                                    }
-                                  }
-                                },
-                              );
                               setState(() {
+                                _messageTo = userDescut;
                                 discus = true;
                               });
                             },
-                            child: ListTile(
-                                title: Text(
-                              userDescut['emailrecup']!,
-                            )),
+                            child: ListTile(title: Text(userDescut)),
                           );
                         },
                       );
