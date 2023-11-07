@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
+import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
+import 'featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
 import 'featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'injection_container.dart' as di;
@@ -52,6 +54,8 @@ class Maktabati extends StatelessWidget {
           ),
           BlocProvider(create: (context) => di.sl<ToolbarCubit>()),
           BlocProvider(create: (context) => di.sl<RecherchCubit>()),
+          BlocProvider(create: (context) => di.sl<MessagesCubit>()),
+          BlocProvider(create: (context) => di.sl<DescusionCubit>()),
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -61,6 +65,6 @@ class Maktabati extends StatelessWidget {
               hintColor: Colors.red,
               shadowColor: Colors.white,
             ),
-            home: const WelcomeScreen()));
+            home: const MessagesUi()));
   }
 }

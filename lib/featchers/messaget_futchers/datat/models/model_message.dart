@@ -6,9 +6,10 @@ class ModelMessage extends Messages {
       super.dateTime,
       super.descusionId,
       super.emailRecuper,
-      super.emailSender});
+      super.emailSender,
+      super.vu});
 
-  Map toMap() {
+  Map<String, dynamic> toMap() {
     return {
       "message": message,
       "dateTime": dateTime,

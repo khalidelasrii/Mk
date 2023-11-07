@@ -6,14 +6,10 @@ import 'package:mk/featchers/Article/domain/repository/repository_articles.dart'
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/addoorable_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dart';
-import 'package:mk/featchers/Article/domain/use_case/get_descusion_use_case.dart';
-import 'package:mk/featchers/Article/domain/use_case/get_message_use_case.dart';
-import 'package:mk/featchers/Article/domain/use_case/send_message_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/get_mes_articles_cuibit/get_mes_articles_cubit.dart';
-import 'package:mk/featchers/Article/presentation/bloc/message_cuibite/messag_cubit.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/get_user_id_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
@@ -23,6 +19,14 @@ import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart
 import 'package:mk/featchers/Article/data/repository_impl/profile_repository_impl.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_mes_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/repository/profile_repository.dart';
+import 'package:mk/featchers/messaget_futchers/datat/data_sources/data_sources.dart';
+import 'package:mk/featchers/messaget_futchers/datat/repository_impl/repository_impl_message.dart';
+import 'package:mk/featchers/messaget_futchers/domain/repository/repository_message.dart';
+import 'package:mk/featchers/messaget_futchers/domain/use_case/get_descusion_use_case.dart';
+import 'package:mk/featchers/messaget_futchers/domain/use_case/get_message_use_case.dart';
+import 'package:mk/featchers/messaget_futchers/domain/use_case/send_message_use_case.dart';
+import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
+
 import 'package:mk/featchers/welcome_screen/data/data_sources/welcome_data_source.dart';
 import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_repository_impl.dart';
 import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
@@ -42,6 +46,7 @@ import 'featchers/Authontification/data/user_repository_impl.dart/user_repositor
 import 'featchers/Authontification/domain/repository/user_repository.dart';
 import 'featchers/Authontification/domain/use_case/singup_use_case.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import 'featchers/welcome_screen/domain/use_case/get_all_welcome_article_use_case.dart';
 import 'featchers/welcome_screen/presentation/bloc/secondcont_cuibit/secoundcont_cubit.dart';
 
@@ -76,15 +81,15 @@ Future<void> init() async {
       () => AdoorArticlesCubit(getAllWelcomeArticleUseCase: sl()));
   sl.registerFactory(
       () => ArticleParCategorieCubit(articleParTypeUseCase: sl()));
-  sl.registerFactory(() => MessagCubit(
-        getDescusionUseCase: sl(),
-        getmessagesUseCase: sl(),
-        sendMessageUseCase: sl(),
-      ));
-
+  sl.registerFactory(() => DescusionCubit(getDescusionUseCase: sl()));
+  sl.registerFactory(
+      () => MessagesCubit(getMessageUseCase: sl(), sendMessageUseCase: sl()));
   // Use cases
-  sl.registerLazySingleton(() => GetSearchResultsUseCase(sl()));
+  sl.registerLazySingleton(() => GetMessageUseCase(sl()));
   sl.registerLazySingleton(() => GetDescusionUseCase(sl()));
+  sl.registerLazySingleton(() => SendMessageUseCase(sl()));
+
+  sl.registerLazySingleton(() => GetSearchResultsUseCase(sl()));
 
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));
@@ -93,8 +98,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetUserIdUSecase(sl()));
   sl.registerLazySingleton(() => SingInGoogleUseCase(sl()));
   sl.registerLazySingleton(() => ArticleParTypeUseCase(sl()));
-  sl.registerLazySingleton(() => SendMessageUseCase(sl()));
-  sl.registerLazySingleton(() => GetMessageUseCase(sl()));
 
   sl.registerLazySingleton(() => GetAllArticleUseCase(sl()));
   sl.registerLazySingleton(() => AddoorableArticlesUseCase(sl()));
@@ -114,12 +117,16 @@ Future<void> init() async {
       () => WelcomeRepositoryImpl(welcomeDataSource: sl()));
   sl.registerLazySingleton<ProfileRepository>(
       () => ProfileRepositoryImpl(profileDataSources: sl()));
+  sl.registerLazySingleton<RepositoryMesaage>(
+      () => RepositoryImplMessage(dataSourcesMessages: sl()));
 
   // Data sources
   sl.registerLazySingleton<ArticlesRemoteDataSource>(() => ArticlesFirebase());
   sl.registerLazySingleton<UserDataSources>(() => UserDataSourcesImpl1());
   sl.registerLazySingleton<WelcomeDataSource>(() => WelcomeDataSourcesImpl());
   sl.registerLazySingleton<ProfileDataSources>(() => ProfileDataSourcesImpl());
+  sl.registerLazySingleton<DataSourcesMessages>(
+      () => DataSourcesMessagesImpl());
 
   // Other dependencies or services can be registered here
 

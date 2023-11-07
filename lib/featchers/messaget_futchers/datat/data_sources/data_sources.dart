@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mk/featchers/messaget_futchers/datat/models/model_message.dart';
 
 import '../../domain/entitie/message.dart';
 
@@ -33,7 +34,7 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection(_auth.currentUser!.email!)
         .doc(conversationId)
         .collection("Messages")
-        .orderBy("timestamp", descending: true)
+        .orderBy("dateTime", descending: true)
         .snapshots();
   }
 
@@ -68,13 +69,13 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection(currentUser.email!)
         .doc(conversationId)
         .collection("Messages")
-        .add({
-      "message": message.message,
-      "senderEmail": currentUser.email,
-      "timestamp": FieldValue.serverTimestamp(),
-      "userId": currentUser.uid,
-      "recipientEmail": message.emailRecuper,
-    });
+        .add(ModelMessage(
+          message: message.message,
+          emailSender: currentUser.email,
+          emailRecuper: message.emailRecuper,
+          descusionId: conversationId,
+          dateTime: FieldValue.serverTimestamp(),
+        ).toMap());
     //! en deuxieme on ajoute le message a la collection de second itulisateur
     _firestore
         .collection("Descusion")
@@ -82,18 +83,16 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection(message.emailRecuper!)
         .doc(conversationId)
         .collection("Messages")
-        .add({
-      "message": message.message,
-      "senderEmail": currentUser.email,
-      "timestamp": FieldValue.serverTimestamp(),
-      "userId": currentUser.uid,
-      "recipientEmail": message.emailRecuper,
-    });
+        .add(ModelMessage(
+          message: message.message,
+          emailSender: currentUser.email,
+          emailRecuper: message.emailRecuper,
+          descusionId: conversationId,
+          dateTime: FieldValue.serverTimestamp(),
+        ).toMap());
   }
 
-  // Fonction pour générer un identifiant de conversation unique basé sur les deux utilisateurs
   String _generateUniqueConversationId(String userId1, String userId2) {
-    // Vous pouvez trier les deux ID d'utilisateur et les concaténer pour créer un ID unique
     final List<String> users = [userId1, userId2];
     users.sort();
     return users.join("_");

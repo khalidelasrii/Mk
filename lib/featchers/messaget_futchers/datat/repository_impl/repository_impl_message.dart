@@ -7,13 +7,13 @@ import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/domain/repository/repository_message.dart';
 
 class RepositoryImplMessage implements RepositoryMesaage {
-  RepositoryImplMessage(this._dataSourcesMessages);
-  final DataSourcesMessages _dataSourcesMessages;
+  RepositoryImplMessage({required this.dataSourcesMessages});
+  final DataSourcesMessages dataSourcesMessages;
   @override
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getDescusion() async {
     try {
-      return Right(await _dataSourcesMessages.getDescusion());
+      return Right(await dataSourcesMessages.getDescusion());
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -23,7 +23,7 @@ class RepositoryImplMessage implements RepositoryMesaage {
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getMessages(String userRecuper) async {
     try {
-      return Right(await _dataSourcesMessages.getMessages(userRecuper));
+      return Right(await dataSourcesMessages.getMessages(userRecuper));
     } on ServerException {
       return Left(ServerFailure());
     }
@@ -32,7 +32,7 @@ class RepositoryImplMessage implements RepositoryMesaage {
   @override
   Future<Either<Faillure, Unit>> sendMessage(Messages message) async {
     try {
-      await _dataSourcesMessages.sendMessage(message);
+      await dataSourcesMessages.sendMessage(message);
       return Right(await Future.value(unit));
     } on ServerException {
       return Left(ServerFailure());

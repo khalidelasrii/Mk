@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
-import 'package:mk/featchers/Article/presentation/bloc/message_cuibite/messag_cubit.dart';
-import 'package:mk/featchers/Article/presentation/widgets/message_core.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'package:mk/injection_container.dart' as di;
@@ -30,9 +27,6 @@ class ProfileScreen extends StatelessWidget {
           BlocProvider(
             create: (_) => di.sl<GetMesArticlesCubit>()..mesArticleLoding(),
           ),
-          BlocProvider(
-            create: (_) => di.sl<MessagCubit>(),
-          )
         ],
         child: Scaffold(
           backgroundColor: mybluebackgroundcolor,
@@ -46,7 +40,6 @@ _buildBody(BuildContext context, User? user) {
   final List<Widget> pages = [
     const ProfileInfo(),
     MesArticlesDeProfile(user: user),
-    const MessageCore(),
     const AboutNous(),
   ];
 
@@ -77,11 +70,6 @@ _buildBody(BuildContext context, User? user) {
                   backgroundColor: mygreen,
                   icon: const Icon(Icons.category),
                   label: 'Articles',
-                ),
-                BottomNavigationBarItem(
-                  backgroundColor: myteal,
-                  icon: const Icon(Icons.message),
-                  label: 'Message',
                 ),
                 BottomNavigationBarItem(
                   backgroundColor: myblue,
@@ -155,135 +143,6 @@ _buildBody(BuildContext context, User? user) {
       );
     },
   );
-}
-
-//! le Core de Descusion
-
-class MessageCore extends StatefulWidget {
-  const MessageCore({super.key});
-
-  @override
-  State<MessageCore> createState() => _MessageCoreState();
-}
-
-class _MessageCoreState extends State<MessageCore> {
-  bool discus = false;
-  String _messageTo = '';
-  String userEmail = '';
-
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<MessagCubit>(context).getDescusionsEvent();
-
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      setState(() {
-        userEmail = user!.email!;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return discus == false
-        ? descusionCoreWidget(context)
-        : MessageCoreWidget(
-            messageTo: _messageTo,
-            userEmail: userEmail,
-          );
-  }
-
-  descusionCoreWidget(BuildContext context) {
-    TextEditingController textEditingController = TextEditingController();
-    return Column(
-      children: [
-        Container(
-          constraints:
-              const BoxConstraints(maxWidth: 500, maxHeight: 70, minHeight: 50),
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [Colors.blue, Colors.orange])),
-          child: Stack(
-            alignment: AlignmentDirectional.centerEnd,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 50),
-                child: TextField(
-                  style: const TextStyle(color: Colors.white),
-                  controller: textEditingController,
-                  onChanged: (value) {
-                    _messageTo = value;
-                  },
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
-                    hintText: 'email@adress.com',
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              MaterialButton(
-                hoverColor: Colors.red,
-                onPressed: () {
-                  textEditingController.clear();
-                  setState(() {
-                    _messageTo != userEmail ? discus = true : null;
-                  });
-                },
-                child: const Text(
-                  'Go',
-                  style: TextStyle(fontSize: 14, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 500),
-          child: BlocBuilder<MessagCubit, MessagState>(
-            builder: (context, state) {
-              if (state is DescusionListState) {
-                return StreamBuilder<QuerySnapshot>(
-                  stream: state.descusions,
-                  builder: (context, snapshot) {
-                    List<String> items = [];
-                    if (snapshot.hasData) {
-                      final snap = snapshot.data!.docs;
-                      for (var ite in snap) {
-                        items.add(ite["email"]);
-                      }
-                      print(items);
-                      // return Text("Hello World");
-                      return ListView.builder(
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          final userDescut = items[index];
-                          return MaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                _messageTo = userDescut;
-                                discus = true;
-                              });
-                            },
-                            child: ListTile(title: Text(userDescut)),
-                          );
-                        },
-                      );
-                    } else {
-                      return const CerclulareLodingWidget();
-                    }
-                  },
-                );
-              }
-
-              return const CerclulareLodingWidget();
-            },
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 //! About Nous
