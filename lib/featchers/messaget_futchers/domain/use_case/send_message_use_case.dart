@@ -8,7 +8,7 @@ class SendMessageUseCase {
   RepositoryMesaage repositoryMesaage;
   SendMessageUseCase(this.repositoryMesaage);
 
-  Future<Either<Faillure, Unit>> call(Messages messages) {
-    return repositoryMesaage.sendMessage(messages);
+  Future<Either<Faillure, Unit>> call(Messages messages) async {
+    return await repositoryMesaage.sendMessage(messages);
   }
 }

@@ -7,7 +7,8 @@ import '../../../../core/errure/faillure.dart';
 class GetDescusionUseCase {
   RepositoryMesaage repositoryMesaage;
   GetDescusionUseCase(this.repositoryMesaage);
-  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>> call() {
-    return repositoryMesaage.getDescusion();
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      call() async {
+    return await repositoryMesaage.getDescusion();
   }
 }

@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/profile_screen.dart';
+import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
 import '../../featchers/Authontification/presentation/ui/sing_in.dart';
+import '../../featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class AppbarWelcom {
@@ -66,6 +68,20 @@ class AppbarWelcom {
             ),
           ),
           const Expanded(child: SizedBox()),
+          user != null
+              ? IconButton(
+                  onPressed: () {
+                    BlocProvider.of<DescusionCubit>(context)
+                        .getDescusionEvent();
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const MessagesUi()));
+                  },
+                  icon: Icon(
+                    Icons.message,
+                    color: color2,
+                  ))
+              : const SizedBox(),
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: IconButton(

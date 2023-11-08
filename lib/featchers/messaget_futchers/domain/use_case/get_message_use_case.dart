@@ -9,6 +9,6 @@ class GetMessageUseCase {
   GetMessageUseCase(this.repositoryMesaage);
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>> call(
       String userRecup) async {
-    return repositoryMesaage.getMessages(userRecup);
+    return await repositoryMesaage.getMessages(userRecup);
   }
 }

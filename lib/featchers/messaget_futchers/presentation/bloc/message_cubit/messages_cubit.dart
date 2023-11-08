@@ -23,7 +23,6 @@ class MessagesCubit extends Cubit<MessagesState> {
     messagesOrfaillure.fold((_) {
       emit(ErrorMessagesState());
     }, (r) {
-      emit(MessagesInitial());
       emit(LodidMessagesState(messages: r));
     });
   }
