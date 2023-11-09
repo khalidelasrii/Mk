@@ -9,6 +9,7 @@ abstract class DataSourcesMessages {
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getMessages(
       String userRecuper);
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getDescusion();
+  Future<void> messageVu(String messageId, Messages message);
 }
 
 class DataSourcesMessagesImpl implements DataSourcesMessages {
@@ -90,6 +91,21 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
           descusionId: conversationId,
           dateTime: FieldValue.serverTimestamp(),
         ).toMap());
+  }
+
+  @override
+  Future<void> messageVu(String messageId, Messages message) {
+    final conversationId = _generateUniqueConversationId(
+        _auth.currentUser!.email!, message.emailRecuper!);
+    _firestore
+        .collection("Descusion")
+        .doc(message.emailRecuper)
+        .collection(message.emailRecuper!)
+        .doc(conversationId)
+        .collection("Messages")
+        .doc(messageId)
+        .set({"vu": true});
+    return Future.value();
   }
 
   String _generateUniqueConversationId(String userId1, String userId2) {
