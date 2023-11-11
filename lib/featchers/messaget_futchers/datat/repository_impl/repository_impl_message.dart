@@ -40,10 +40,9 @@ class RepositoryImplMessage implements RepositoryMesaage {
   }
 
   @override
-  Future<Either<Faillure, void>> messageVu(
-      String messageId, Messages message) async {
+  Future<Either<Faillure, void>> messageVu(Messages message) async {
     try {
-      await dataSourcesMessages.messageVu(messageId, message);
+      await dataSourcesMessages.messageVu(message);
       // ignore: void_checks
       return Right(Future.value());
     } on ServerException {

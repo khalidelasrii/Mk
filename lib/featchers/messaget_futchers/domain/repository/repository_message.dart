@@ -10,4 +10,5 @@ abstract class RepositoryMesaage {
       getMessages(String userRecuper);
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getDescusion();
+  Future<Either<Faillure, void>> messageVu(Messages message);
 }

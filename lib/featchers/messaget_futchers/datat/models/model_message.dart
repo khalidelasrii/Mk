@@ -11,6 +11,7 @@ class ModelMessage extends Messages {
 
   Map<String, dynamic> toMap() {
     return {
+      "vu": vu,
       "message": message,
       "dateTime": dateTime,
       "descusionId": descusionId,

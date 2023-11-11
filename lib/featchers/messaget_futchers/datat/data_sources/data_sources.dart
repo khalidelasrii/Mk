@@ -9,7 +9,7 @@ abstract class DataSourcesMessages {
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getMessages(
       String userRecuper);
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getDescusion();
-  Future<void> messageVu(String messageId, Messages message);
+  Future<void> messageVu(Messages message);
 }
 
 class DataSourcesMessagesImpl implements DataSourcesMessages {
@@ -45,6 +45,8 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
     // Créez un identifiant unique pour le document de conversation
     final conversationId = _generateUniqueConversationId(
         currentUser!.email!, message.emailRecuper!);
+
+    final messageid = Timestamp.now();
     //! ecrer les champs de de descusion
     _firestore
         .collection("Descusion")
@@ -63,20 +65,22 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
       "email": currentUser.email,
     });
 
-    //! en premier on ajout le message a ma collection
+    //! en premier on ajout le message au premier itulisateur
     _firestore
         .collection("Descusion")
         .doc(currentUser.email)
         .collection(currentUser.email!)
         .doc(conversationId)
         .collection("Messages")
-        .add(ModelMessage(
-          message: message.message,
-          emailSender: currentUser.email,
-          emailRecuper: message.emailRecuper,
-          descusionId: conversationId,
-          dateTime: FieldValue.serverTimestamp(),
-        ).toMap());
+        .doc(messageid.toString())
+        .set(ModelMessage(
+                vu: message.vu,
+                message: message.message,
+                emailSender: currentUser.email,
+                emailRecuper: message.emailRecuper,
+                descusionId: conversationId,
+                dateTime: messageid)
+            .toMap());
     //! en deuxieme on ajoute le message a la collection de second itulisateur
     _firestore
         .collection("Descusion")
@@ -84,27 +88,37 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection(message.emailRecuper!)
         .doc(conversationId)
         .collection("Messages")
-        .add(ModelMessage(
+        .doc(messageid.toString())
+        .set(ModelMessage(
+          vu: message.vu,
           message: message.message,
           emailSender: currentUser.email,
           emailRecuper: message.emailRecuper,
           descusionId: conversationId,
-          dateTime: FieldValue.serverTimestamp(),
+          dateTime: messageid,
         ).toMap());
   }
 
   @override
-  Future<void> messageVu(String messageId, Messages message) {
+  Future<void> messageVu(Messages message) {
     final conversationId = _generateUniqueConversationId(
-        _auth.currentUser!.email!, message.emailRecuper!);
+        _auth.currentUser!.email!, message.emailSender!);
+    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     _firestore
         .collection("Descusion")
-        .doc(message.emailRecuper)
-        .collection(message.emailRecuper!)
+        .doc(message.emailSender)
+        .collection(message.emailSender!)
         .doc(conversationId)
         .collection("Messages")
-        .doc(messageId)
-        .set({"vu": true});
+        .doc(message.messageId)
+        .set(ModelMessage(
+          vu: message.vu,
+          message: message.message,
+          emailSender: message.emailSender,
+          emailRecuper: message.emailRecuper,
+          descusionId: message.descusionId,
+          dateTime: message.dateTime,
+        ).toMap());
     return Future.value();
   }
 

@@ -24,6 +24,7 @@ import 'package:mk/featchers/messaget_futchers/datat/repository_impl/repository_
 import 'package:mk/featchers/messaget_futchers/domain/repository/repository_message.dart';
 import 'package:mk/featchers/messaget_futchers/domain/use_case/get_descusion_use_case.dart';
 import 'package:mk/featchers/messaget_futchers/domain/use_case/get_message_use_case.dart';
+import 'package:mk/featchers/messaget_futchers/domain/use_case/message_vu.dart';
 import 'package:mk/featchers/messaget_futchers/domain/use_case/send_message_use_case.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 
@@ -71,26 +72,27 @@ Future<void> init() async {
       ));
   sl.registerFactory(() => RecherchCubit(getSearchResultsUseCase: sl()));
   sl.registerFactory(() => GetMesArticlesCubit(getMesArticlesUSeCase: sl()));
-
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
   sl.registerFactory(() => AppbafontCubit());
-
   sl.registerFactory(
       () => AdoorArticlesCubit(getAllWelcomeArticleUseCase: sl()));
   sl.registerFactory(
       () => ArticleParCategorieCubit(articleParTypeUseCase: sl()));
   sl.registerFactory(() => DescusionCubit(getDescusionUseCase: sl()));
-  sl.registerFactory(
-      () => MessagesCubit(getMessageUseCase: sl(), sendMessageUseCase: sl()));
+  sl.registerFactory(() => MessagesCubit(
+      getMessageUseCase: sl(),
+      sendMessageUseCase: sl(),
+      messageVuUseCase: sl()));
+
   // Use cases
+
+  sl.registerLazySingleton(() => MessageVuUseCase(sl()));
   sl.registerLazySingleton(() => GetMessageUseCase(sl()));
   sl.registerLazySingleton(() => GetDescusionUseCase(sl()));
   sl.registerLazySingleton(() => SendMessageUseCase(sl()));
-
   sl.registerLazySingleton(() => GetSearchResultsUseCase(sl()));
-
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));
   sl.registerLazySingleton(() => SingOutUseCase(sl()));
@@ -98,7 +100,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetUserIdUSecase(sl()));
   sl.registerLazySingleton(() => SingInGoogleUseCase(sl()));
   sl.registerLazySingleton(() => ArticleParTypeUseCase(sl()));
-
   sl.registerLazySingleton(() => GetAllArticleUseCase(sl()));
   sl.registerLazySingleton(() => AddoorableArticlesUseCase(sl()));
   sl.registerLazySingleton(() => AddArticleUseCase(sl()));
@@ -121,6 +122,7 @@ Future<void> init() async {
       () => RepositoryImplMessage(dataSourcesMessages: sl()));
 
   // Data sources
+
   sl.registerLazySingleton<ArticlesRemoteDataSource>(() => ArticlesFirebase());
   sl.registerLazySingleton<UserDataSources>(() => UserDataSourcesImpl1());
   sl.registerLazySingleton<WelcomeDataSource>(() => WelcomeDataSourcesImpl());

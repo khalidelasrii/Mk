@@ -60,6 +60,9 @@ class _MessageCoreState extends State<MessageCore> {
 
   @override
   Widget build(BuildContext context) {
+    messageTo == null
+        ? BlocProvider.of<MessagesCubit>(context).initialEvent()
+        : null;
     return Container(
       constraints:
           const BoxConstraints(maxWidth: double.infinity, maxHeight: 600),
@@ -70,7 +73,7 @@ class _MessageCoreState extends State<MessageCore> {
             child: descusionCorefonction(context),
           )),
           Expanded(
-              flex: 4,
+              flex: 2,
               child: Container(
                 child: messageTo == null
                     ? Center(
@@ -143,15 +146,16 @@ class _MessageCoreState extends State<MessageCore> {
             child: BlocBuilder<DescusionCubit, DescusionState>(
               builder: (context, state) {
                 if (state is LodidDescusionState) {
-                  return StreamBuilder<QuerySnapshot>(
+                  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                       stream: state.descusions,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          final data = snapshot.data!.docs;
-                          List<String> descusionList = [];
-                          for (var descusion in data) {
-                            descusionList.add(descusion["email"]);
-                          }
+                          List<String> descusionList =
+                              snapshot.data!.docs.map((subdoc) {
+                            final subdocemail = subdoc.data();
+                            return subdocemail["email"].toString();
+                          }).toList();
+
                           //!
 
                           return ListView.builder(
@@ -214,39 +218,56 @@ class _MessageCoreState extends State<MessageCore> {
             child: BlocBuilder<MessagesCubit, MessagesState>(
               builder: (context, state) {
                 if (state is LodidMessagesState) {
-                  return StreamBuilder<QuerySnapshot>(
+                  return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: state.messages,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        final data = snapshot.data!.docs;
-                        List<Map<String, String>> messagesList = [];
-
-                        for (var messag in data) {
-                          messagesList.add({
-                            "message": messag["message"],
-                            "emailSender": messag["emailSender"],
-                            "emailRecuper": messag["emailRecuper"],
-                            "descusionId": messag["descusionId"],
-                          });
-                        }
+                        List<Messages> messagesList =
+                            snapshot.data!.docs.map((subDoc) {
+                          final subDocMessage = subDoc.data();
+                          return Messages(
+                            message: subDocMessage['message'],
+                            emailRecuper: subDocMessage['emailRecuper'],
+                            emailSender: subDocMessage['emailSender'],
+                            vu: subDocMessage['vu'],
+                            messageId: subDoc.id,
+                            dateTime: subDocMessage["dateTime"],
+                            descusionId: subDocMessage["descusionId"],
+                          );
+                        }).toList();
 
                         return ListView.builder(
                           reverse: true,
                           itemCount: messagesList.length,
                           itemBuilder: (context, index) {
                             final item = messagesList[index];
-                            return user!.email == item["emailRecuper"]!
-                                ? Row(
-                                    children: [
-                                      Expanded(
-                                          flex: 3,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 8,
-                                                right: 60,
-                                                bottom: 4,
-                                                top: 4),
-                                            child: Container(
+
+                            if (user!.email == item.emailRecuper!) {
+                              item.vu == false
+                                  ? BlocProvider.of<MessagesCubit>(context)
+                                      .messageVuEvent(Messages(
+                                          descusionId: item.descusionId,
+                                          message: item.message,
+                                          dateTime: item.dateTime,
+                                          messageId: item.messageId,
+                                          vu: true,
+                                          emailSender: item.emailSender,
+                                          emailRecuper: item.emailRecuper))
+                                  : null;
+                              return Row(
+                                children: [
+                                  Expanded(
+                                      flex: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8,
+                                            right: 60,
+                                            bottom: 4,
+                                            top: 4),
+                                        child: Stack(
+                                          alignment: Alignment.bottomLeft,
+                                          children: [
+                                            Container(
                                               decoration: const BoxDecoration(
                                                   gradient: LinearGradient(
                                                       colors: [
@@ -262,22 +283,25 @@ class _MessageCoreState extends State<MessageCore> {
                                                       BorderRadius.only(
                                                           topRight:
                                                               Radius.circular(
-                                                                  20),
+                                                                  15),
                                                           bottomLeft:
                                                               Radius.circular(
-                                                                  20),
+                                                                  15),
                                                           bottomRight:
                                                               Radius.circular(
-                                                                  20))),
+                                                                  15))),
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
+                                                padding: const EdgeInsets.only(
+                                                    left: 8.0,
+                                                    right: 8,
+                                                    top: 8,
+                                                    bottom: 14),
                                                 child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      item["emailSender"]!,
+                                                      item.emailSender!,
                                                       style: const TextStyle(
                                                           fontSize: 12,
                                                           color: Colors.black),
@@ -286,7 +310,7 @@ class _MessageCoreState extends State<MessageCore> {
                                                       height: 8,
                                                     ),
                                                     Text(
-                                                      item["message"]!,
+                                                      item.message,
                                                       style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 16),
@@ -295,22 +319,42 @@ class _MessageCoreState extends State<MessageCore> {
                                                 ),
                                               ),
                                             ),
-                                          )),
-                                      const Expanded(child: SizedBox())
-                                    ],
-                                  )
-                                : Row(
-                                    children: [
-                                      const Expanded(child: SizedBox()),
-                                      Expanded(
-                                        flex: 4,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8,
-                                              left: 60,
-                                              bottom: 4,
-                                              top: 4),
-                                          child: Container(
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                const SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  "${item.dateTime!.toDate().hour.toString()}:${item.dateTime!.toDate().minute.toString()} ",
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )),
+                                  const Expanded(child: SizedBox())
+                                ],
+                              );
+                            } else {
+                              return Row(
+                                children: [
+                                  const Expanded(child: SizedBox()),
+                                  Expanded(
+                                    flex: 4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 8,
+                                          left: 60,
+                                          bottom: 4,
+                                          top: 4),
+                                      child: Stack(
+                                        alignment: Alignment.bottomRight,
+                                        children: [
+                                          Container(
                                             decoration: const BoxDecoration(
                                                 gradient: LinearGradient(
                                                     colors: [
@@ -324,45 +368,72 @@ class _MessageCoreState extends State<MessageCore> {
                                                         Alignment.bottomCenter),
                                                 borderRadius: BorderRadius.only(
                                                     topLeft:
-                                                        Radius.circular(20),
+                                                        Radius.circular(15),
                                                     bottomLeft:
-                                                        Radius.circular(20),
+                                                        Radius.circular(15),
                                                     bottomRight:
-                                                        Radius.circular(20))),
+                                                        Radius.circular(15))),
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8,
+                                                  right: 8,
+                                                  top: 8,
+                                                  bottom: 14),
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    item["emailSender"]!,
+                                                    item.emailSender!,
                                                     style: const TextStyle(
                                                         fontSize: 12,
-                                                        color: Color.fromARGB(
-                                                            255,
-                                                            190,
-                                                            164,
-                                                            164)),
+                                                        color: Colors.black),
                                                   ),
                                                   const SizedBox(
                                                     height: 8,
                                                   ),
                                                   Text(
-                                                    item["message"]!,
+                                                    item.message,
                                                     style: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 16),
-                                                  )
+                                                  ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              item.vu == false
+                                                  ? const Icon(
+                                                      Icons.check,
+                                                      color: Colors.white,
+                                                      size: 12,
+                                                    )
+                                                  : const Icon(
+                                                      Icons.remove_red_eye,
+                                                      color: Colors.green,
+                                                      size: 12,
+                                                    ),
+                                              Text(
+                                                "${item.dateTime!.toDate().hour.toString()}:${item.dateTime!.toDate().minute.toString()} ",
+                                                style: const TextStyle(
+                                                    fontSize: 12),
+                                              ),
+                                              const SizedBox(
+                                                width: 4,
+                                              )
+                                            ],
+                                          )
+                                        ],
                                       ),
-                                    ],
-                                  );
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
                           },
                         );
                       } else {
@@ -412,11 +483,11 @@ class _MessageCoreState extends State<MessageCore> {
                 hoverColor: Colors.red,
                 onPressed: () {
                   textEditingController.clear();
-                  BlocProvider.of<MessagesCubit>(context)
-                      .sendMessageEvent(Messages(
-                    message: message,
-                    emailRecuper: messageTo,
-                  ));
+                  BlocProvider.of<MessagesCubit>(context).sendMessageEvent(
+                      Messages(
+                          message: message,
+                          emailRecuper: messageTo,
+                          vu: false));
                 },
                 child: const Text(
                   'Send',

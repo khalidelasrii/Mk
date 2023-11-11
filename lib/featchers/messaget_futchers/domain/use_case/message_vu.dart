@@ -8,8 +8,7 @@ class MessageVuUseCase {
 
   MessageVuUseCase(this._repositoryMesaage);
 
-  Future<Either<Faillure, void>> call(
-      String messageId, Messages message) async {
-    return await _repositoryMesaage.messageVu(messageId, message);
+  Future<Either<Faillure, void>> call(Messages message) async {
+    return await _repositoryMesaage.messageVu(message);
   }
 }

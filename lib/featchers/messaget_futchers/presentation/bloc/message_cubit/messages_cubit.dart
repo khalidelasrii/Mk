@@ -22,8 +22,12 @@ class MessagesCubit extends Cubit<MessagesState> {
     await sendMessageUseCase(message);
   }
 
-  messageVuEvent(String messageId, Messages message) async {
-    await messageVuUseCase.call(messageId, message);
+  messageVuEvent(Messages message) async {
+    await messageVuUseCase.call(message);
+  }
+
+  initialEvent() {
+    emit(MessagesInitial());
   }
 
   getMessagesEvent(String messageTo) async {
