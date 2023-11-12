@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mk/featchers/messaget_futchers/datat/models/model_message.dart';
@@ -10,6 +12,7 @@ abstract class DataSourcesMessages {
       String userRecuper);
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getDescusion();
   Future<void> messageVu(Messages message);
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> notificationMessages();
 }
 
 class DataSourcesMessagesImpl implements DataSourcesMessages {
@@ -103,7 +106,6 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
   Future<void> messageVu(Messages message) {
     final conversationId = _generateUniqueConversationId(
         _auth.currentUser!.email!, message.emailSender!);
-    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     _firestore
         .collection("Descusion")
         .doc(message.emailSender)
@@ -126,5 +128,15 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
     final List<String> users = [userId1, userId2];
     users.sort();
     return users.join("_");
+  }
+
+  @override
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>>
+      notificationMessages() async {
+    return _firestore
+        .collection('Descusion')
+        .doc(_auth.currentUser!.email)
+        .collection(_auth.currentUser!.email!)
+        .snapshots();
   }
 }
