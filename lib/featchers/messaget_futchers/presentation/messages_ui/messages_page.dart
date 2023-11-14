@@ -93,7 +93,7 @@ class _MessageCoreState extends State<MessageCore> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          //     //! La zone pour ajouter une nouvelle descusion
+          //! La zone pour ajouter une nouvelle descusion
           Container(
             constraints: const BoxConstraints(
               minHeight: 50,
@@ -150,34 +150,47 @@ class _MessageCoreState extends State<MessageCore> {
                       stream: state.descusions,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          List<String> descusionList =
+                          List<Messages> descusionList =
                               snapshot.data!.docs.map((subdoc) {
                             final subdocemail = subdoc.data();
-                            return subdocemail["email"].toString();
+                            return Messages(
+                                message: '',
+                                emailSender: subdocemail["email"],
+                                nbrvu: subdocemail['nbr']);
                           }).toList();
 
                           //!
-
                           return ListView.builder(
                             itemCount: descusionList.length,
                             itemBuilder: (context, index) {
                               final descusion = descusionList[index];
 
                               return MaterialButton(
-                                onPressed: () {
-                                  BlocProvider.of<MessagesCubit>(context)
-                                      .getMessagesEvent(descusion);
+                                  onPressed: () {
+                                    BlocProvider.of<MessagesCubit>(context)
+                                        .getMessagesEvent(
+                                            descusion.emailSender!);
 
-                                  setState(() {
-                                    messageTo = descusion;
-                                  });
-                                },
-                                child: ListTile(
-                                    title: Text(
-                                  descusion,
-                                  style: const TextStyle(color: Colors.white),
-                                )),
-                              );
+                                    setState(() {
+                                      messageTo = descusion.emailSender!;
+                                    });
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.centerRight,
+                                    children: [
+                                      Container(
+                                        color: Colors.amber,
+                                        child: Text("${descusion.nbrvu}"),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          descusion.emailSender!,
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ],
+                                  ));
                             },
                           );
                         } else {
@@ -221,6 +234,7 @@ class _MessageCoreState extends State<MessageCore> {
                   return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: state.messages,
                     builder: (context, snapshot) {
+                      int nbrdevu = 0;
                       if (snapshot.hasData) {
                         List<Messages> messagesList =
                             snapshot.data!.docs.map((subDoc) {
@@ -236,6 +250,17 @@ class _MessageCoreState extends State<MessageCore> {
                           );
                         }).toList();
 
+                        for (var i in messagesList) {
+                          if (i.vu == false && user!.email == i.emailSender!) {
+                            nbrdevu += 1;
+                          }
+                        }
+                        BlocProvider.of<DescusionCubit>(context).nbrMessageVu(
+                            Messages(
+                                message: "",
+                                emailRecuper: messagesList.first.emailRecuper,
+                                nbrvu: nbrdevu));
+
                         return ListView.builder(
                           reverse: true,
                           itemCount: messagesList.length,
@@ -243,17 +268,18 @@ class _MessageCoreState extends State<MessageCore> {
                             final item = messagesList[index];
 
                             if (user!.email == item.emailRecuper!) {
-                              item.vu == false
-                                  ? BlocProvider.of<MessagesCubit>(context)
-                                      .messageVuEvent(Messages(
-                                          descusionId: item.descusionId,
-                                          message: item.message,
-                                          dateTime: item.dateTime,
-                                          messageId: item.messageId,
-                                          vu: true,
-                                          emailSender: item.emailSender,
-                                          emailRecuper: item.emailRecuper))
-                                  : null;
+                              if (item.vu == false) {
+                                BlocProvider.of<MessagesCubit>(context)
+                                    .messageVuEvent(Messages(
+                                        descusionId: item.descusionId,
+                                        message: item.message,
+                                        dateTime: item.dateTime,
+                                        messageId: item.messageId,
+                                        vu: true,
+                                        emailSender: item.emailSender,
+                                        emailRecuper: item.emailRecuper));
+                              }
+
                               return Row(
                                 children: [
                                   Expanded(

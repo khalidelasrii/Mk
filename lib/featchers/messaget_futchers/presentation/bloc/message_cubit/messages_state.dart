@@ -17,4 +17,12 @@ class LodidMessagesState extends MessagesState {
   List<Object> get props => [messages];
 }
 
+class NotificationMessageState extends MessagesState {
+  final Stream<QuerySnapshot<Map<String, dynamic>>> messages;
+  const NotificationMessageState({required this.messages});
+
+  @override
+  List<Object> get props => [messages];
+}
+
 class ErrorMessagesState extends MessagesState {}

@@ -49,4 +49,9 @@ class RepositoryImplMessage implements RepositoryMesaage {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  void notificationMessages(Messages message) {
+    dataSourcesMessages.notificationMessages(message);
+  }
 }

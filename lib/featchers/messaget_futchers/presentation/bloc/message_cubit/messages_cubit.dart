@@ -30,8 +30,17 @@ class MessagesCubit extends Cubit<MessagesState> {
     emit(MessagesInitial());
   }
 
-  getMessagesEvent(String messageTo) async {
+  notificationMessageEvent(String messageTo) async {
     final messagesOrfaillure = await getMessageUseCase.call(messageTo);
+    messagesOrfaillure.fold((_) {
+      emit(ErrorMessagesState());
+    }, (r) {
+      emit(NotificationMessageState(messages: r));
+    });
+  }
+
+  getMessagesEvent(String messageTo) async {
+    final messagesOrfaillure = await getMessageUseCase(messageTo);
     messagesOrfaillure.fold((_) {
       emit(ErrorMessagesState());
     }, (r) {

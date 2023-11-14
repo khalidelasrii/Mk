@@ -25,6 +25,7 @@ import 'package:mk/featchers/messaget_futchers/domain/repository/repository_mess
 import 'package:mk/featchers/messaget_futchers/domain/use_case/get_descusion_use_case.dart';
 import 'package:mk/featchers/messaget_futchers/domain/use_case/get_message_use_case.dart';
 import 'package:mk/featchers/messaget_futchers/domain/use_case/message_vu.dart';
+import 'package:mk/featchers/messaget_futchers/domain/use_case/nbr_vu_use_case.dart';
 import 'package:mk/featchers/messaget_futchers/domain/use_case/send_message_use_case.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 
@@ -80,7 +81,8 @@ Future<void> init() async {
       () => AdoorArticlesCubit(getAllWelcomeArticleUseCase: sl()));
   sl.registerFactory(
       () => ArticleParCategorieCubit(articleParTypeUseCase: sl()));
-  sl.registerFactory(() => DescusionCubit(getDescusionUseCase: sl()));
+  sl.registerFactory(
+      () => DescusionCubit(getDescusionUseCase: sl(), nbrVuUseCase: sl()));
   sl.registerFactory(() => MessagesCubit(
       getMessageUseCase: sl(),
       sendMessageUseCase: sl(),
@@ -88,6 +90,7 @@ Future<void> init() async {
 
   // Use cases
 
+  sl.registerLazySingleton(() => NbrVuUseCase(sl()));
   sl.registerLazySingleton(() => MessageVuUseCase(sl()));
   sl.registerLazySingleton(() => GetMessageUseCase(sl()));
   sl.registerLazySingleton(() => GetDescusionUseCase(sl()));

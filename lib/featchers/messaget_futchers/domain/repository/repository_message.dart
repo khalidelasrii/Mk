@@ -11,4 +11,5 @@ abstract class RepositoryMesaage {
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
       getDescusion();
   Future<Either<Faillure, void>> messageVu(Messages message);
+  void notificationMessages(Messages message);
 }

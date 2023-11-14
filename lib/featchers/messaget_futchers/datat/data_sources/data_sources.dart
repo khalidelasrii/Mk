@@ -12,7 +12,7 @@ abstract class DataSourcesMessages {
       String userRecuper);
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getDescusion();
   Future<void> messageVu(Messages message);
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> notificationMessages();
+  void notificationMessages(Messages message);
 }
 
 class DataSourcesMessagesImpl implements DataSourcesMessages {
@@ -121,6 +121,21 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
           descusionId: message.descusionId,
           dateTime: message.dateTime,
         ).toMap());
+    _firestore
+        .collection("Descusion")
+        .doc(message.emailRecuper)
+        .collection(message.emailRecuper!)
+        .doc(conversationId)
+        .collection("Messages")
+        .doc(message.messageId)
+        .set(ModelMessage(
+          vu: message.vu,
+          message: message.message,
+          emailSender: message.emailSender,
+          emailRecuper: message.emailRecuper,
+          descusionId: message.descusionId,
+          dateTime: message.dateTime,
+        ).toMap());
     return Future.value();
   }
 
@@ -131,12 +146,21 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
   }
 
   @override
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>>
-      notificationMessages() async {
-    return _firestore
-        .collection('Descusion')
-        .doc(_auth.currentUser!.email)
-        .collection(_auth.currentUser!.email!)
-        .snapshots();
+  void notificationMessages(Messages message) async {
+    final currentUser = _auth.currentUser;
+
+    if (currentUser!.email != message.emailRecuper!) {
+      final conversationId = _generateUniqueConversationId(
+          currentUser.email!, message.emailRecuper!);
+
+      _firestore
+          .collection("Descusion")
+          .doc(message.emailRecuper)
+          .collection(message.emailRecuper!)
+          .doc(conversationId)
+          .set({"email": currentUser.email, "nbr": message.nbrvu});
+    }
+
+    return Future.value();
   }
 }
