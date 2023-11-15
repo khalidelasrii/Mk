@@ -178,10 +178,23 @@ class _MessageCoreState extends State<MessageCore> {
                                   child: Stack(
                                     alignment: Alignment.centerRight,
                                     children: [
-                                      Container(
-                                        color: Colors.amber,
-                                        child: Text("${descusion.nbrvu}"),
-                                      ),
+                                      descusion.nbrvu == null ||
+                                              descusion.nbrvu == 0
+                                          ? const SizedBox()
+                                          : Container(
+                                              decoration: const BoxDecoration(
+                                                  color: Colors.amber,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              100))),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child:
+                                                    Text("${descusion.nbrvu}"),
+                                              ),
+                                            ),
                                       ListTile(
                                         title: Text(
                                           descusion.emailSender!,
@@ -194,11 +207,11 @@ class _MessageCoreState extends State<MessageCore> {
                             },
                           );
                         } else {
-                          return Text('is data stream');
+                          return const Text('is data stream');
                         }
                       });
                 } else {
-                  return Text('is state');
+                  return const Text('is state');
                 }
               },
             ),
@@ -234,11 +247,12 @@ class _MessageCoreState extends State<MessageCore> {
                   return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: state.messages,
                     builder: (context, snapshot) {
-                      int nbrdevu = 0;
                       if (snapshot.hasData) {
+                        int nbrdevu = 0;
                         List<Messages> messagesList =
                             snapshot.data!.docs.map((subDoc) {
                           final subDocMessage = subDoc.data();
+
                           return Messages(
                             message: subDocMessage['message'],
                             emailRecuper: subDocMessage['emailRecuper'],
@@ -249,9 +263,9 @@ class _MessageCoreState extends State<MessageCore> {
                             descusionId: subDocMessage["descusionId"],
                           );
                         }).toList();
-
-                        for (var i in messagesList) {
-                          if (i.vu == false && user!.email == i.emailSender!) {
+                        for (Messages mess in messagesList) {
+                          if (mess.vu == false &&
+                              user!.email == mess.emailRecuper) {
                             nbrdevu += 1;
                           }
                         }
@@ -260,7 +274,6 @@ class _MessageCoreState extends State<MessageCore> {
                                 message: "",
                                 emailRecuper: messagesList.first.emailRecuper,
                                 nbrvu: nbrdevu));
-
                         return ListView.builder(
                           reverse: true,
                           itemCount: messagesList.length,

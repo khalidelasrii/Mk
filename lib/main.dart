@@ -7,7 +7,6 @@ import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit
 import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
-import 'package:mk/test.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import 'featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
@@ -66,6 +65,6 @@ class Maktabati extends StatelessWidget {
               hintColor: Colors.red,
               shadowColor: Colors.white,
             ),
-            home: const Notificatintest()));
+            home: const WelcomeScreen()));
   }
 }
