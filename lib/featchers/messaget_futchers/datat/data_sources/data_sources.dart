@@ -12,7 +12,7 @@ abstract class DataSourcesMessages {
       String userRecuper);
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getDescusion();
   Future<void> messageVu(Messages message);
-  void notificationMessages(Messages message);
+  void notificationMessages(String emailre, int nbr);
 }
 
 class DataSourcesMessagesImpl implements DataSourcesMessages {
@@ -51,22 +51,18 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
 
     final messageid = Timestamp.now();
     //! ecrer les champs de de descusion
-    _firestore
-        .collection("Descusion")
-        .doc(currentUser.email)
-        .collection(currentUser.email!)
-        .doc(conversationId)
-        .set({
-      "email": message.emailRecuper,
-    });
-    _firestore
-        .collection("Descusion")
-        .doc(message.emailRecuper)
-        .collection(message.emailRecuper!)
-        .doc(conversationId)
-        .set({
-      "email": currentUser.email,
-    });
+    // _firestore
+    //     .collection("Descusion")
+    //     .doc(currentUser.email)
+    //     .collection(currentUser.email!)
+    //     .doc(conversationId)
+    //     .set({"email": message.emailRecuper, "nbr": message.nbrvu});
+    // _firestore
+    //     .collection("Descusion")
+    //     .doc(message.emailRecuper)
+    //     .collection(message.emailRecuper!)
+    //     .doc(conversationId)
+    //     .set({"email": currentUser.email, "nbr": message.nbrvu});
 
     //! en premier on ajout le message au premier itulisateur
     _firestore
@@ -77,6 +73,7 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection("Messages")
         .doc(messageid.toString())
         .set(ModelMessage(
+                nbrvu: 0,
                 vu: message.vu,
                 message: message.message,
                 emailSender: currentUser.email,
@@ -93,6 +90,7 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection("Messages")
         .doc(messageid.toString())
         .set(ModelMessage(
+          nbrvu: 0,
           vu: message.vu,
           message: message.message,
           emailSender: currentUser.email,
@@ -114,6 +112,7 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection("Messages")
         .doc(message.messageId)
         .set(ModelMessage(
+          nbrvu: 0,
           vu: message.vu,
           message: message.message,
           emailSender: message.emailSender,
@@ -121,6 +120,7 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
           descusionId: message.descusionId,
           dateTime: message.dateTime,
         ).toMap());
+
     _firestore
         .collection("Descusion")
         .doc(message.emailRecuper)
@@ -129,6 +129,7 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         .collection("Messages")
         .doc(message.messageId)
         .set(ModelMessage(
+          nbrvu: 0,
           vu: message.vu,
           message: message.message,
           emailSender: message.emailSender,
@@ -146,19 +147,24 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
   }
 
   @override
-  void notificationMessages(Messages message) async {
+  void notificationMessages(String emailre, int nbr) async {
     final currentUser = _auth.currentUser;
-
-    if (currentUser!.email != message.emailRecuper!) {
-      final conversationId = _generateUniqueConversationId(
-          currentUser.email!, message.emailRecuper!);
+    if (currentUser!.email != emailre) {
+      final conversationId =
+          _generateUniqueConversationId(currentUser.email!, emailre);
+      _firestore
+          .collection("Descusion")
+          .doc(emailre)
+          .collection(emailre)
+          .doc(conversationId)
+          .set({"email": currentUser.email, "nbr": nbr});
 
       _firestore
           .collection("Descusion")
-          .doc(message.emailRecuper)
-          .collection(message.emailRecuper!)
+          .doc(currentUser.email)
+          .collection(currentUser.email!)
           .doc(conversationId)
-          .set({"email": currentUser.email, "nbr": message.nbrvu});
+          .set({"email": emailre, "nbr": 0});
     }
 
     return Future.value();

@@ -60,9 +60,6 @@ class _MessageCoreState extends State<MessageCore> {
 
   @override
   Widget build(BuildContext context) {
-    messageTo == null
-        ? BlocProvider.of<MessagesCubit>(context).initialEvent()
-        : null;
     return Container(
       constraints:
           const BoxConstraints(maxWidth: double.infinity, maxHeight: 600),
@@ -70,7 +67,7 @@ class _MessageCoreState extends State<MessageCore> {
         children: [
           Expanded(
               child: Container(
-            child: descusionCorefonction(context),
+            child: descusionCorefonction(context, widget.user),
           )),
           Expanded(
               flex: 2,
@@ -86,8 +83,8 @@ class _MessageCoreState extends State<MessageCore> {
     );
   }
 
-//! le core de duscusion
-  descusionCorefonction(BuildContext context) {
+//! le core de duscusion///////////////////////////////////////////////////////////////////////////////////
+  descusionCorefonction(BuildContext context, User? user) {
     TextEditingController textEditingController = TextEditingController();
 
     return SingleChildScrollView(
@@ -156,7 +153,7 @@ class _MessageCoreState extends State<MessageCore> {
                             return Messages(
                                 message: '',
                                 emailSender: subdocemail["email"],
-                                nbrvu: subdocemail['nbr']);
+                                nbrvu: subdocemail['nbr'] ?? 100);
                           }).toList();
 
                           //!
@@ -167,34 +164,28 @@ class _MessageCoreState extends State<MessageCore> {
 
                               return MaterialButton(
                                   onPressed: () {
+                                    final email = descusion.emailSender;
+
                                     BlocProvider.of<MessagesCubit>(context)
-                                        .getMessagesEvent(
-                                            descusion.emailSender!);
+                                        .getMessagesEvent(email!);
 
                                     setState(() {
-                                      messageTo = descusion.emailSender!;
+                                      messageTo = email;
                                     });
                                   },
                                   child: Stack(
                                     alignment: Alignment.centerRight,
                                     children: [
-                                      descusion.nbrvu == null ||
-                                              descusion.nbrvu == 0
-                                          ? const SizedBox()
-                                          : Container(
-                                              decoration: const BoxDecoration(
-                                                  color: Colors.amber,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              100))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child:
-                                                    Text("${descusion.nbrvu}"),
-                                              ),
-                                            ),
+                                      Container(
+                                        decoration: const BoxDecoration(
+                                            color: Colors.amber,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(100))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("${descusion.nbrvu}"),
+                                        ),
+                                      ),
                                       ListTile(
                                         title: Text(
                                           descusion.emailSender!,
@@ -221,11 +212,19 @@ class _MessageCoreState extends State<MessageCore> {
     );
   }
 
-  //! Le core de messages
+  //! Le core de messages/////////////////////////////////////////////////////////////////////////////////////////////
 
   messageCorefonction(BuildContext context, User? user) {
     TextEditingController textEditingController = TextEditingController();
     String message = "";
+    contour(BuildContext context, String mess, List<Messages> meslest) {
+      int x = 0;
+      for (Messages i in meslest) {
+        i.vu == false && user!.email == i.emailSender ? x = x + 1 : null;
+      }
+      BlocProvider.of<DescusionCubit>(context).nbrMessageVu(mess, x);
+    }
+
     return Column(
       children: [
         Container(
@@ -248,12 +247,12 @@ class _MessageCoreState extends State<MessageCore> {
                     stream: state.messages,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        int nbrdevu = 0;
+                        //! creation d'un liste des messages
                         List<Messages> messagesList =
                             snapshot.data!.docs.map((subDoc) {
                           final subDocMessage = subDoc.data();
-
                           return Messages(
+                            nbrvu: 0,
                             message: subDocMessage['message'],
                             emailRecuper: subDocMessage['emailRecuper'],
                             emailSender: subDocMessage['emailSender'],
@@ -263,17 +262,7 @@ class _MessageCoreState extends State<MessageCore> {
                             descusionId: subDocMessage["descusionId"],
                           );
                         }).toList();
-                        for (Messages mess in messagesList) {
-                          if (mess.vu == false &&
-                              user!.email == mess.emailRecuper) {
-                            nbrdevu += 1;
-                          }
-                        }
-                        BlocProvider.of<DescusionCubit>(context).nbrMessageVu(
-                            Messages(
-                                message: "",
-                                emailRecuper: messagesList.first.emailRecuper,
-                                nbrvu: nbrdevu));
+                        contour(context, messageTo!, messagesList);
                         return ListView.builder(
                           reverse: true,
                           itemCount: messagesList.length,
@@ -284,6 +273,7 @@ class _MessageCoreState extends State<MessageCore> {
                               if (item.vu == false) {
                                 BlocProvider.of<MessagesCubit>(context)
                                     .messageVuEvent(Messages(
+                                        nbrvu: 0,
                                         descusionId: item.descusionId,
                                         message: item.message,
                                         dateTime: item.dateTime,
@@ -291,6 +281,8 @@ class _MessageCoreState extends State<MessageCore> {
                                         vu: true,
                                         emailSender: item.emailSender,
                                         emailRecuper: item.emailRecuper));
+                                BlocProvider.of<DescusionCubit>(context)
+                                    .nbrMessageVu(messageTo!, 0);
                               }
 
                               return Row(
@@ -524,6 +516,7 @@ class _MessageCoreState extends State<MessageCore> {
                   textEditingController.clear();
                   BlocProvider.of<MessagesCubit>(context).sendMessageEvent(
                       Messages(
+                          nbrvu: 0,
                           message: message,
                           emailRecuper: messageTo,
                           vu: false));

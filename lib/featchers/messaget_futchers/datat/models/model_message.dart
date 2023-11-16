@@ -3,6 +3,7 @@ import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 class ModelMessage extends Messages {
   const ModelMessage(
       {required super.message,
+      required super.nbrvu,
       super.dateTime,
       super.descusionId,
       super.emailRecuper,

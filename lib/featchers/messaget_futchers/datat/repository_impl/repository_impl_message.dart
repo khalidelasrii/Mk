@@ -51,7 +51,7 @@ class RepositoryImplMessage implements RepositoryMesaage {
   }
 
   @override
-  void notificationMessages(Messages message) {
-    dataSourcesMessages.notificationMessages(message);
+  void notificationMessages(String emailre, int nbr) {
+    dataSourcesMessages.notificationMessages(emailre, nbr);
   }
 }

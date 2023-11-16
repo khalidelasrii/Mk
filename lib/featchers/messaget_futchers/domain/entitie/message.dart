@@ -9,17 +9,18 @@ class Messages extends Equatable {
   final String? descusionId;
   final Timestamp? dateTime;
   final bool? vu;
-  final int? nbrvu;
+  final int nbrvu;
 
-  const Messages(
-      {required this.message,
-      this.messageId,
-      this.emailSender,
-      this.emailRecuper,
-      this.descusionId,
-      this.dateTime,
-      this.vu,
-      this.nbrvu});
+  const Messages({
+    required this.message,
+    required this.nbrvu,
+    this.messageId,
+    this.emailSender,
+    this.emailRecuper,
+    this.descusionId,
+    this.dateTime,
+    this.vu,
+  });
 
   @override
   List<Object?> get props =>

@@ -1,13 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/profile_screen.dart';
+import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
 import '../../featchers/Authontification/presentation/ui/sing_in.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
+import '../../featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class AppbarWelcom {
@@ -46,6 +49,8 @@ class AppbarWelcom {
         children: [
           MaterialButton(
             onPressed: () {
+              BlocProvider.of<MessagesCubit>(context).initialEvent();
+              BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
               Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const WelcomeScreen()));
             },
@@ -69,18 +74,73 @@ class AppbarWelcom {
           ),
           const Expanded(child: SizedBox()),
           user != null
-              ? IconButton(
+              ? MaterialButton(
                   onPressed: () {
+                    BlocProvider.of<MessagesCubit>(context).initialEvent();
                     BlocProvider.of<DescusionCubit>(context)
                         .getDescusionEvent();
-
                     Navigator.push(context,
                         MaterialPageRoute(builder: (_) => const MessagesUi()));
                   },
-                  icon: Icon(
-                    Icons.message,
-                    color: color2,
-                  ))
+                  child: SizedBox(
+                      child: BlocBuilder<DescusionCubit, DescusionState>(
+                    builder: (context, state) {
+                      if (state is LodidDescusionState) {
+                        return StreamBuilder<
+                                QuerySnapshot<Map<String, dynamic>>>(
+                            stream: state.descusions,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                int cont = 0;
+                                List<Messages> x =
+                                    snapshot.data!.docs.map((subdata) {
+                                  final subEmail = subdata.data();
+                                  return Messages(
+                                      message: '', nbrvu: subEmail["nbr"]);
+                                }).toList();
+                                for (Messages i in x) {
+                                  cont = i.nbrvu + cont;
+                                }
+                                return Stack(
+                                  alignment: Alignment.topRight,
+                                  children: [
+                                    const Icon(
+                                      Icons.message,
+                                      color: Colors.white,
+                                    ),
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(2.0),
+                                        child: Text(
+                                          cont.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return const Icon(
+                                  Icons.message,
+                                  color: Colors.white,
+                                );
+                              }
+                            });
+                      } else {
+                        return const Icon(
+                          Icons.message,
+                          color: Colors.white,
+                        );
+                      }
+                    },
+                  )),
+                )
               : const SizedBox(),
           Padding(
             padding: const EdgeInsets.only(left: 10),
@@ -88,6 +148,8 @@ class AppbarWelcom {
               focusColor: Colors.orange,
               hoverColor: Colors.red,
               onPressed: () {
+                BlocProvider.of<MessagesCubit>(context).initialEvent();
+                BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
                 BlocProvider.of<AppbafontCubit>(context)
                     .appBarfontPressedEvent();
               },
@@ -102,6 +164,8 @@ class AppbarWelcom {
                   focusColor: Colors.orange,
                   hoverColor: Colors.red,
                   onPressed: () {
+                    BlocProvider.of<MessagesCubit>(context).initialEvent();
+
                     Navigator.push(
                         context,
                         MaterialPageRoute(
