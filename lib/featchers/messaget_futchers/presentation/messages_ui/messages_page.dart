@@ -7,7 +7,6 @@ import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
-
 import '../bloc/message_cubit/messages_cubit.dart';
 
 class MessagesUi extends StatefulWidget {
@@ -19,9 +18,11 @@ class MessagesUi extends StatefulWidget {
 
 class _MessagesUiState extends State<MessagesUi> {
   User? user;
+
   @override
   void initState() {
     super.initState();
+    // Écouter les changements dans l'état de l'authentification Firebase
     FirebaseAuth.instance.authStateChanges().listen((User? usr) {
       if (usr != null) {
         setState(() {
@@ -39,7 +40,9 @@ class _MessagesUiState extends State<MessagesUi> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Barre d'applications
             AppbarWelcom().appBarWidget(context, user),
+            // Core des messages
             MessageCore(user: user),
           ],
         ),
@@ -51,6 +54,7 @@ class _MessagesUiState extends State<MessagesUi> {
 class MessageCore extends StatefulWidget {
   const MessageCore({super.key, required this.user});
   final User? user;
+
   @override
   State<MessageCore> createState() => _MessageCoreState();
 }
@@ -65,32 +69,36 @@ class _MessageCoreState extends State<MessageCore> {
           const BoxConstraints(maxWidth: double.infinity, maxHeight: 600),
       child: Row(
         children: [
+          // Partie gauche : Négociations
           Expanded(
-              child: Container(
-            child: descusionCorefonction(context, widget.user),
-          )),
+            child: Container(
+              child: descusionCorefonction(context, widget.user),
+            ),
+          ),
+          // Partie droite : Messages
           Expanded(
-              flex: 2,
-              child: Container(
-                child: messageTo == null
-                    ? Center(
-                        child: SizedBox(child: Image.asset('images/MK.png')),
-                      )
-                    : messageCorefonction(context, widget.user),
-              )),
+            flex: 2,
+            child: Container(
+              child: messageTo == null
+                  ? Center(
+                      child: SizedBox(child: Image.asset('images/MK.png')),
+                    )
+                  : messageCorefonction(context, widget.user),
+            ),
+          ),
         ],
       ),
     );
   }
 
-//! le core de duscusion///////////////////////////////////////////////////////////////////////////////////
+  // Fonctionnalité principale des négociations
   descusionCorefonction(BuildContext context, User? user) {
     TextEditingController textEditingController = TextEditingController();
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          //! La zone pour ajouter une nouvelle descusion
+          // Zone pour ajouter une nouvelle négociation
           Container(
             constraints: const BoxConstraints(
               minHeight: 50,
@@ -125,9 +133,9 @@ class _MessageCoreState extends State<MessageCore> {
                     textEditingController.clear();
                     setState(() {
                       messageTo;
-                      BlocProvider.of<MessagesCubit>(context)
-                          .getMessagesEvent(messageTo!);
                     });
+                    BlocProvider.of<MessagesCubit>(context)
+                        .getMessagesEvent(messageTo!);
                   },
                   child: const Text(
                     'Go',
@@ -137,70 +145,70 @@ class _MessageCoreState extends State<MessageCore> {
               ],
             ),
           ),
-          //     //! La list de descusion
+          // Liste des négociations
           SizedBox(
             height: 600,
             child: BlocBuilder<DescusionCubit, DescusionState>(
               builder: (context, state) {
                 if (state is LodidDescusionState) {
                   return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                      stream: state.descusions,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<Messages> descusionList =
-                              snapshot.data!.docs.map((subdoc) {
-                            final subdocemail = subdoc.data();
-                            return Messages(
-                                message: '',
-                                emailSender: subdocemail["email"],
-                                nbrvu: subdocemail['nbr'] ?? 100);
-                          }).toList();
+                    stream: state.descusions,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Messages> descusionList =
+                            snapshot.data!.docs.map((subdoc) {
+                          final subdocemail = subdoc.data();
+                          return Messages(
+                              message: '',
+                              emailSender: subdocemail["email"],
+                              nbrvu: subdocemail['nbr'] ?? 100);
+                        }).toList();
 
-                          //!
-                          return ListView.builder(
-                            itemCount: descusionList.length,
-                            itemBuilder: (context, index) {
-                              final descusion = descusionList[index];
+                        return ListView.builder(
+                          itemCount: descusionList.length,
+                          itemBuilder: (context, index) {
+                            final descusion = descusionList[index];
 
-                              return MaterialButton(
-                                  onPressed: () {
-                                    final email = descusion.emailSender;
+                            return MaterialButton(
+                              onPressed: () {
+                                BlocProvider.of<MessagesCubit>(context)
+                                    .getMessagesEvent(descusion.emailSender!);
 
-                                    BlocProvider.of<MessagesCubit>(context)
-                                        .getMessagesEvent(email!);
-
-                                    setState(() {
-                                      messageTo = email;
-                                    });
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.centerRight,
-                                    children: [
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.amber,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(100))),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("${descusion.nbrvu}"),
-                                        ),
-                                      ),
-                                      ListTile(
-                                        title: Text(
-                                          descusion.emailSender!,
-                                          style: const TextStyle(
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
-                                  ));
-                            },
-                          );
-                        } else {
-                          return const Text('is data stream');
-                        }
-                      });
+                                setState(() {
+                                  messageTo = descusion.emailSender;
+                                });
+                              },
+                              child: Stack(
+                                alignment: Alignment.centerRight,
+                                children: [
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      color: Colors.amber,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("${descusion.nbrvu}"),
+                                    ),
+                                  ),
+                                  ListTile(
+                                    title: Text(
+                                      descusion.emailSender!,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        return const Text('is data stream');
+                      }
+                    },
+                  );
                 } else {
                   return const Text('is state');
                 }
@@ -212,11 +220,12 @@ class _MessageCoreState extends State<MessageCore> {
     );
   }
 
-  //! Le core de messages/////////////////////////////////////////////////////////////////////////////////////////////
-
+  // Fonctionnalité principale des messages
   messageCorefonction(BuildContext context, User? user) {
     TextEditingController textEditingController = TextEditingController();
     String message = "";
+
+    // Fonction pour mettre à jour le nombre de messages vus
     contour(BuildContext context, String mess, List<Messages> meslest) {
       int x = 0;
       for (Messages i in meslest) {
@@ -232,12 +241,13 @@ class _MessageCoreState extends State<MessageCore> {
           width: double.infinity,
           height: 50,
           child: Center(
-              child: Text(
-            messageTo!,
-            style: const TextStyle(color: Colors.white),
-          )),
+            child: Text(
+              messageTo!,
+              style: const TextStyle(color: Colors.white),
+            ),
+          ),
         ),
-        //! La liste de message
+        // Liste des messages
         Expanded(
           child: SizedBox(
             child: BlocBuilder<MessagesCubit, MessagesState>(
@@ -247,7 +257,6 @@ class _MessageCoreState extends State<MessageCore> {
                     stream: state.messages,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        //! creation d'un liste des messages
                         List<Messages> messagesList =
                             snapshot.data!.docs.map((subDoc) {
                           final subDocMessage = subDoc.data();
@@ -273,14 +282,15 @@ class _MessageCoreState extends State<MessageCore> {
                               if (item.vu == false) {
                                 BlocProvider.of<MessagesCubit>(context)
                                     .messageVuEvent(Messages(
-                                        nbrvu: 0,
-                                        descusionId: item.descusionId,
-                                        message: item.message,
-                                        dateTime: item.dateTime,
-                                        messageId: item.messageId,
-                                        vu: true,
-                                        emailSender: item.emailSender,
-                                        emailRecuper: item.emailRecuper));
+                                  nbrvu: 0,
+                                  descusionId: item.descusionId,
+                                  message: item.message,
+                                  dateTime: item.dateTime,
+                                  messageId: item.messageId,
+                                  vu: true,
+                                  emailSender: item.emailSender,
+                                  emailRecuper: item.emailRecuper,
+                                ));
                                 BlocProvider.of<DescusionCubit>(context)
                                     .nbrMessageVu(messageTo!, 0);
                               }
@@ -288,86 +298,82 @@ class _MessageCoreState extends State<MessageCore> {
                               return Row(
                                 children: [
                                   Expanded(
-                                      flex: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 8,
-                                            right: 60,
-                                            bottom: 4,
-                                            top: 4),
-                                        child: Stack(
-                                          alignment: Alignment.bottomLeft,
-                                          children: [
-                                            Container(
-                                              decoration: const BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                      colors: [
-                                                        Color.fromARGB(
-                                                            255, 156, 144, 144),
-                                                        Colors.blueGrey
-                                                      ],
-                                                      begin: Alignment
-                                                          .topCenter,
-                                                      end: Alignment
-                                                          .bottomCenter),
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          topRight:
-                                                              Radius.circular(
-                                                                  15),
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  15),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  15))),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8.0,
-                                                    right: 8,
-                                                    top: 8,
-                                                    bottom: 14),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      item.emailSender!,
-                                                      style: const TextStyle(
-                                                          fontSize: 12,
-                                                          color: Colors.black),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 8,
-                                                    ),
-                                                    Text(
-                                                      item.message,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 16),
-                                                    )
-                                                  ],
-                                                ),
+                                    flex: 4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 8,
+                                        right: 60,
+                                        bottom: 4,
+                                        top: 4,
+                                      ),
+                                      child: Stack(
+                                        alignment: Alignment.bottomLeft,
+                                        children: [
+                                          Container(
+                                            decoration: const BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(
+                                                      255, 156, 144, 144),
+                                                  Colors.blueGrey
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                              borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(15),
+                                                bottomLeft: Radius.circular(15),
+                                                bottomRight:
+                                                    Radius.circular(15),
                                               ),
                                             ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                const SizedBox(
-                                                  width: 4,
-                                                ),
-                                                Text(
-                                                  "${item.dateTime!.toDate().hour.toString()}:${item.dateTime!.toDate().minute.toString()} ",
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      )),
-                                  const Expanded(child: SizedBox())
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 8.0,
+                                                right: 8,
+                                                top: 8,
+                                                bottom: 14,
+                                              ),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    item.emailSender!,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    item.message,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(width: 4),
+                                              Text(
+                                                "${item.dateTime!.toDate().hour.toString()}:${item.dateTime!.toDate().minute.toString()} ",
+                                                style: const TextStyle(
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Expanded(child: SizedBox()),
                                 ],
                               );
                             } else {
@@ -378,38 +384,40 @@ class _MessageCoreState extends State<MessageCore> {
                                     flex: 4,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          right: 8,
-                                          left: 60,
-                                          bottom: 4,
-                                          top: 4),
+                                        right: 8,
+                                        left: 60,
+                                        bottom: 4,
+                                        top: 4,
+                                      ),
                                       child: Stack(
                                         alignment: Alignment.bottomRight,
                                         children: [
                                           Container(
                                             decoration: const BoxDecoration(
-                                                gradient: LinearGradient(
-                                                    colors: [
-                                                      Color.fromARGB(
-                                                          255, 46, 128, 49),
-                                                      Color.fromARGB(
-                                                          255, 8, 104, 37)
-                                                    ],
-                                                    begin: Alignment.topCenter,
-                                                    end:
-                                                        Alignment.bottomCenter),
-                                                borderRadius: BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(15),
-                                                    bottomLeft:
-                                                        Radius.circular(15),
-                                                    bottomRight:
-                                                        Radius.circular(15))),
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(
+                                                      255, 46, 128, 49),
+                                                  Color.fromARGB(
+                                                      255, 8, 104, 37),
+                                                ],
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                              ),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15),
+                                                bottomLeft: Radius.circular(15),
+                                                bottomRight:
+                                                    Radius.circular(15),
+                                              ),
+                                            ),
                                             child: Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8,
-                                                  right: 8,
-                                                  top: 8,
-                                                  bottom: 14),
+                                                left: 8,
+                                                right: 8,
+                                                top: 8,
+                                                bottom: 14,
+                                              ),
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.end,
@@ -417,17 +425,17 @@ class _MessageCoreState extends State<MessageCore> {
                                                   Text(
                                                     item.emailSender!,
                                                     style: const TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.black),
+                                                      fontSize: 12,
+                                                      color: Colors.black,
+                                                    ),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 8,
-                                                  ),
+                                                  const SizedBox(height: 8),
                                                   Text(
                                                     item.message,
                                                     style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 16),
+                                                      color: Colors.white,
+                                                      fontSize: 16,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
@@ -480,7 +488,7 @@ class _MessageCoreState extends State<MessageCore> {
           ),
         ),
 
-        //! La zone pour ecriire un nouvaux message
+//! La zone pour ecriire un nouvaux message
         Container(
           constraints: const BoxConstraints(
             minHeight: 50,

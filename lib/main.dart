@@ -60,13 +60,14 @@ class Maktabati extends StatelessWidget {
                   di.sl<DescusionCubit>()..getDescusionEvent()),
         ],
         child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              cardColor: Colors.green,
-              primaryColor: Colors.pink,
-              hintColor: Colors.red,
-              shadowColor: Colors.white,
-            ),
-            home: const WelcomeScreen()));
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            cardColor: Colors.green,
+            primaryColor: Colors.pink,
+            hintColor: Colors.red,
+            shadowColor: Colors.white,
+          ),
+          home: const WelcomeScreen(),
+        ));
   }
 }
