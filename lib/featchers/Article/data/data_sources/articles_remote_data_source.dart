@@ -62,6 +62,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
           .doc(userId)
           .collection(article.type)
           .add({
+        "userId": article.userId,
         'type': article.type,
         'id': uniqueImageId,
         'article': article.article,
@@ -72,6 +73,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       });
 
       await _firestore.collection('ArticleSearche').doc(uniqueImageId).set({
+        "userId": article.userId,
         'type': article.type,
         'id': uniqueImageId,
         'article': article.article,
@@ -125,6 +127,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       Map<String, dynamic> subArticleData = subDoc.data();
 
       return Article(
+          userId: subArticleData['userId'] ?? "",
           type: subArticleData['type'],
           email: subArticleData['email'],
           id: subDoc.id,
@@ -141,6 +144,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   Future<Unit> addoorableArticle(Article article) async {
     try {
       await _firestore.collection('ArticleAdor').doc(article.id).set({
+        'userId': article.userId,
         'id': article.id,
         'article': article.article,
         'name': article.name,

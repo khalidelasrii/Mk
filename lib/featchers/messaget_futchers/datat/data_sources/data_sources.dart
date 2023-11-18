@@ -50,19 +50,6 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
         currentUser!.email!, message.emailRecuper!);
 
     final messageid = Timestamp.now();
-    //! ecrer les champs de de descusion
-    // _firestore
-    //     .collection("Descusion")
-    //     .doc(currentUser.email)
-    //     .collection(currentUser.email!)
-    //     .doc(conversationId)
-    //     .set({"email": message.emailRecuper, "nbr": message.nbrvu});
-    // _firestore
-    //     .collection("Descusion")
-    //     .doc(message.emailRecuper)
-    //     .collection(message.emailRecuper!)
-    //     .doc(conversationId)
-    //     .set({"email": currentUser.email, "nbr": message.nbrvu});
 
     //! en premier on ajout le message au premier itulisateur
     _firestore

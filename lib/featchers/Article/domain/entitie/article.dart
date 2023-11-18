@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
 
 class Article extends Equatable {
+  final String userId;
   final String id;
   final String article;
   final String name;
@@ -13,7 +14,8 @@ class Article extends Equatable {
   final String type;
 
   const Article(
-      {required this.type,
+      {required this.userId,
+      required this.type,
       this.articleUrl,
       this.selectedImageInBytes,
       required this.email,

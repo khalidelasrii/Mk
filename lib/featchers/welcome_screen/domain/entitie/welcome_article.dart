@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class WelcomeArticle extends Equatable {
+  final String userId;
   final String name;
   final String prixArticle;
   final String article;
@@ -10,7 +11,8 @@ class WelcomeArticle extends Equatable {
   final String type;
 
   const WelcomeArticle(
-      {required this.type,
+      {required this.userId,
+      required this.type,
       required this.name,
       required this.prixArticle,
       required this.article,

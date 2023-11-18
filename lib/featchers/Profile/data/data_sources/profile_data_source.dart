@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
-abstract class ProfileDataSources {
+import '../../../Article/domain/entitie/article.dart';
+import '../../domaine/entitie/profile_user.dart';
+
+abstract class ProfileDataSource {
+  Future<ProfileUser> getMyProfile();
+  Future<ProfileUser> getAutreProfile(ProfileUser profile);
   Future<List<Article>> getmesArticles();
 }
 
-class ProfileDataSourcesImpl implements ProfileDataSources {
+class ProfileDataSourceImpl implements ProfileDataSource {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   List<String> collectionName = [
@@ -43,5 +47,16 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
       articlesList.addAll(xx);
     }
     return articlesList;
+  }
+
+  @override
+  Future<ProfileUser> getMyProfile() {
+    // TODO: implement getMyProfile
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ProfileUser> getAutreProfile(ProfileUser profile) {
+    throw UnimplementedError();
   }
 }

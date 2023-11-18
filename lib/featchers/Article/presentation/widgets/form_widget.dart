@@ -46,6 +46,7 @@ class _FormWidgetState extends State<FormWidget> {
   void validateFormthenUpdateOrAddArticle(
       Uint8List? selectedImageInBytes, String type) {
     final article = Article(
+        userId: widget.user!.uid,
         type: type, //! add the type of objet her
         email: widget.user!.email!,
         article: _articleControlor.text,

@@ -18,6 +18,7 @@ class ArticleParCategorieWidget {
     String isHover = '';
     void navToarticlepage(int index) {
       final artic = Article(
+          userId: articleList[index].userId,
           type: articleList[index].type,
           email: articleList[index].email,
           article: articleList[index].article,

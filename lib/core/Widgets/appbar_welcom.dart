@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/Article/presentation/ui/profile_screen.dart';
+import 'package:mk/featchers/Profile/presentation/page/profile_screen.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
@@ -165,7 +165,8 @@ class AppbarWelcom {
                   hoverColor: Colors.red,
                   onPressed: () {
                     BlocProvider.of<MessagesCubit>(context).initialEvent();
-
+                    BlocProvider.of<DescusionCubit>(context)
+                        .getDescusionEvent();
                     Navigator.push(
                         context,
                         MaterialPageRoute(

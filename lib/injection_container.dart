@@ -9,16 +9,12 @@ import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dar
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
-import 'package:mk/featchers/Article/presentation/bloc/get_mes_articles_cuibit/get_mes_articles_cubit.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/get_user_id_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
 import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart';
-import 'package:mk/featchers/Article/data/repository_impl/profile_repository_impl.dart';
-import 'package:mk/featchers/Article/domain/use_case/get_mes_article_use_case.dart';
-import 'package:mk/featchers/Article/domain/repository/profile_repository.dart';
 import 'package:mk/featchers/messaget_futchers/datat/data_sources/data_sources.dart';
 import 'package:mk/featchers/messaget_futchers/datat/repository_impl/repository_impl_message.dart';
 import 'package:mk/featchers/messaget_futchers/domain/repository/repository_message.dart';
@@ -72,7 +68,6 @@ Future<void> init() async {
         singInGoogleUseCase: sl(),
       ));
   sl.registerFactory(() => RecherchCubit(getSearchResultsUseCase: sl()));
-  sl.registerFactory(() => GetMesArticlesCubit(getMesArticlesUSeCase: sl()));
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
@@ -109,7 +104,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DelletArticleUseCase(sl()));
   sl.registerLazySingleton(() => UpdateArticleUseCase(sl()));
   sl.registerLazySingleton(() => GetAllWelcomeArticleUseCase(sl()));
-  sl.registerLazySingleton(() => GetMesArticlesUSeCase(sl()));
 
   // Repository
 
@@ -119,8 +113,7 @@ Future<void> init() async {
       () => UserRepositooryImpl(userDataSources: sl()));
   sl.registerLazySingleton<WelcomeRepository>(
       () => WelcomeRepositoryImpl(welcomeDataSource: sl()));
-  sl.registerLazySingleton<ProfileRepository>(
-      () => ProfileRepositoryImpl(profileDataSources: sl()));
+
   sl.registerLazySingleton<RepositoryMesaage>(
       () => RepositoryImplMessage(dataSourcesMessages: sl()));
 

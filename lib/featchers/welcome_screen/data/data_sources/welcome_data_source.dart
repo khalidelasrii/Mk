@@ -45,6 +45,7 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
             final subArticleData = subDoc.data();
 
             return WelcomeArticleModel(
+                userId: subArticleData['userId'] ?? "",
                 type: subArticleData['type'],
                 email: subArticleData['email'],
                 article: subArticleData['article'],
@@ -78,6 +79,7 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
         final subCollectionArticles = subCollectionSnapshot.docs.map((docdoc) {
           final subArticleData = docdoc.data();
           return WelcomeArticleModel(
+              userId: subArticleData['userId'],
               type: subArticleData['type'],
               email: subArticleData['email'],
               name: subArticleData['name'],

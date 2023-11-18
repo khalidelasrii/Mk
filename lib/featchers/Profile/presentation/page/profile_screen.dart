@@ -1,15 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
-import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
-import 'package:mk/injection_container.dart' as di;
-
-import '../../../../core/Widgets/core_widgets.dart';
-import '../bloc/get_mes_articles_cuibit/get_mes_articles_cubit.dart';
-import '../widgets/grid_view_body.dart';
+import '../widgets/about_nous.dart';
+import '../widgets/article_profile.dart';
+import '../widgets/profile_Info.dart';
 
 Color mygreen = const Color.fromARGB(115, 76, 175, 79);
 Color myteal = const Color.fromARGB(129, 0, 150, 135);
@@ -22,16 +17,10 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (_) => di.sl<GetMesArticlesCubit>()..mesArticleLoding(),
-          ),
-        ],
-        child: Scaffold(
-          backgroundColor: mybluebackgroundcolor,
-          body: _buildBody(context, user),
-        ));
+    return Scaffold(
+      backgroundColor: mybluebackgroundcolor,
+      body: _buildBody(context, user),
+    );
   }
 }
 
@@ -143,91 +132,4 @@ _buildBody(BuildContext context, User? user) {
       );
     },
   );
-}
-
-//! About Nous
-class AboutNous extends StatelessWidget {
-  const AboutNous({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-        color: myblue,
-        child: MaterialButton(
-            onPressed: () {
-              BlocProvider.of<AuthCubit>(context).singOut();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const WelcomeScreen()));
-            },
-            child: Container(
-                color: Colors.amber,
-                constraints: const BoxConstraints(maxWidth: 200),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Deconection',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ))),
-      ),
-    );
-  }
-}
-
-//! Profile Info
-class ProfileInfo extends StatelessWidget {
-  const ProfileInfo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-        color: profilcolor,
-      ),
-    );
-  }
-}
-//! Articles
-
-class MesArticlesDeProfile extends StatelessWidget {
-  const MesArticlesDeProfile({super.key, required this.user});
-  final User? user;
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-        color: mygreen,
-        child: BlocBuilder<GetMesArticlesCubit, GetMesArticlesState>(
-          builder: (context, state) {
-            if (state is LodidMesArticlesState) {
-              return GridViewBody(
-                articles: state.articles,
-                isDisktop: true,
-                user: user,
-              );
-            } else {
-              return const SizedBox(
-                child: Center(
-                  child: CerclulareLodingWidget(),
-                ),
-              );
-            }
-          },
-        ),
-      ),
-    );
-  }
 }

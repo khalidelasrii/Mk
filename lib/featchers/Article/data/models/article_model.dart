@@ -2,7 +2,8 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
   const ArticleModel(
-      {required super.type,
+      {required super.userId,
+      required super.type,
       required super.email,
       required super.article,
       required super.name,
@@ -11,6 +12,7 @@ class ArticleModel extends Article {
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
+      userId: map['userId'],
       type: map['type'] ?? '',
       email: map['email'] ?? '',
       id: map['id'] ?? '',
@@ -21,6 +23,7 @@ class ArticleModel extends Article {
   }
   Map<String, dynamic> toMap() {
     return {
+      "userId": userId,
       'id': id,
       'article': article,
       'name': name,
