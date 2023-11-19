@@ -32,6 +32,7 @@ class BardeRocherche {
                                     BorderRadius.all(Radius.circular(25))),
                           ),
                           onChanged: (value) {
+                            print(value);
                             if (value == "") {
                               BlocProvider.of<RecherchCubit>(context)
                                   .closeBoxRecherchEvent();
