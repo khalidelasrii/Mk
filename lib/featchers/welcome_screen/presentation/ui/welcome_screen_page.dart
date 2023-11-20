@@ -9,6 +9,7 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/too
 import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.dart';
 import 'package:mk/injection_container.dart' as di;
 import '../../../../core/Widgets/bar_de_recherche.dart';
+import '../bloc/recherch_cuibit/recherch_cubit.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
@@ -66,14 +67,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             //! Appbar Widget
 
             AppbarWelcom().appBarWidget(context, user),
-            //! Les Boton de tous les categorie
-
-            BarDeBotonPage().secondBar(context),
-            //!   la Sous liste du Catégorie:
-
-            ContainerAllCategorie().containerAllCategorie(),
             //! La bar de recherche :
-
             BlocBuilder<ToolbarCubit, ToolbarState>(
               builder: (context, state) {
                 if (state is ToolbarInitial) {
@@ -82,7 +76,21 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   return const SizedBox();
                 }
               },
-            )
+            ),
+            //! Les Boton de tous les categorie
+            BlocBuilder<RecherchCubit, RecherchState>(
+              builder: (context, state) {
+                if (state is RecherchStartstate) {
+                  return SizedBox();
+                } else {
+                  return BarDeBotonPage().secondBar(context);
+                }
+              },
+            ),
+
+            //!   la Sous liste du Catégorie:
+
+            ContainerAllCategorie().containerAllCategorie(),
           ],
         ),
         BlocBuilder<AppbafontCubit, AppbafontState>(

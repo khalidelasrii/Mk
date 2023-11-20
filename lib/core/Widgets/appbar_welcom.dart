@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +11,7 @@ import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.
 import '../../featchers/Authontification/presentation/ui/sing_in.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
+import '../../featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class AppbarWelcom {
@@ -52,95 +51,94 @@ class AppbarWelcom {
         height: 60,
         child: Row(
           children: [
-            textsearch == null
-                ? Row(
-                    children: [
-                      MaterialButton(
-                        onPressed: () {
-                          BlocProvider.of<MessagesCubit>(context)
-                              .initialEvent();
-                          BlocProvider.of<DescusionCubit>(context)
-                              .getDescusionEvent();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => const WelcomeScreen()));
-                        },
-                        child: Row(
-                          children: [
-                            Image.asset('images/MK.png'),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                      text: 'M',
-                                      style: TextStyle(
-                                          color: color2, fontSize: 30)),
-                                  TextSpan(
-                                      text: 'iloTech',
-                                      style: TextStyle(
-                                          color: color2, fontSize: 20))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              textsearch = '';
-                            });
-                          },
-                          icon: const Icon(
-                            Icons.search,
-                            color: Colors.white,
-                          ))
-                    ],
+            MaterialButton(
+              onPressed: () {
+                BlocProvider.of<MessagesCubit>(context).initialEvent();
+                BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+              },
+              child: Row(
+                children: [
+                  Image.asset('images/MK.png'),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: 'M',
+                            style: TextStyle(color: color2, fontSize: 30)),
+                        TextSpan(
+                            text: 'iloTech',
+                            style: TextStyle(color: color2, fontSize: 20))
+                      ],
+                    ),
                   )
+                ],
+              ),
+            ),
 
-                //! bar de recherche
+            //! bar de recherche
 
+            const Expanded(child: SizedBox()),
+            textsearch == null
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        textsearch = '';
+                      });
+                    },
+                    icon: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ))
                 : Expanded(
+                    flex: 4,
                     child: Container(
                       constraints: const BoxConstraints(maxWidth: 400),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SearchBar(
-                          controller: textEditingController,
-                          padding: const MaterialStatePropertyAll<EdgeInsets>(
-                              EdgeInsets.symmetric(horizontal: 10.0)),
-                          onTap: () {
-                            setState(() {
-                              textsearch = "";
-                            });
-                          },
-                          onChanged: (value) {
-                            print(value);
-                            setState(() {
-                              textsearch = value;
-                            });
-                          },
-                          leading: IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.search)),
-                          trailing: <Widget>[
-                            textsearch == ""
-                                ? SizedBox()
-                                : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        textsearch = "";
-                                      });
-                                      textEditingController.clear();
-                                    },
-                                    icon: const Icon(Icons.clear),
-                                  ),
-                          ],
-                        ),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: SearchBar(
+                            controller: textEditingController,
+                            padding: const MaterialStatePropertyAll<EdgeInsets>(
+                                EdgeInsets.symmetric(horizontal: 10.0)),
+                            onTap: () {
+                              setState(() {
+                                textsearch = "";
+                              });
+                            },
+                            onChanged: (value) {
+                              if (value == "") {
+                                BlocProvider.of<RecherchCubit>(context)
+                                    .closeBoxRecherchEvent();
+                              } else {
+                                BlocProvider.of<RecherchCubit>(context)
+                                    .recherchStatEvent(value);
+                              }
+                              print(value);
+                              setState(() {
+                                textsearch = value;
+                              });
+                            },
+                            leading: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.search)),
+                            trailing: <Widget>[
+                              textsearch == ""
+                                  ? SizedBox()
+                                  : IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          textsearch = "";
+                                        });
+                                        textEditingController.clear();
+                                      },
+                                      icon: const Icon(Icons.clear),
+                                    ),
+                            ],
+                          )),
                     ),
                   ),
-            const Expanded(child: SizedBox()),
+
             user != null
                 ? MaterialButton(
                     onPressed: () {
