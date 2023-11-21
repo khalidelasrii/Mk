@@ -7,9 +7,10 @@ class CerclulareLodingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: SizedBox(
-          height: 40,
+          height: 30,
+          width: 30,
           child: CircularProgressIndicator(
-            color: Colors.green,
+            color: Colors.white,
           )),
     );
   }

@@ -72,8 +72,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: [
             //! Appbar Widget
 
-            AppbarWelcom().appBarWidget(context, user),
-
+            AppbarWelcome(
+              user: user,
+            ),
             //! La bar de recherche :
             BlocBuilder<ToolbarCubit, ToolbarState>(
               builder: (context, state) {

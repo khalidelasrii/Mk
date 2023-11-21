@@ -9,31 +9,21 @@ import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 import '../../domain/entitie/article.dart';
 import '../../../welcome_screen/presentation/ui/article_produit.dart';
 
-class GridViewBody extends StatefulWidget {
-  const GridViewBody(
-      {super.key,
-      required this.articles,
-      required this.isDisktop,
-      required this.user});
+class GridViewBody extends StatelessWidget {
+  const GridViewBody({super.key, required this.articles, required this.user});
   final List<Article> articles;
-  final bool isDisktop;
   final User? user;
 
-  @override
-  State<GridViewBody> createState() => _GridViewBodyState();
-}
-
-class _GridViewBodyState extends State<GridViewBody> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: SizedBox(
         child: GridView.builder(
-          itemCount: widget.articles.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: widget.isDisktop == true ? 6 : 3),
+          itemCount: articles.length,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 6),
           itemBuilder: (context, index) {
-            final article = widget.articles[index];
+            final article = articles[index];
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: MaterialButton(
@@ -96,13 +86,13 @@ class _GridViewBodyState extends State<GridViewBody> {
                                         builder: (_) => AddOrUpdateArticle(
                                               isUpdate: true,
                                               article: article,
-                                              user: widget.user,
+                                              user: user,
                                             )));
                               } else if (newValue == '2') {
                                 BlocProvider.of<AddordeletorupdateBloc>(context)
                                     .add(DelletArticleEvent(
                                         articlId: article.id,
-                                        collectionId: article.email));
+                                        collectionId: article.type));
                                 BlocProvider.of<ArticleBloc>(context)
                                     .add(GetAllArticlesEvent());
                               }

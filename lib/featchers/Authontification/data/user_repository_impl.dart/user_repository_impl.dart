@@ -5,7 +5,7 @@ import 'package:mk/featchers/Authontification/data/date_sources.dart/user_data_s
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:mk/featchers/Authontification/domain/repository/user_repository.dart';
 
-class UserRepositooryImpl implements UserRepository {
+class UserRepositooryImpl implements RepositoryAuth {
   UserDataSources userDataSources;
   UserRepositooryImpl({required this.userDataSources});
   @override

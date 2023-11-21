@@ -4,7 +4,7 @@ import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:mk/featchers/Authontification/domain/repository/user_repository.dart';
 
 class SingInUseCase {
-  UserRepository userRepository;
+  RepositoryAuth userRepository;
   SingInUseCase(this.userRepository);
 
   Future<Either<String, User?>> call(Usr usr) async {

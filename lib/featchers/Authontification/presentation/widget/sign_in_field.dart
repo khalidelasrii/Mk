@@ -13,18 +13,18 @@ class SingInField extends StatefulWidget {
 }
 
 class _SingInFieldState extends State<SingInField> {
+  TextEditingController emailControllor = TextEditingController();
+  TextEditingController passwordControllor = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    emailControllor.dispose();
+    passwordControllor.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailControllor = TextEditingController();
-    TextEditingController passwordControllor = TextEditingController();
-
-    @override
-    void dispose() {
-      super.dispose();
-      emailControllor.dispose();
-      passwordControllor.dispose();
-    }
-
     return Center(
         child: SingleChildScrollView(
       child: Column(

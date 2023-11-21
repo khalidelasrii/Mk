@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
@@ -42,7 +43,7 @@ class ArticleRepositoryImpl implements RepositoryArticles {
   }
 
   @override
-  Future<Either<Faillure, List<Article>>> getallArticles() async {
+  Future<Either<Faillure, Stream<QuerySnapshot<Map>>>> getallArticles() async {
     try {
       return Right(await articlesFirebase.getAllArticles());
     } on ServerException {

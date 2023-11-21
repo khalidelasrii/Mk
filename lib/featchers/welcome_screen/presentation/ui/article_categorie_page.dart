@@ -32,7 +32,9 @@ class _ArticleCategoriePageState extends State<ArticleCategoriePage> {
       backgroundColor: mybluebackgroundcolor,
       body: Column(
         children: [
-          AppbarWelcom().appBarWidget(context, user),
+          AppbarWelcome(
+            user: user,
+          ),
           Expanded(
             child: SizedBox(
               child: Row(

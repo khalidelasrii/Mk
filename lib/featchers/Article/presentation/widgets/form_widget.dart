@@ -43,6 +43,15 @@ class _FormWidgetState extends State<FormWidget> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _articleControlor.dispose();
+    _prixControlor.dispose();
+    _nameControlor.dispose();
+    _idControlor.dispose();
+  }
+
   void validateFormthenUpdateOrAddArticle(
       Uint8List? selectedImageInBytes, String type) {
     final article = Article(

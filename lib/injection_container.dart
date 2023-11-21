@@ -13,6 +13,9 @@ import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
 import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart';
+import 'package:mk/featchers/Profile/data/repository_impl/repository_profile_impl.dart';
+import 'package:mk/featchers/Profile/domaine/use_case/get_mes_articles_use_case.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:mk/featchers/messaget_futchers/datat/data_sources/data_sources.dart';
 import 'package:mk/featchers/messaget_futchers/datat/repository_impl/repository_impl_message.dart';
 import 'package:mk/featchers/messaget_futchers/domain/repository/repository_message.dart';
@@ -42,6 +45,8 @@ import 'featchers/Authontification/data/user_repository_impl.dart/user_repositor
 import 'featchers/Authontification/domain/repository/user_repository.dart';
 import 'featchers/Authontification/domain/use_case/singup_use_case.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'featchers/Profile/data/data_sources/profile_data_source.dart';
+import 'featchers/Profile/domaine/repository/repository_profile.dart';
 import 'featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import 'featchers/welcome_screen/domain/use_case/get_all_welcome_article_use_case.dart';
 import 'featchers/welcome_screen/presentation/bloc/secondcont_cuibit/secoundcont_cubit.dart';
@@ -68,6 +73,8 @@ Future<void> init() async {
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
   sl.registerFactory(() => AppbafontCubit());
+  sl.registerFactory(() => ProfileBloc(getMesArticlesUseCase: sl()));
+
   sl.registerFactory(
       () => AdoorArticlesCubit(getAllWelcomeArticleUseCase: sl()));
   sl.registerFactory(
@@ -80,7 +87,7 @@ Future<void> init() async {
       messageVuUseCase: sl()));
 
   // Use cases
-
+  sl.registerLazySingleton(() => GetMesArticlesUseCase(sl()));
   sl.registerLazySingleton(() => NbrVuUseCase(sl()));
   sl.registerLazySingleton(() => MessageVuUseCase(sl()));
   sl.registerLazySingleton(() => GetMessageUseCase(sl()));
@@ -101,17 +108,19 @@ Future<void> init() async {
 
   // Repository
 
+  sl.registerLazySingleton<RepositoryMesaage>(
+      () => RepositoryImplMessage(dataSourcesMessages: sl()));
+  sl.registerLazySingleton<RepositoryProfile>(
+      () => RepositoryProfileImpl(profileDataSource: sl()));
   sl.registerLazySingleton<RepositoryArticles>(
       () => ArticleRepositoryImpl(articlesFirebase: sl()));
-  sl.registerLazySingleton<UserRepository>(
+  sl.registerLazySingleton<RepositoryAuth>(
       () => UserRepositooryImpl(userDataSources: sl()));
   sl.registerLazySingleton<WelcomeRepository>(
       () => WelcomeRepositoryImpl(welcomeDataSource: sl()));
 
-  sl.registerLazySingleton<RepositoryMesaage>(
-      () => RepositoryImplMessage(dataSourcesMessages: sl()));
-
   // Data sources
+  sl.registerLazySingleton<ProfileDataSource>(() => ProfileDataSourceImpl());
 
   sl.registerLazySingleton<ArticlesRemoteDataSource>(() => ArticlesFirebase());
   sl.registerLazySingleton<UserDataSources>(() => UserDataSourcesImpl1());

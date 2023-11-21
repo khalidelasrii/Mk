@@ -3,88 +3,86 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ArticlesRemoteDataSource {
-  Future<List<Article>> getAllArticles();
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllArticles();
+  Future<Stream<QuerySnapshot<Map>>> getAllArticlestype(String type);
   Future<Unit> updateArticle(Article article);
   Future<Unit> addArticle(Article article);
-  Future<Unit> delletArticle(String collectionId, String id);
+  Future<Unit> delletArticle(String collectiontype, String id);
   Future<Unit> addoorableArticle(Article article);
 }
 
 class ArticlesFirebase implements ArticlesRemoteDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance.currentUser;
-  firebase_storage.FirebaseStorage storage =
-      firebase_storage.FirebaseStorage.instance;
-  List<String> collectionName = [
-    'Forniture',
-    'Livres',
-    'Cartables',
-    'Stylo',
-    'Cartables',
-    'Autres',
-  ];
 
   @override
   Future<Unit> addArticle(Article article) async {
     try {
-      // Récupérer l'ID de l'utilisateur (vous devez avoir un moyen de l'obtenir)
-      final String userId =
-          article.email; // Changez cela pour obtenir l'ID de l'utilisateur
+      final String userId = _auth!.uid;
 
       // Créez un ID unique pour le fichier image
-      String uniqueImageId = DateTime.now().millisecondsSinceEpoch.toString();
+      String uniqueImageId =
+          userId + DateTime.now().millisecondsSinceEpoch.toString();
 
-      // Créez une référence au dossier de l'utilisateur dans Firebase Storage
       Reference userFolderRef =
           FirebaseStorage.instance.ref().child('user_images/$userId');
 
-      // Créez une référence au fichier image dans le dossier de l'utilisateur
       Reference imageRef = userFolderRef.child('$uniqueImageId.jpg');
 
-      // Définir les métadonnées pour le fichier image
       final metadata = SettableMetadata(contentType: 'image/jpeg');
 
-      // Uploader l'image à l'emplacement spécifié
       await imageRef.putData(article.selectedImageInBytes!, metadata);
 
-      // Obtenir l'URL de téléchargement de l'image téléchargée
       String imageUrl = await imageRef.getDownloadURL();
 
       // Enregistrez les informations de l'image dans la base de données Firestore
 
       await _firestore
           .collection('Articles')
-          .doc(userId)
+          .doc(_auth!.uid)
           .collection(article.type)
-          .add({
-        "userId": article.userId,
+          .doc(uniqueImageId)
+          .set({
+        "userId": _auth!.uid,
+        "id": uniqueImageId,
         'type': article.type,
-        'id': uniqueImageId,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,
-        'email': article.email,
+        'email': _auth!.email,
+        'articleUrl': imageUrl,
+      });
+      await _firestore.collection('Searche').doc(uniqueImageId).set({
+        "userId": _auth!.uid,
+        "id": uniqueImageId,
+        'type': article.type,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': _auth!.email,
         'articleUrl': imageUrl,
       });
 
-      await _firestore.collection('Searche').doc(uniqueImageId).set({
-        "userId": article.userId,
+      await _firestore
+          .collection('Searche')
+          .doc(article.type)
+          .collection(article.type)
+          .doc(uniqueImageId)
+          .set({
+        "userId": _auth!.uid,
+        "id": uniqueImageId,
         'type': article.type,
-        'id': uniqueImageId,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,
-        'email': article.email,
+        'email': _auth!.email,
         'articleUrl': imageUrl,
       });
-      await _firestore.collection('Articles').doc(userId).set({
-        'email': userId,
-      });
+
       return unit;
     } catch (error) {
       return unit;
@@ -92,13 +90,24 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<Unit> delletArticle(String collectionId, String id) async {
+  Future<Unit> delletArticle(String typeArticle, String id) async {
+    await _firestore.collection('Articles').doc(id).delete();
     await _firestore
         .collection('Articles')
-        .doc(collectionId)
-        .collection(collectionId)
+        .doc(_auth!.uid)
+        .collection(typeArticle)
         .doc(id)
         .delete();
+
+    await _firestore
+        .collection('Searche')
+        .doc(typeArticle)
+        .collection(typeArticle)
+        .doc(id)
+        .delete();
+
+    await _firestore.collection('Searche').doc(id).delete();
+
     return unit; // Utilisez "unit" ici au lieu de "Future.value(unit)"
   }
 
@@ -106,44 +115,60 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   Future<Unit> updateArticle(Article article) async {
     await _firestore
         .collection('Articles')
-        .doc(_auth!.email)
-        .collection(_auth!.email!)
+        .doc(_auth!.uid)
+        .collection(article.type)
         .doc(article.id)
         .set({
+      "userId": _auth!.uid,
+      "id": article.id,
+      'type': article.type,
       'article': article.article,
       'name': article.name,
       'prix': article.prix,
+      'email': _auth!.email,
+      'articleUrl': article.articleUrl,
+    });
+    await _firestore.collection('Searche').doc(article.id).set({
+      "userId": _auth!.uid,
+      "id": article.id,
+      'type': article.type,
+      'article': article.article,
+      'name': article.name,
+      'prix': article.prix,
+      'email': _auth!.email,
+      'articleUrl': article.articleUrl,
+    });
+    await _firestore
+        .collection('Searche')
+        .doc(article.type)
+        .collection(article.type)
+        .doc(article.id)
+        .set({
+      "userId": _auth!.uid,
+      "id": article.id,
+      'type': article.type,
+      'article': article.article,
+      'name': article.name,
+      'prix': article.prix,
+      'email': _auth!.email,
+      'articleUrl': article.articleUrl,
     });
     return unit;
   }
 
   @override
-  Future<List<Article>> getAllArticles() async {
-    final articlesCollection = _firestore.collection('Searche');
-    QuerySnapshot<Map<String, dynamic>> snapshot =
-        await articlesCollection.get();
-
-    List<Article> subCollectionArticles = snapshot.docs.map((subDoc) {
-      Map<String, dynamic> subArticleData = subDoc.data();
-
-      return Article(
-          userId: subArticleData['userId'] ?? "",
-          type: subArticleData['type'],
-          email: subArticleData['email'],
-          id: subDoc.id,
-          name: subArticleData['name'],
-          prix: subArticleData['prix'],
-          article: subArticleData['article'],
-          articleUrl: subArticleData['articleUrl']);
-    }).toList();
-
-    return subCollectionArticles;
+  Future<Stream<QuerySnapshot<Map>>> getAllArticlestype(String type) async {
+    return _firestore
+        .collection('Searche')
+        .doc(type)
+        .collection(type)
+        .snapshots();
   }
 
   @override
   Future<Unit> addoorableArticle(Article article) async {
     try {
-      await _firestore.collection('ArticleAdor').doc(article.id).set({
+      await _firestore.collection('ArticleSherché').doc(article.id).set({
         'userId': article.userId,
         'id': article.id,
         'article': article.article,
@@ -157,5 +182,10 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
     } catch (e) {
       return Future.value(unit);
     }
+  }
+
+  @override
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllArticles() async {
+    return _firestore.collection('Searche').snapshots();
   }
 }

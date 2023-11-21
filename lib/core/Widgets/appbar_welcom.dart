@@ -14,36 +14,54 @@ import '../../featchers/messaget_futchers/presentation/bloc/message_cubit/messag
 import '../../featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
-class AppbarWelcom {
-  User? userVer;
+class AppbarWelcome extends StatefulWidget {
+  const AppbarWelcome({super.key, required this.user});
+  final User? user;
 
-  appBarWidget(BuildContext context, User? userVer) {
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return BlocBuilder<ToolbarCubit, ToolbarState>(
-          builder: (context, state) {
-            if (state is ToolbarInitial) {
-              return appbarwelcom(
-                  context, Colors.transparent, Colors.white, userVer);
-            } else if (state is CategorieState1 ||
-                state is CategorieState2 ||
-                state is CategorieState3 ||
-                state is CategorieState4 ||
-                state is CategorieState5 ||
-                state is CategorieState6) {
-              return appbarwelcom(context,
-                  const Color.fromARGB(70, 49, 128, 52), Colors.amber, userVer);
-            }
-            return appbarwelcom(
-                context, Colors.transparent, Colors.white, userVer);
-          },
-        );
+  @override
+  State<AppbarWelcome> createState() => _AppbarWelcomeState();
+}
+
+class _AppbarWelcomeState extends State<AppbarWelcome> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
+    BlocProvider.of<MessagesCubit>(context).initialEvent();
+  }
+
+  TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    textEditingController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ToolbarCubit, ToolbarState>(
+      builder: (context, state) {
+        if (state is ToolbarInitial) {
+          return appbarwelcom(context, Colors.transparent, Colors.white,
+              widget.user, textEditingController);
+        } else if (state is CategorieState1 ||
+            state is CategorieState2 ||
+            state is CategorieState3 ||
+            state is CategorieState4 ||
+            state is CategorieState5 ||
+            state is CategorieState6) {
+          return appbarwelcom(context, const Color.fromARGB(70, 49, 128, 52),
+              Colors.amber, widget.user, textEditingController);
+        }
+        return appbarwelcom(context, Colors.transparent, Colors.white,
+            widget.user, textEditingController);
       },
     );
   }
 
-  appbarwelcom(BuildContext context, Color color1, Color color2, User? user) {
-    TextEditingController textEditingController = TextEditingController();
+  appbarwelcom(BuildContext context, Color color1, Color color2, User? user,
+      TextEditingController textEditingController) {
     String? textsearch;
     return StatefulBuilder(builder: (context, setState) {
       return Container(
@@ -64,10 +82,6 @@ class AppbarWelcom {
                             //! logo
                             MaterialButton(
                               onPressed: () {
-                                BlocProvider.of<MessagesCubit>(context)
-                                    .initialEvent();
-                                BlocProvider.of<DescusionCubit>(context)
-                                    .getDescusionEvent();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -93,7 +107,7 @@ class AppbarWelcom {
                                 ],
                               ),
                             ),
-                            Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox()),
                             IconButton(
                                 onPressed: () {
                                   setState(() {
@@ -108,7 +122,7 @@ class AppbarWelcom {
                         ),
                       )
                     : Container(
-                        constraints: BoxConstraints(maxWidth: 1000),
+                        constraints: const BoxConstraints(maxWidth: 1000),
                         child: Row(
                           children: [
                             //! bar de recherche
@@ -176,9 +190,6 @@ class AppbarWelcom {
             user != null
                 ? MaterialButton(
                     onPressed: () {
-                      BlocProvider.of<MessagesCubit>(context).initialEvent();
-                      BlocProvider.of<DescusionCubit>(context)
-                          .getDescusionEvent();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -252,8 +263,6 @@ class AppbarWelcom {
                 focusColor: Colors.orange,
                 hoverColor: Colors.red,
                 onPressed: () {
-                  BlocProvider.of<MessagesCubit>(context).initialEvent();
-                  BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
                   BlocProvider.of<AppbafontCubit>(context)
                       .appBarfontPressedEvent();
                 },
@@ -269,9 +278,6 @@ class AppbarWelcom {
                       focusColor: Colors.orange,
                       hoverColor: Colors.red,
                       onPressed: () {
-                        BlocProvider.of<MessagesCubit>(context).initialEvent();
-                        BlocProvider.of<DescusionCubit>(context)
-                            .getDescusionEvent();
                         Navigator.push(
                             context,
                             MaterialPageRoute(

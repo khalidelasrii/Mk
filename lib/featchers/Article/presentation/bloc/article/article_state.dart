@@ -9,11 +9,9 @@ sealed class ArticleState extends Equatable {
 
 final class ArticleInitial extends ArticleState {}
 
-class LodingArticlesState extends ArticleState {}
-
-class LodedAllarticles extends ArticleState {
-  final List<Article> articles;
-  const LodedAllarticles({required this.articles});
+class LodedAllarticlesState extends ArticleState {
+  final Stream<QuerySnapshot<Map>> articles;
+  const LodedAllarticlesState({required this.articles});
   @override
   List<Object> get props => [articles];
 }

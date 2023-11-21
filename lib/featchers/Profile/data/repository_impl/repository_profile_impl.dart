@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 
@@ -25,6 +26,16 @@ class RepositoryProfileImpl implements RepositoryProfile {
   Future<Either<Faillure, ProfileUser>> getMyProfile() async {
     try {
       return Right(await profileDataSource.getMyProfile());
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Faillure, Stream<QuerySnapshot>>> getMesArticle(
+      String typearticle) async {
+    try {
+      return Right(await profileDataSource.getmesArticles(typearticle));
     } on ServerException {
       return Left(ServerFailure());
     }

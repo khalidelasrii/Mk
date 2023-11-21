@@ -55,9 +55,7 @@ class Maktabati extends StatelessWidget {
           BlocProvider(create: (context) => di.sl<ToolbarCubit>()),
           BlocProvider(create: (context) => di.sl<RecherchCubit>()),
           BlocProvider(create: (context) => di.sl<MessagesCubit>()),
-          BlocProvider(
-              create: (context) =>
-                  di.sl<DescusionCubit>()..getDescusionEvent()),
+          BlocProvider(create: (context) => di.sl<DescusionCubit>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -41,7 +41,9 @@ buildbody(BuildContext context, Article article, User? user) {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            AppbarWelcom().appBarWidget(context, user),
+            AppbarWelcome(
+              user: user,
+            ),
             BardeRocherche().bardeRocherche(context),
             SizedBox(
               child: Row(
