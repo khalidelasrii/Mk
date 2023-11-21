@@ -9,11 +9,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user_model.dart';
 
 abstract class UserDataSources {
-  Future<Unit> signIn(Usr usr);
-  Future<Unit> signUp(Usr usr);
+  Future<User?> signIn(Usr usr);
+  Future<User?> signUp(Usr usr);
   Future<Unit> singOut();
-  Future<bool> isSignIn();
-  Future<UserModel> getUserId();
   Future<UserCredential?> signInWithGoogle();
 }
 
@@ -22,26 +20,30 @@ class UserDataSourcesImpl1 implements UserDataSources {
   final _firebase = FirebaseFirestore.instance;
 
   @override
-  Future<Unit> signIn(Usr usr) async {
+  Future<User?> signIn(Usr usr) async {
     await _auth.signInWithEmailAndPassword(
         email: usr.email, password: usr.password);
-    return unit;
+    return _auth.currentUser;
   }
 
   @override
-  Future<Unit> signUp(Usr usr) async {
-    UserModel usermodel = UserModel(
-        adress: usr.adress,
-        payes: usr.payes,
-        email: usr.email,
-        password: usr.password);
-    await _firebase.collection('Users').doc(usr.email).set(usermodel.toMap());
+  Future<User?> signUp(Usr usr) async {
     await _auth.createUserWithEmailAndPassword(
       email: usr.email,
       password: usr.password,
     );
 
-    return unit;
+    await _firebase.collection('Users').add(UserModel(
+            uid: _auth.currentUser!.uid,
+            name: usr.name,
+            phoneNumber: usr.phoneNumber,
+            adress: usr.adress,
+            payes: usr.payes,
+            email: usr.email,
+            password: usr.password)
+        .toMap());
+
+    return _auth.currentUser;
   }
 
   @override
@@ -51,41 +53,33 @@ class UserDataSourcesImpl1 implements UserDataSources {
   }
 
   @override
-  Future<bool> isSignIn() async => _auth.currentUser?.uid != null;
-
-  @override
-  Future<UserModel> getUserId() async {
-    final user = _auth.currentUser;
-    return UserModel(
-        adress: '',
-        payes: '',
-        password: '',
-        uid: user!.uid,
-        name: user.displayName ?? 'Best User',
-        phoneNumber: user.phoneNumber ?? '',
-        email: user.email!,
-        profile: user.photoURL ?? '');
-  }
-
-  @override
   Future<UserCredential?> signInWithGoogle() async {
-    try {
-      final GoogleSignIn _googleSignIn = GoogleSignIn();
-      final GoogleSignInAccount? googleSignInAccount =
-          await _googleSignIn.signIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
 
+    try {
+      // Attempt to sign in silently
+      final GoogleSignInAccount? googleSignInAccount =
+          await googleSignIn.signIn();
       if (googleSignInAccount != null) {
+        // If sign in silently is successful, get authentication credentials
         final GoogleSignInAuthentication googleSignInAuthentication =
             await googleSignInAccount.authentication;
+
+        // Create AuthCredential using Google Sign-In credentials
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
+
+        // Sign in with Firebase using the AuthCredential
         return await FirebaseAuth.instance.signInWithCredential(credential);
+      } else {
+        // If sign in silently is not successful, return null
+        return null;
       }
     } catch (error) {
-      print("Error signing in with Google: $error");
+      // Handle any errors that occur during the sign-in process
+      return null;
     }
-    return null;
   }
 }

@@ -13,11 +13,14 @@ class UserModel extends Usr {
 
   Map<String, dynamic> toMap() {
     return {
+      "payes": payes,
+      "profile": profile,
+      'phoneNumber': phoneNumber,
       'id': uid,
       'email': email,
       'name': name,
       'adress': adress,
-      'phone': phoneNumber,
+      "password": password,
     };
   }
 }

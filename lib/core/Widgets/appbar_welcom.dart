@@ -48,97 +48,131 @@ class AppbarWelcom {
     return StatefulBuilder(builder: (context, setState) {
       return Container(
         color: color1,
-        height: 60,
+        constraints:
+            const BoxConstraints(minHeight: 60, maxWidth: double.infinity),
         child: Row(
           children: [
-            MaterialButton(
-              onPressed: () {
-                BlocProvider.of<MessagesCubit>(context).initialEvent();
-                BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const WelcomeScreen()));
-              },
-              child: Row(
-                children: [
-                  Image.asset('images/MK.png'),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: 'M',
-                            style: TextStyle(color: color2, fontSize: 30)),
-                        TextSpan(
-                            text: 'iloTech',
-                            style: TextStyle(color: color2, fontSize: 20))
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            //! bar de recherche
-
-            const Expanded(child: SizedBox()),
-            textsearch == null
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        textsearch = '';
-                      });
-                    },
-                    icon: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                    ))
-                : Expanded(
-                    flex: 4,
-                    child: Container(
-                      constraints: const BoxConstraints(maxWidth: 400),
-                      child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SearchBar(
-                            controller: textEditingController,
-                            padding: const MaterialStatePropertyAll<EdgeInsets>(
-                                EdgeInsets.symmetric(horizontal: 10.0)),
-                            onTap: () {
-                              setState(() {
-                                textsearch = "";
-                              });
-                            },
-                            onChanged: (value) {
-                              if (value == "") {
-                                BlocProvider.of<RecherchCubit>(context)
-                                    .closeBoxRecherchEvent();
-                              } else {
-                                BlocProvider.of<RecherchCubit>(context)
-                                    .recherchStatEvent(value);
-                              }
-                              print(value);
-                              setState(() {
-                                textsearch = value;
-                              });
-                            },
-                            leading: IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.search)),
-                            trailing: <Widget>[
-                              textsearch == ""
-                                  ? SizedBox()
-                                  : IconButton(
-                                      onPressed: () {
+            Expanded(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 2000),
+                child: textsearch == null
+                    ? Container(
+                        constraints: const BoxConstraints(
+                            maxHeight: 60, maxWidth: double.infinity),
+                        child: Row(
+                          children: [
+                            //! logo
+                            MaterialButton(
+                              onPressed: () {
+                                BlocProvider.of<MessagesCubit>(context)
+                                    .initialEvent();
+                                BlocProvider.of<DescusionCubit>(context)
+                                    .getDescusionEvent();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const WelcomeScreen()));
+                              },
+                              child: Row(
+                                children: [
+                                  Image.asset('images/MK.png'),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                            text: 'M',
+                                            style: TextStyle(
+                                                color: color2, fontSize: 30)),
+                                        TextSpan(
+                                            text: 'iloTech',
+                                            style: TextStyle(
+                                                color: color2, fontSize: 20))
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            Expanded(child: SizedBox()),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    textsearch = '';
+                                  });
+                                },
+                                icon: const Icon(
+                                  Icons.search,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
+                      )
+                    : Container(
+                        constraints: BoxConstraints(maxWidth: 1000),
+                        child: Row(
+                          children: [
+                            //! bar de recherche
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 400),
+                                child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SearchBar(
+                                      controller: textEditingController,
+                                      padding: const MaterialStatePropertyAll<
+                                              EdgeInsets>(
+                                          EdgeInsets.symmetric(
+                                              horizontal: 10.0)),
+                                      onTap: () {
                                         setState(() {
                                           textsearch = "";
                                         });
-                                        textEditingController.clear();
                                       },
-                                      icon: const Icon(Icons.clear),
-                                    ),
-                            ],
-                          )),
-                    ),
-                  ),
-
+                                      onChanged: (value) {
+                                        if (value == "") {
+                                          BlocProvider.of<RecherchCubit>(
+                                                  context)
+                                              .closeBoxRecherchEvent();
+                                        } else {
+                                          BlocProvider.of<RecherchCubit>(
+                                                  context)
+                                              .recherchStatEvent(value);
+                                        }
+                                        setState(() {
+                                          textsearch = value;
+                                        });
+                                      },
+                                      leading: IconButton(
+                                          onPressed: () {},
+                                          icon: const Icon(Icons.search)),
+                                      trailing: <Widget>[
+                                        textsearch == ""
+                                            ? const SizedBox()
+                                            : IconButton(
+                                                onPressed: () {
+                                                  BlocProvider.of<
+                                                              RecherchCubit>(
+                                                          context)
+                                                      .closeBoxRecherchEvent();
+                                                  setState(() {
+                                                    textsearch = null;
+                                                  });
+                                                  textEditingController.clear();
+                                                },
+                                                icon: const Icon(Icons.clear),
+                                              ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            const Expanded(child: SizedBox()),
+                          ],
+                        ),
+                      ),
+              ),
+            ),
             user != null
                 ? MaterialButton(
                     onPressed: () {
@@ -210,6 +244,8 @@ class AppbarWelcom {
                     )),
                   )
                 : const SizedBox(),
+
+            //! Shop Icon
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: IconButton(
@@ -227,52 +263,55 @@ class AppbarWelcom {
                 ),
               ),
             ),
-            user != null
-                ? MaterialButton(
-                    focusColor: Colors.orange,
-                    hoverColor: Colors.red,
-                    onPressed: () {
-                      BlocProvider.of<MessagesCubit>(context).initialEvent();
-                      BlocProvider.of<DescusionCubit>(context)
-                          .getDescusionEvent();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => ProfileScreen(
-                                    user: user,
-                                  )));
-                    },
-                    child: user.photoURL != null
-                        ? ClipOval(
-                            child: Image.network(
-                              user.photoURL!,
-                              height: 50,
-                              fit: BoxFit.cover,
-                            ),
-                          )
-                        : Icon(Icons.person, color: color2),
-                  )
-                : MaterialButton(
-                    hoverColor: Colors.red,
-                    focusColor: Colors.orange,
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => const SingIn()));
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.person,
-                          color: color2,
-                        ),
-                        Text(
-                          'Connexion',
-                          style: TextStyle(
+            SizedBox(
+              child: user != null
+                  ? MaterialButton(
+                      focusColor: Colors.orange,
+                      hoverColor: Colors.red,
+                      onPressed: () {
+                        BlocProvider.of<MessagesCubit>(context).initialEvent();
+                        BlocProvider.of<DescusionCubit>(context)
+                            .getDescusionEvent();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => ProfileScreen(
+                                      user: user,
+                                    )));
+                      },
+                      child: user.photoURL != null
+                          ? ClipOval(
+                              child: Image.network(
+                                user.photoURL!,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Icon(Icons.person, color: color2),
+                    )
+                  : MaterialButton(
+                      hoverColor: Colors.red,
+                      focusColor: Colors.orange,
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (_) => const SingIn()));
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.person,
                             color: color2,
                           ),
-                        )
-                      ],
-                    ))
+                          Text(
+                            'Connexion',
+                            style: TextStyle(
+                              color: color2,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+            ),
           ],
         ),
       );

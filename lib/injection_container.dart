@@ -9,8 +9,6 @@ import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dar
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
-import 'package:mk/featchers/Authontification/domain/use_case/get_user_id_usecase.dart';
-import 'package:mk/featchers/Authontification/domain/use_case/is_singin_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
@@ -63,8 +61,6 @@ Future<void> init() async {
         singInUseCase: sl(),
         singOutUseCase: sl(),
         singUpUseCase: sl(),
-        isSingInUsecase: sl(),
-        getUserIdUSecase: sl(),
         singInGoogleUseCase: sl(),
       ));
   sl.registerFactory(() => RecherchCubit(getSearchResultsUseCase: sl()));
@@ -94,8 +90,6 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));
   sl.registerLazySingleton(() => SingOutUseCase(sl()));
-  sl.registerLazySingleton(() => IsSingInUsecase(sl()));
-  sl.registerLazySingleton(() => GetUserIdUSecase(sl()));
   sl.registerLazySingleton(() => SingInGoogleUseCase(sl()));
   sl.registerLazySingleton(() => ArticleParTypeUseCase(sl()));
   sl.registerLazySingleton(() => GetAllArticleUseCase(sl()));

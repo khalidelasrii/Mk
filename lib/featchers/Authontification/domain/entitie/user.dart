@@ -21,5 +21,6 @@ class Usr extends Equatable {
       this.uid});
 
   @override
-  List<Object?> get props => [email, password, profile, name, uid];
+  List<Object?> get props =>
+      [email, password, profile, name, uid, adress, payes, uid];
 }

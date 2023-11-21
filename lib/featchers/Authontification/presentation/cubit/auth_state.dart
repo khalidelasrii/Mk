@@ -10,12 +10,9 @@ sealed class AuthState extends Equatable {
 final class AuthInitial extends AuthState {}
 
 class IsSingInState extends AuthState {
-  final Usr userId;
+  final User? userId;
 
   const IsSingInState({required this.userId});
-
-  @override
-  List<Object> get props => [userId];
 }
 
 class IsSingOutstate extends AuthState {

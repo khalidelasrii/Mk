@@ -5,7 +5,7 @@ class GetSearchResultsUseCase {
   WelcomeRepository welcomeRepository;
   GetSearchResultsUseCase(this.welcomeRepository);
 
-  Stream<QuerySnapshot> call(String query) {
-    return welcomeRepository.getSearchResults(query);
+  Future<Stream<QuerySnapshot<Object?>>> call(String query) async {
+    return await welcomeRepository.getSearchResults(query);
   }
 }

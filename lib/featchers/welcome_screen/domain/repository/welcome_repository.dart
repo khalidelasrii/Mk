@@ -7,5 +7,5 @@ abstract class WelcomeRepository {
   Future<Either<Faillure, List<WelcomeArticle>>> getAllWelcomeArticle();
   Future<Either<Faillure, List<WelcomeArticle>>> articleParCategorie(
       String collection);
-  Stream<QuerySnapshot> getSearchResults(String query);
+  Future<Stream<QuerySnapshot<Object?>>> getSearchResults(String query);
 }

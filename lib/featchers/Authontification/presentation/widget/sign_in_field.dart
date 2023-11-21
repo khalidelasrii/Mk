@@ -5,17 +5,22 @@ import '../../domain/entitie/user.dart';
 import '../cubit/auth_cubit.dart';
 import '../ui/sing_up.dart';
 
-class SingInField extends StatelessWidget {
-  const SingInField({required this.isDisktop, super.key});
-  final bool isDisktop;
+class SingInField extends StatefulWidget {
+  const SingInField({super.key});
 
   @override
+  State<SingInField> createState() => _SingInFieldState();
+}
+
+class _SingInFieldState extends State<SingInField> {
+  @override
   Widget build(BuildContext context) {
-    final emailControllor = TextEditingController();
-    final passwordControllor = TextEditingController();
+    TextEditingController emailControllor = TextEditingController();
+    TextEditingController passwordControllor = TextEditingController();
 
     @override
-    void despose() {
+    void dispose() {
+      super.dispose();
       emailControllor.dispose();
       passwordControllor.dispose();
     }

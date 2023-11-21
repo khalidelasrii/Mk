@@ -23,8 +23,10 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   User? user;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     FirebaseAuth.instance.authStateChanges().listen(
       (User? userr) {
         if (userr != null) {
@@ -34,6 +36,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         }
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => di.sl<CategoriecheldrenCubit>()),
@@ -43,10 +49,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         child: Scaffold(
             backgroundColor: const Color.fromARGB(183, 0, 0, 0),
             // appBar: _buildAppbar(),
-            body: _buildbody()));
+            body: _buildbody(context, user)));
   }
 
-  _buildbody() {
+  _buildbody(BuildContext context, User? user) {
     return SingleChildScrollView(
         child: Column(children: [
       Stack(alignment: AlignmentDirectional.topEnd, children: [
@@ -67,6 +73,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             //! Appbar Widget
 
             AppbarWelcom().appBarWidget(context, user),
+
             //! La bar de recherche :
             BlocBuilder<ToolbarCubit, ToolbarState>(
               builder: (context, state) {
@@ -81,7 +88,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             BlocBuilder<RecherchCubit, RecherchState>(
               builder: (context, state) {
                 if (state is RecherchStartstate) {
-                  return SizedBox();
+                  return const SizedBox();
                 } else {
                   return BarDeBotonPage().secondBar(context);
                 }

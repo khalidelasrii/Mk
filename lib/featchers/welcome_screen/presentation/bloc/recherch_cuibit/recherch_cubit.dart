@@ -14,7 +14,7 @@ class RecherchCubit extends Cubit<RecherchState> {
     emit(RecherchInitial());
   }
 
-  recherchStatEvent(String value) {
-    emit(RecherchStartstate(getSearchResultsUseCase(value)));
+  recherchStatEvent(String value) async {
+    emit(RecherchStartstate(await getSearchResultsUseCase(value)));
   }
 }

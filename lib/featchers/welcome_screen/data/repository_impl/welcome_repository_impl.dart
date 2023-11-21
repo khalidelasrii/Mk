@@ -30,7 +30,7 @@ class WelcomeRepositoryImpl implements WelcomeRepository {
   }
 
   @override
-  Stream<QuerySnapshot<Object?>> getSearchResults(String query) {
-    return welcomeDataSource.getSearchResults(query);
+  Future<Stream<QuerySnapshot<Object?>>> getSearchResults(String query) async {
+    return await welcomeDataSource.getSearchResults(query);
   }
 }

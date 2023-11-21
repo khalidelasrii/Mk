@@ -2,44 +2,38 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
-import 'package:mk/core/responsive.dart';
 import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/Authontification/presentation/widget/sing_up_field.dart';
 
-class SingUp extends StatelessWidget {
+import '../../../welcome_screen/presentation/ui/welcome_screen_page.dart';
+
+class SingUp extends StatefulWidget {
   const SingUp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const ResponsiveLayote(
-        disktopScafolde: SingUpDeskTop(), moubileSccafolde: SingUpMobile());
-  }
+  State<SingUp> createState() => _SingUpState();
 }
 
-class SingUpDeskTop extends StatelessWidget {
-  const SingUpDeskTop({super.key});
+class _SingUpState extends State<SingUp> {
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const WelcomeScreen()));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.black,
       appBar: _myapbar(),
-      body: _mybody(context, true),
-    );
-  }
-}
-
-class SingUpMobile extends StatelessWidget {
-  const SingUpMobile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green,
-      appBar: _myapbar(),
-      body: _mybody(context, false),
+      body: _mybody(context),
     );
   }
 }
@@ -58,100 +52,56 @@ AppBar _myapbar() {
   );
 }
 
-Widget _mybody(BuildContext context, bool isDisktop) {
+Widget _mybody(BuildContext context) {
   return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
     if (state is ErrorSingState) {
       SnackBarMessage()
           .showErrorSnackBar(message: state.message, context: context);
     } else if (state is IsSingInState) {
-      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (_) => const HomePage()));
     }
   }, builder: (context, state) {
     if (state is LodingAuthState) {
-      FirebaseAuth.instance.authStateChanges().listen((User? usr) {
-        if (usr != null) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (_) => HomePage()));
-        }
-      });
       return const CerclulareLodingWidget();
-    }
-    return Center(
-      child: Padding(
-        padding: isDisktop == true
-            ? const EdgeInsets.symmetric(horizontal: 150, vertical: 80)
-            : const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        child: Container(
-          constraints: const BoxConstraints(minWidth: 300, minHeight: 300),
-          child: isDisktop == true
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          border: Border.all(color: Colors.black),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              bottomLeft: Radius.circular(25)),
-                        ),
-                        child: Image.asset("images/logo.gif"),
+    } else {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 50),
+          child: Container(
+              constraints: const BoxConstraints(minWidth: 300, minHeight: 300),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        border: Border.all(color: Colors.black),
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(25),
+                            bottomLeft: Radius.circular(25)),
                       ),
+                      child: Image.asset("images/logo.gif"),
                     ),
-                    Expanded(
-                        flex: 3,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            gradient: const LinearGradient(
-                                colors: [Colors.black, Colors.blueAccent]),
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(25),
-                                bottomRight: Radius.circular(25)),
-                          ),
-                          child: SingUpField(
-                            isDisktop: isDisktop,
-                          ),
-                        ))
-                  ],
-                )
-              : Column(
-                  children: [
-                    Expanded(
+                  ),
+                  Expanded(
+                      flex: 3,
                       child: Container(
-                        width: double.infinity,
                         decoration: BoxDecoration(
-                          color: Colors.black,
                           border: Border.all(color: Colors.black),
+                          gradient: const LinearGradient(
+                              colors: [Colors.black, Colors.blueAccent]),
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(25),
-                              topRight: Radius.circular(25)),
+                              topRight: Radius.circular(25),
+                              bottomRight: Radius.circular(25)),
                         ),
-                        child: Image.asset("images/logo.gif"),
-                      ),
-                    ),
-                    Expanded(
-                        flex: 3,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            gradient: const LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [Colors.black, Colors.blueAccent]),
-                            borderRadius: const BorderRadius.only(
-                                bottomRight: Radius.circular(25),
-                                bottomLeft: Radius.circular(25)),
-                          ),
-                          child: SingUpField(
-                            isDisktop: isDisktop,
-                          ),
-                        ))
-                  ],
-                ),
+                        child: SingUpField(),
+                      ))
+                ],
+              )),
         ),
-      ),
-    );
+      );
+    }
   });
 }

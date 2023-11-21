@@ -61,6 +61,14 @@ class MessageCore extends StatefulWidget {
 
 class _MessageCoreState extends State<MessageCore> {
   String? messageTo;
+  TextEditingController duscusTextEditingController = TextEditingController();
+  TextEditingController messagetextEditingController = TextEditingController();
+  @override
+  void dispose() {
+    super.dispose();
+    duscusTextEditingController.dispose();
+    messagetextEditingController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +80,8 @@ class _MessageCoreState extends State<MessageCore> {
           // Partie gauche : Négociations
           Expanded(
             child: Container(
-              child: descusionCorefonction(context, widget.user),
+              child: descusionCorefonction(
+                  context, widget.user, duscusTextEditingController),
             ),
           ),
           // Partie droite : Messages
@@ -83,7 +92,8 @@ class _MessageCoreState extends State<MessageCore> {
                   ? Center(
                       child: SizedBox(child: Image.asset('images/MK.png')),
                     )
-                  : messageCorefonction(context, widget.user),
+                  : messageCorefonction(
+                      context, widget.user, messagetextEditingController),
             ),
           ),
         ],
@@ -92,9 +102,8 @@ class _MessageCoreState extends State<MessageCore> {
   }
 
   // Fonctionnalité principale des négociations
-  descusionCorefonction(BuildContext context, User? user) {
-    TextEditingController textEditingController = TextEditingController();
-
+  descusionCorefonction(BuildContext context, User? user,
+      TextEditingController textEditingController) {
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -221,8 +230,8 @@ class _MessageCoreState extends State<MessageCore> {
   }
 
   // Fonctionnalité principale des messages
-  messageCorefonction(BuildContext context, User? user) {
-    TextEditingController textEditingController = TextEditingController();
+  messageCorefonction(BuildContext context, User? user,
+      TextEditingController textEditingController) {
     String message = "";
 
     // Fonction pour mettre à jour le nombre de messages vus

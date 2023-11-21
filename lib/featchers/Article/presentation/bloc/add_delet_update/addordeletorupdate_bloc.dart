@@ -1,12 +1,14 @@
 // ignore: depend_on_referenced_packages
 
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mk/core/messages.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/dellet_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 
+import '../../../../../core/errure/faillure.dart';
 import '../../../domain/entitie/article.dart';
 
 part 'addordeletorupdate_event.dart';
@@ -24,23 +26,17 @@ class AddordeletorupdateBloc
       : super(AddordeletorupdateInitial()) {
     on<AddordeletorupdateEvent>((event, emit) async {
       if (event is AddArticleEvent) {
-        if (event.article.article == '' ||
-            event.article.name == '' ||
-            event.article.prix == '') {
-          emit(
-              const ErrorAddDeleteUpdateState(message: SERVER_FAILURE_MESSAGE));
-        } else {
-          final faillureOrDoneMessage = await addArticle(event.article);
+        Either<Faillure, Unit> faillureOrDoneMessage =
+            await addArticle(event.article);
 
-          faillureOrDoneMessage.fold(
-            (faillure) {
-              emit(const ErrorAddDeleteUpdateState(
-                  message: SERVER_FAILURE_MESSAGE));
-            },
-            (_) => emit(
-                const MessageAddDeleteUpdatePostState(message: 'Add Seccess')),
-          );
-        }
+        faillureOrDoneMessage.fold(
+          (faillure) {
+            emit(const ErrorAddDeleteUpdateState(
+                message: SERVER_FAILURE_MESSAGE));
+          },
+          (_) => emit(
+              const MessageAddDeleteUpdatePostState(message: 'Add Seccess')),
+        );
       } else if (event is DelletArticleEvent) {
         emit(LodingAddDeleteUpdateArticleState());
         final faillureOrDoneMessage =

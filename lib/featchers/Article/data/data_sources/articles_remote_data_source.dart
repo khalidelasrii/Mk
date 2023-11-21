@@ -72,7 +72,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'articleUrl': imageUrl,
       });
 
-      await _firestore.collection('ArticleSearche').doc(uniqueImageId).set({
+      await _firestore.collection('Searche').doc(uniqueImageId).set({
         "userId": article.userId,
         'type': article.type,
         'id': uniqueImageId,
@@ -119,7 +119,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
   @override
   Future<List<Article>> getAllArticles() async {
-    final articlesCollection = _firestore.collection('ArticleSearche');
+    final articlesCollection = _firestore.collection('Searche');
     QuerySnapshot<Map<String, dynamic>> snapshot =
         await articlesCollection.get();
 

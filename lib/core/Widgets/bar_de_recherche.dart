@@ -20,7 +20,6 @@ class BardeRocherche {
               if (state is RecherchStartstate) {
                 return Row(
                   children: [
-                    const Expanded(child: SizedBox()),
                     Expanded(
                       child: Container(
                         height: 300,
@@ -79,6 +78,7 @@ class BardeRocherche {
                         ),
                       ),
                     ),
+                    const Expanded(child: SizedBox()),
                   ],
                 );
               }

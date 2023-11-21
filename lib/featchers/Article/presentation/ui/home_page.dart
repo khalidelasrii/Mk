@@ -23,10 +23,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     BlocProvider.of<ArticleBloc>(context).add(GetAllArticlesEvent());
-  }
-
-  @override
-  Widget build(BuildContext context) {
     FirebaseAuth.instance.authStateChanges().listen(
       (User? user) {
         if (user != null) {
@@ -36,6 +32,10 @@ class _HomePageState extends State<HomePage> {
         }
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mybluebackgroundcolor,
       body: _buildBody(context, true, userconnect),

@@ -4,7 +4,7 @@ import 'package:mk/featchers/welcome_screen/data/models/welcome_article_model.da
 abstract class WelcomeDataSource {
   Future<List<WelcomeArticleModel>> getAllArticle();
   Future<List<WelcomeArticleModel>> articlePartype(String collection);
-  Stream<QuerySnapshot> getSearchResults(String query);
+  Future<Stream<QuerySnapshot>> getSearchResults(String query);
 }
 
 class WelcomeDataSourcesImpl implements WelcomeDataSource {
@@ -19,7 +19,7 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
     'Autres',
   ];
   @override
-  Stream<QuerySnapshot> getSearchResults(String query) {
+  Future<Stream<QuerySnapshot>> getSearchResults(String query) async {
     return FirebaseFirestore.instance
         .collection('ArticleSearche')
         .where('name', isGreaterThanOrEqualTo: query)

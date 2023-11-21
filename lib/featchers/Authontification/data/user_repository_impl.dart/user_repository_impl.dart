@@ -9,10 +9,9 @@ class UserRepositooryImpl implements UserRepository {
   UserDataSources userDataSources;
   UserRepositooryImpl({required this.userDataSources});
   @override
-  Future<Either<String, Unit>> singIn(Usr usr) async {
+  Future<Either<String, User?>> singIn(Usr usr) async {
     try {
-      await userDataSources.signIn(usr);
-      return const Right(unit);
+      return Right(await userDataSources.signIn(usr));
     } catch (e) {
       return const Left('Error to connect');
     }
@@ -28,10 +27,9 @@ class UserRepositooryImpl implements UserRepository {
   }
 
   @override
-  Future<Either<String, Unit>> singUp(Usr usr) async {
+  Future<Either<String, User?>> singUp(Usr usr) async {
     try {
-      await userDataSources.signUp(usr);
-      return const Right(unit);
+      return Right(await userDataSources.signUp(usr));
     } catch (e) {
       return const Left('Error to connect try a gaine');
     }
@@ -40,15 +38,5 @@ class UserRepositooryImpl implements UserRepository {
   @override
   Future<Unit> singOut() async {
     return await userDataSources.singOut();
-  }
-
-  @override
-  Future<bool> isSignIn() async {
-    return await userDataSources.isSignIn();
-  }
-
-  @override
-  Future<Usr> getUserId() async {
-    return await userDataSources.getUserId();
   }
 }
