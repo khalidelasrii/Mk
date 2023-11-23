@@ -9,16 +9,16 @@ sealed class ProfileState extends Equatable {
 
 final class ProfileInitial extends ProfileState {}
 
-class ProleLodedState extends ProfileState {
+class ProfileLodedState extends ProfileState {
   final ProfileUser profileUser;
-  const ProleLodedState({required this.profileUser});
+  const ProfileLodedState({required this.profileUser});
   @override
   List<Object> get props => [profileUser];
 }
 
-class LodedArticleState extends ProfileState {
-  final Stream<QuerySnapshot<Map>> articles;
-  const LodedArticleState({required this.articles});
+class ArticleLodedState extends ProfileState {
+  final Stream<QuerySnapshot<Map<String, dynamic>>> articles;
+  const ArticleLodedState({required this.articles});
   @override
   List<Object> get props => [articles];
 }

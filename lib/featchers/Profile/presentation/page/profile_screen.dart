@@ -38,35 +38,6 @@ class ProfileScreen extends StatelessWidget {
                     AppbarWelcome(
                       user: user,
                     ),
-                    BottomNavigationBar(
-                      backgroundColor: const Color.fromARGB(98, 0, 0, 0),
-                      selectedItemColor: Colors.amber,
-                      unselectedItemColor: Colors.white,
-                      elevation: 0,
-                      currentIndex: currentIndex,
-                      onTap: (int newIndex) {
-                        setState(() {
-                          currentIndex = newIndex;
-                        });
-                      },
-                      items: [
-                        const BottomNavigationBarItem(
-                          backgroundColor: Color.fromARGB(98, 0, 0, 0),
-                          icon: Icon(Icons.person),
-                          label: 'Profil',
-                        ),
-                        BottomNavigationBarItem(
-                          backgroundColor: mygreen,
-                          icon: const Icon(Icons.category),
-                          label: 'Articles',
-                        ),
-                        BottomNavigationBarItem(
-                          backgroundColor: myblue,
-                          icon: const Icon(Icons.info),
-                          label: 'About Nous',
-                        ),
-                      ],
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: SizedBox(
@@ -75,6 +46,7 @@ class ProfileScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               width: 300,
+                              height: 1100,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
@@ -123,7 +95,48 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            pages[currentIndex]
+                            Expanded(
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                    maxHeight: 3000, maxWidth: 3000),
+                                child: Column(
+                                  children: [
+                                    BottomNavigationBar(
+                                      backgroundColor:
+                                          const Color.fromARGB(98, 0, 0, 0),
+                                      selectedItemColor: Colors.amber,
+                                      unselectedItemColor: Colors.white,
+                                      elevation: 0,
+                                      currentIndex: currentIndex,
+                                      onTap: (int newIndex) {
+                                        setState(() {
+                                          currentIndex = newIndex;
+                                        });
+                                      },
+                                      items: [
+                                        const BottomNavigationBarItem(
+                                          backgroundColor:
+                                              Color.fromARGB(98, 0, 0, 0),
+                                          icon: Icon(Icons.person),
+                                          label: 'Profil',
+                                        ),
+                                        BottomNavigationBarItem(
+                                          backgroundColor: mygreen,
+                                          icon: const Icon(Icons.category),
+                                          label: 'Articles',
+                                        ),
+                                        BottomNavigationBarItem(
+                                          backgroundColor: myblue,
+                                          icon: const Icon(Icons.info),
+                                          label: 'About Nous',
+                                        ),
+                                      ],
+                                    ),
+                                    pages[currentIndex]
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),

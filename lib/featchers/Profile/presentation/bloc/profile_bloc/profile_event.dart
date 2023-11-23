@@ -7,9 +7,9 @@ sealed class ProfileEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetMesArticles extends ProfileEvent {
+class GetMesArticlesEvent extends ProfileEvent {
   final String articletype;
-  const GetMesArticles({required this.articletype});
+  const GetMesArticlesEvent({required this.articletype});
   @override
   List<Object> get props => [articletype];
 }

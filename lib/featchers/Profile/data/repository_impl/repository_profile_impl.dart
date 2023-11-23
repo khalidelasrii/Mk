@@ -13,27 +13,17 @@ class RepositoryProfileImpl implements RepositoryProfile {
   final ProfileDataSource profileDataSource;
   RepositoryProfileImpl({required this.profileDataSource});
   @override
-  Future<Either<Faillure, ProfileUser>> getAutreProfile(
-      ProfileUser proUser) async {
+  Future<Either<Faillure, ProfileUser>> getProfile(ProfileUser proUser) async {
     try {
-      return Right(await profileDataSource.getAutreProfile(proUser));
+      return Right(await profileDataSource.getProfile(proUser));
     } on ServerException {
       return Left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<Faillure, ProfileUser>> getMyProfile() async {
-    try {
-      return Right(await profileDataSource.getMyProfile());
-    } on ServerException {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<Either<Faillure, Stream<QuerySnapshot>>> getMesArticle(
-      String typearticle) async {
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getMesArticle(String typearticle) async {
     try {
       return Right(await profileDataSource.getmesArticles(typearticle));
     } on ServerException {

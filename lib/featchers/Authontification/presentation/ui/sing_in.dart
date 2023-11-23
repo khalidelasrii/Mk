@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/core/snackbar_widget.dart';
-import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
@@ -54,16 +53,14 @@ AppBar _myapbar() {
 
 Widget _mybody(BuildContext context) {
   return BlocConsumer<AuthCubit, AuthState>(listener: (context, state) {
-    print(state);
     if (state is ErrorSingState) {
       SnackBarMessage()
           .showErrorSnackBar(message: state.message, context: context);
     } else if (state is IsSingInState) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+      SnackBarMessage()
+          .showSuccessSnackBar(message: "Hello !", context: context);
     }
   }, builder: (context, state) {
-    print(state);
     if (state is LodingAuthState) {
       return const CerclulareLodingWidget();
     } else {

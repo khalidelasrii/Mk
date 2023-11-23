@@ -1,63 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domaine/entitie/profile_user.dart';
 
 abstract class ProfileDataSource {
-  Future<ProfileUser> getMyProfile();
-  Future<ProfileUser> getAutreProfile(ProfileUser profile);
-  Future<Stream<QuerySnapshot>> getmesArticles(String typearticle);
+  Future<ProfileUser> getProfile(ProfileUser profile);
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getmesArticles(
+      String typearticle);
 }
 
 class ProfileDataSourceImpl implements ProfileDataSource {
-  final _firestore = FirebaseFirestore.instance;
-  // final _auth = FirebaseAuth.instance;
-  List<String> collectionName = [
-    'Forniture',
-    'Livres',
-    'Cartables',
-    'Stylo',
-    'Cartables',
-    'Autres',
-  ];
-  @override
-  Future<Stream<QuerySnapshot<Map>>> getmesArticles(String typearticle) async {
-    // for (var collection in collectionName) {
-    //   final querysnapshot = await _firestore
-    //       .collection('Articles')
-    //       .doc(_auth.currentUser!.email)
-    //       .collection(collection)
-    //       .get();
-    //   final xx = querysnapshot.docs.map((alluser) {
-    //     final data = alluser.data();
-    //     final usrid = alluser.id;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance.currentUser;
 
-    //     return ProfleArticle(
-    //         userId: data['userId'] ?? "",
-    //         type: data['type'],
-    //         email: data['email'],
-    //         id: usrid,
-    //         name: data['name'],
-    //         prix: data['prix'],
-    //         article: data['article'],
-    //         articleUrl: data['articleUrl']);
-    //   }).toList();
-    //   articlesList.addAll(xx);
-    // }
+  @override
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getmesArticles(
+      String type) async {
     return _firestore
         .collection('Articles')
-        .doc()
-        .collection(typearticle)
+        .doc(_auth!.uid)
+        .collection(type)
+        .orderBy("date", descending: true)
         .snapshots();
   }
 
   @override
-  Future<ProfileUser> getMyProfile() {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ProfileUser> getAutreProfile(ProfileUser profile) {
+  Future<ProfileUser> getProfile(ProfileUser profile) {
     throw UnimplementedError();
   }
 }

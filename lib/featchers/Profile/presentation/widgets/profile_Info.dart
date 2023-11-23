@@ -7,11 +7,10 @@ class ProfileInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-        color: profilcolor,
-      ),
+    return Container(
+      color: profilcolor,
+      width: double.infinity,
+      height: 1000,
     );
   }
 }

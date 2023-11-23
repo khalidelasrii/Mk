@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dartz/dartz.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,8 +10,9 @@ import '../models/user_model.dart';
 abstract class UserDataSources {
   Future<User?> signIn(Usr usr);
   Future<User?> signUp(Usr usr);
-  Future<Unit> singOut();
+  Future<void> singOut();
   Future<UserCredential?> signInWithGoogle();
+  Future<void> addUser(Usr user);
 }
 
 class UserDataSourcesImpl1 implements UserDataSources {
@@ -47,9 +47,8 @@ class UserDataSourcesImpl1 implements UserDataSources {
   }
 
   @override
-  Future<Unit> singOut() async {
+  Future<void> singOut() async {
     await _auth.signOut();
-    return unit;
   }
 
   @override
@@ -81,5 +80,10 @@ class UserDataSourcesImpl1 implements UserDataSources {
       // Handle any errors that occur during the sign-in process
       return null;
     }
+  }
+
+  @override
+  Future<void> addUser(Usr user) async {
+    throw UnimplementedError();
   }
 }

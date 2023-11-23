@@ -6,5 +6,6 @@ abstract class RepositoryAuth {
   Future<Either<String, User?>> singIn(Usr usr);
   Future<Either<String, User?>> singUp(Usr usr);
   Future<Either<String, UserCredential?>> signInWithGoogle();
-  Future<Unit> singOut();
+  Future<void> singOut();
+  Future<void> addUser(Usr user);
 }

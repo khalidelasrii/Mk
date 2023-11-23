@@ -22,6 +22,8 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   @override
   Future<Unit> addArticle(Article article) async {
     try {
+      final messageid = Timestamp.now();
+
       final String userId = _auth!.uid;
 
       // Créez un ID unique pour le fichier image
@@ -55,6 +57,23 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
+        "date": messageid,
+      });
+      await _firestore
+          .collection('Articles')
+          .doc(_auth!.uid)
+          .collection("AllCategorie")
+          .doc(uniqueImageId)
+          .set({
+        "userId": _auth!.uid,
+        "id": uniqueImageId,
+        'type': article.type,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': _auth!.email,
+        'articleUrl': imageUrl,
+        "date": messageid,
       });
       await _firestore.collection('Searche').doc(uniqueImageId).set({
         "userId": _auth!.uid,
@@ -65,6 +84,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
+        "date": messageid,
       });
 
       await _firestore
@@ -81,6 +101,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
+        "date": messageid,
       });
 
       return unit;
@@ -98,7 +119,12 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         .collection(typeArticle)
         .doc(id)
         .delete();
-
+    await _firestore
+        .collection('Articles')
+        .doc(_auth!.uid)
+        .collection("AllCategorie")
+        .doc(id)
+        .delete();
     await _firestore
         .collection('Searche')
         .doc(typeArticle)
@@ -162,6 +188,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         .collection('Searche')
         .doc(type)
         .collection(type)
+        .orderBy("date", descending: true)
         .snapshots();
   }
 
@@ -176,6 +203,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': article.email,
         'articleUrl': article.articleUrl,
+        'date': article.date
       });
 
       return Future.value(unit);
@@ -186,6 +214,9 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
   @override
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllArticles() async {
-    return _firestore.collection('Searche').snapshots();
+    return _firestore
+        .collection('Searche')
+        .orderBy("date", descending: true)
+        .snapshots();
   }
 }

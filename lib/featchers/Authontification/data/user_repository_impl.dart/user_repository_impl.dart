@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:mk/featchers/Authontification/data/date_sources.dart/user_data_sources.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
-import 'package:mk/featchers/Authontification/domain/repository/user_repository.dart';
+import 'package:mk/featchers/Authontification/domain/repository/repository_auth.dart';
 
 class UserRepositooryImpl implements RepositoryAuth {
   UserDataSources userDataSources;
@@ -36,7 +36,12 @@ class UserRepositooryImpl implements RepositoryAuth {
   }
 
   @override
-  Future<Unit> singOut() async {
-    return await userDataSources.singOut();
+  Future<void> singOut() async {
+    return userDataSources.singOut();
+  }
+
+  @override
+  Future<void> addUser(Usr user) async {
+    await userDataSources.addUser(user);
   }
 }

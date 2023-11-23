@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,8 @@ class _FormWidgetState extends State<FormWidget> {
 
   void validateFormthenUpdateOrAddArticle(
       Uint8List? selectedImageInBytes, String type) {
-    final article = Article(
+    final Article article = Article(
+        date: Timestamp.now(),
         userId: widget.user!.uid,
         type: type, //! add the type of objet her
         email: widget.user!.email!,
@@ -79,6 +81,28 @@ class _FormWidgetState extends State<FormWidget> {
     }
   }
 
+  // Method to pick image in flutter web
+  Future<void> pickImage() async {
+    try {
+      // Pick image using file_picker package
+      FilePickerResult? fileResult = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+      );
+
+      // If user picks an image, save selected image to variable
+      if (fileResult != null) {
+        setState(() {
+          _imageFile = fileResult.files.first.name;
+          selectedImageInBytes = fileResult.files.first.bytes;
+        });
+      }
+    } catch (e) {
+      // If an error occured, show SnackBar with error message
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Error:$e")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -89,7 +113,7 @@ class _FormWidgetState extends State<FormWidget> {
         Padding(
           padding: const EdgeInsets.only(top: 70, left: 20),
           child: Container(
-            constraints: BoxConstraints(maxHeight: 300, maxWidth: 300),
+            constraints: const BoxConstraints(maxHeight: 300, maxWidth: 300),
             child: MaterialButton(
               onPressed: () {
                 // Calling pickImage Method
@@ -138,10 +162,11 @@ class _FormWidgetState extends State<FormWidget> {
                         hint: Row(
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
                               child: Text(
                                 typeArticle,
-                                style: TextStyle(color: Colors.red),
+                                style: const TextStyle(color: Colors.red),
                               ),
                             ),
                             const Icon(
@@ -165,6 +190,16 @@ class _FormWidgetState extends State<FormWidget> {
                             )),
                           ),
                           DropdownMenuItem(
+                            value: 'Cartables',
+                            child: Center(
+                                child: Text(
+                              'Cartables',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            )),
+                          ),
+                          DropdownMenuItem(
                             value: 'Livres',
                             child: Center(
                                 child: Text(
@@ -179,16 +214,6 @@ class _FormWidgetState extends State<FormWidget> {
                             child: Center(
                                 child: Text(
                               'Stylo',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            )),
-                          ),
-                          DropdownMenuItem(
-                            value: 'Cartables',
-                            child: Center(
-                                child: Text(
-                              'Cartables',
                               style: TextStyle(
                                 color: Colors.white,
                               ),
@@ -339,27 +364,5 @@ class _FormWidgetState extends State<FormWidget> {
         //! Drope Down boton
       ]),
     );
-  }
-
-  // Method to pick image in flutter web
-  Future<void> pickImage() async {
-    try {
-      // Pick image using file_picker package
-      FilePickerResult? fileResult = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-      );
-
-      // If user picks an image, save selected image to variable
-      if (fileResult != null) {
-        setState(() {
-          _imageFile = fileResult.files.first.name;
-          selectedImageInBytes = fileResult.files.first.bytes;
-        });
-      }
-    } catch (e) {
-      // If an error occured, show SnackBar with error message
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Error:$e")));
-    }
   }
 }

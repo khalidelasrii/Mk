@@ -9,6 +9,7 @@ import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dar
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
+import 'package:mk/featchers/Authontification/domain/use_case/add_user_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
@@ -42,7 +43,7 @@ import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
 import 'featchers/Article/domain/use_case/dellet_article_use_case.dart';
 import 'featchers/Authontification/data/date_sources.dart/user_data_sources.dart';
 import 'featchers/Authontification/data/user_repository_impl.dart/user_repository_impl.dart';
-import 'featchers/Authontification/domain/repository/user_repository.dart';
+import 'featchers/Authontification/domain/repository/repository_auth.dart';
 import 'featchers/Authontification/domain/use_case/singup_use_case.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'featchers/Profile/data/data_sources/profile_data_source.dart';
@@ -63,6 +64,7 @@ Future<void> init() async {
         updateArticle: sl(),
       ));
   sl.registerFactory(() => AuthCubit(
+        addUserUseCase: sl(),
         singInUseCase: sl(),
         singOutUseCase: sl(),
         singUpUseCase: sl(),
@@ -87,6 +89,8 @@ Future<void> init() async {
       messageVuUseCase: sl()));
 
   // Use cases
+
+  sl.registerLazySingleton(() => AddUserUseCase(sl()));
   sl.registerLazySingleton(() => GetMesArticlesUseCase(sl()));
   sl.registerLazySingleton(() => NbrVuUseCase(sl()));
   sl.registerLazySingleton(() => MessageVuUseCase(sl()));

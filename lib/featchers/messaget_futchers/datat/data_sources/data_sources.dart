@@ -20,11 +20,16 @@ class DataSourcesMessagesImpl implements DataSourcesMessages {
   final _auth = FirebaseAuth.instance;
   @override
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getDescusion() async {
-    return _firestore
-        .collection("Descusion")
-        .doc(_auth.currentUser!.email)
-        .collection(_auth.currentUser!.email!)
-        .snapshots();
+    if (_auth.currentUser != null) {
+      return _firestore
+          .collection("Descusion")
+          .doc(_auth.currentUser!.email)
+          .collection(_auth.currentUser!.email!)
+          .orderBy("dateTime", descending: true)
+          .snapshots();
+    } else {
+      return _firestore.collection("Descusion").snapshots();
+    }
   }
 
   @override

@@ -9,6 +9,6 @@ class GetAutreProfileUseCase {
   GetAutreProfileUseCase(this.repositoryProfile);
 
   Future<Either<Faillure, ProfileUser>> call(ProfileUser proUser) async {
-    return await repositoryProfile.getAutreProfile(proUser);
+    return await repositoryProfile.getProfile(proUser);
   }
 }

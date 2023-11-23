@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mk/featchers/Authontification/domain/repository/user_repository.dart';
+import 'package:mk/featchers/Authontification/domain/repository/repository_auth.dart';
 
 class SingInGoogleUseCase {
   RepositoryAuth userRepository;

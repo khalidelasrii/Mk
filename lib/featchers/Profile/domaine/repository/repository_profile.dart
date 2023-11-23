@@ -5,8 +5,7 @@ import 'package:mk/core/errure/faillure.dart';
 import '../entitie/profile_user.dart';
 
 abstract class RepositoryProfile {
-  Future<Either<Faillure, Stream<QuerySnapshot>>> getMesArticle(
-      String typearticle);
-  Future<Either<Faillure, ProfileUser>> getMyProfile();
-  Future<Either<Faillure, ProfileUser>> getAutreProfile(ProfileUser proUser);
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
+      getMesArticle(String typearticle);
+  Future<Either<Faillure, ProfileUser>> getProfile(ProfileUser proUser);
 }

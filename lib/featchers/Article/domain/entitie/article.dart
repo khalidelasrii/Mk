@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Article extends Equatable {
@@ -12,10 +13,12 @@ class Article extends Equatable {
   final Uint8List? selectedImageInBytes;
   final String? articleUrl;
   final String type;
+  final Timestamp? date;
 
   const Article(
       {required this.userId,
       required this.type,
+      this.date,
       this.articleUrl,
       this.selectedImageInBytes,
       required this.email,

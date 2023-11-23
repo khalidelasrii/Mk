@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Article/presentation/ui/home_page.dart';
+import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/Authontification/presentation/widget/sing_up_field.dart';
 
@@ -22,6 +23,8 @@ class _SingUpState extends State<SingUp> {
     super.initState();
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user != null) {
+        BlocProvider.of<AuthCubit>(context).addUser(
+            Usr(adress: "", payes: "", email: "", password: "password"));
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const WelcomeScreen()));
       }

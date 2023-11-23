@@ -26,6 +26,7 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
   @override
   void initState() {
     super.initState();
+
     BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
     BlocProvider.of<MessagesCubit>(context).initialEvent();
   }

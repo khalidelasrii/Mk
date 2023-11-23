@@ -8,7 +8,7 @@ class GetMesArticlesUseCase {
   RepositoryProfile repositoryProfile;
 
   GetMesArticlesUseCase(this.repositoryProfile);
-  Future<Either<Faillure, Stream<QuerySnapshot>>> call(
+  Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>> call(
       String typearticle) async {
     return await repositoryProfile.getMesArticle(typearticle);
   }

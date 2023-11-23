@@ -10,35 +10,35 @@ class AboutNous extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 1000, maxWidth: 1000),
-        color: myblue,
-        child: MaterialButton(
-            onPressed: () {
-              BlocProvider.of<AuthCubit>(context).singOut();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const WelcomeScreen()));
-            },
-            child: Container(
-                color: Colors.amber,
-                constraints: const BoxConstraints(maxWidth: 200),
-                child: const Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Deconection',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: Icon(
-                        Icons.exit_to_app,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ))),
+    return Container(
+      width: double.infinity,
+      height: 1000,
+      color: myblue,
+      child: MaterialButton(
+        onPressed: () {
+          BlocProvider.of<AuthCubit>(context).singOut();
+          Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+        },
+        child: Container(
+            color: Colors.amber,
+            constraints: const BoxConstraints(maxWidth: 200),
+            child: const Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Deconection',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            )),
       ),
     );
   }
