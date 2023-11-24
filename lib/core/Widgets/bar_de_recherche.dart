@@ -1,21 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
+
+import '../../featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
 // ...
 
-class BardeRocherche {
-  bardeRocherche(BuildContext context) {
+class BardeRocherche extends StatelessWidget {
+  const BardeRocherche({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return MouseRegion(
       onExit: (_) {
-        BlocProvider.of<RecherchCubit>(context).closeBoxRecherchEvent();
+        BlocProvider.of<WelcomeArticleBlocBloc>(context)
+            .add(WelcomeBlocInitialEvent());
       },
       child: Stack(
         children: [
           // //! le box de recherche
 
-          BlocBuilder<RecherchCubit, RecherchState>(
+          BlocBuilder<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
             builder: (context, state) {
               if (state is RecherchStartstate) {
                 return Row(
@@ -32,11 +37,12 @@ class BardeRocherche {
                             )),
                         child: MouseRegion(
                           onExit: (_) {
-                            BlocProvider.of<RecherchCubit>(context)
-                                .closeBoxRecherchEvent();
+                            BlocProvider.of<WelcomeArticleBlocBloc>(context)
+                                .add(WelcomeBlocInitialEvent());
                           },
                           child: SizedBox(
-                            child: BlocBuilder<RecherchCubit, RecherchState>(
+                            child: BlocBuilder<WelcomeArticleBlocBloc,
+                                WelcomeArticleBlocState>(
                               builder: (context, state) {
                                 if (state is RecherchStartstate) {
                                   return StreamBuilder<QuerySnapshot>(

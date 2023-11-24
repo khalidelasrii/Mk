@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
-
-import '../../../bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
 class BarBotonsAllPages {
   categoriePageBoton(BuildContext context, bool isin, int bontonNembr,
@@ -11,8 +10,8 @@ class BarBotonsAllPages {
       onEnter: (_) {
         isin = true;
         bontonNembr == 1
-            ? BlocProvider.of<AdoorArticlesCubit>(context)
-                .adoorArticlesloadingEvent()
+            ? BlocProvider.of<WelcomeArticleBlocBloc>(context)
+                .add(AdoorArticlesloadingEvent())
             : null;
 
         BlocProvider.of<ToolbarCubit>(context).categorie1(bontonNembr);

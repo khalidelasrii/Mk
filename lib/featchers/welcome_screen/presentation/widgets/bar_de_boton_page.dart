@@ -18,8 +18,11 @@ Color color6 = Colors.transparent;
 Color colortranst = Colors.white;
 Color greenColor = const Color(0x464CAF4F);
 
-class BarDeBotonPage {
-  secondBar(BuildContext context) {
+class BarDeBotonPage extends StatelessWidget {
+  const BarDeBotonPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     categorieIs(BuildContext context, Color c1, Color c2, Color c3, Color c4,
         Color c5, Color c6, Color tran, Color contaiColor) {
       return Container(

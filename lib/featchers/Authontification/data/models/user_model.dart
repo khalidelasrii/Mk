@@ -2,10 +2,10 @@ import '../../domain/entitie/user.dart';
 
 class UserModel extends Usr {
   const UserModel(
-      {required super.adress,
-      required super.payes,
-      required super.email,
-      required super.password,
+      {super.adress,
+      super.payes,
+      super.email,
+      super.password,
       super.name,
       super.phoneNumber,
       super.profile,

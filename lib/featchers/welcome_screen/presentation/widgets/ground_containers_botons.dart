@@ -5,8 +5,11 @@ import '../bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 import 'all_categorie_boton/pere_container-all_categorie.dart';
 
-class ContainerAllCategorie {
-  containerAllCategorie() {
+class ContainerAllCategorie extends StatelessWidget {
+  const ContainerAllCategorie({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return BlocBuilder<ToolbarCubit, ToolbarState>(
       builder: (context, state) {
         if (state is CategorieState1) {
@@ -47,5 +50,6 @@ class ContainerAllCategorie {
     );
   }
 }
+
 //! seullment pour le temps
 

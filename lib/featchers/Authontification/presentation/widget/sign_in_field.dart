@@ -107,7 +107,11 @@ class _SingInFieldState extends State<SingInField> {
                           email: emailControllor.text,
                           password: passwordControllor.text,
                           adress: '',
-                          payes: '');
+                          payes: '',
+                          name: '',
+                          phoneNumber: '',
+                          profile: '',
+                          uid: '');
                       BlocProvider.of<AuthCubit>(context).singIn(usr);
                     },
                     child: const Text('Connexion'),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
 import '../../../../../Article/presentation/ui/home_page.dart';
 import '../../../bloc/secondcont_cuibit/secoundcont_cubit.dart';
@@ -98,8 +98,8 @@ class ContainerBotons {
               BlocProvider.of<SecoundcontCubit>(context)
                   .ferstGroupEvent(bontonNembr);
               //!
-              BlocProvider.of<AdoorArticlesCubit>(context)
-                  .adoorArticlesloadingEvent();
+              BlocProvider.of<WelcomeArticleBlocBloc>(context)
+                  .add(AdoorArticlesloadingEvent());
             });
           },
           onExit: (_) {

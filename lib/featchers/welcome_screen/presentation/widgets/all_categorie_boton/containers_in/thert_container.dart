@@ -2,8 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/article_categorie_page.dart';
 
 thertContainer() {
@@ -11,7 +10,7 @@ thertContainer() {
     child: Container(
       constraints: const BoxConstraints(maxWidth: 1000),
       height: double.infinity,
-      child: BlocConsumer<AdoorArticlesCubit, AdoorArticlesState>(
+      child: BlocConsumer<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
         listener: (context, state) {},
         builder: (context, state) {
           if (state is LodidAdorArticlesState) {
@@ -28,12 +27,14 @@ thertContainer() {
                       header: Text(article.type),
                       child: MaterialButton(
                         onPressed: () {
-                          BlocProvider.of<ArticleParCategorieCubit>(context)
-                              .getarticleParCategorieEvent(article.type);
+                          BlocProvider.of<WelcomeArticleBlocBloc>(context).add(
+                              GetarticleParCategorieEvent(
+                                  collection: article.type));
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (_) => ArticleCategoriePage()));
+                                  builder: (_) =>
+                                      const ArticleCategoriePage()));
                         },
                         child: ClipOval(
                           child: CachedNetworkImage(

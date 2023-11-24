@@ -10,9 +10,9 @@ sealed class AuthState extends Equatable {
 final class AuthInitial extends AuthState {}
 
 class IsSingInState extends AuthState {
-  final User? userId;
+  final String message;
 
-  const IsSingInState({required this.userId});
+  const IsSingInState({required this.message});
 }
 
 class IsSingOutstate extends AuthState {

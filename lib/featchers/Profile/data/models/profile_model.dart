@@ -1,8 +1,12 @@
 import '../../domaine/entitie/profile_user.dart';
 
 class ProfileModel extends ProfileUser {
-  const ProfileModel(
-      {required super.email, super.name, super.number, super.type, super.user});
+  const ProfileModel({
+    required super.email,
+    super.name,
+    super.number,
+    super.type,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -10,7 +14,6 @@ class ProfileModel extends ProfileUser {
       "name": name,
       "number": number,
       "type": type,
-      "user": user,
     };
   }
 }

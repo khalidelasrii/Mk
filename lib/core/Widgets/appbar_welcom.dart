@@ -5,13 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Profile/presentation/page/profile_screen.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
 import '../../featchers/Authontification/presentation/ui/sing_in.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
-import '../../featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class AppbarWelcome extends StatefulWidget {
@@ -146,15 +145,17 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                                         });
                                       },
                                       onChanged: (value) {
-                                        if (value == "") {
-                                          BlocProvider.of<RecherchCubit>(
-                                                  context)
-                                              .closeBoxRecherchEvent();
-                                        } else {
-                                          BlocProvider.of<RecherchCubit>(
-                                                  context)
-                                              .recherchStatEvent(value);
-                                        }
+                                        value == ""
+                                            ? BlocProvider.of<
+                                                        WelcomeArticleBlocBloc>(
+                                                    context)
+                                                .add(WelcomeBlocInitialEvent())
+                                            : BlocProvider.of<
+                                                        WelcomeArticleBlocBloc>(
+                                                    context)
+                                                .add(RecherchStatEvent(
+                                                    value: value));
+
                                         setState(() {
                                           textsearch = value;
                                         });
@@ -168,9 +169,10 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                                             : IconButton(
                                                 onPressed: () {
                                                   BlocProvider.of<
-                                                              RecherchCubit>(
+                                                              WelcomeArticleBlocBloc>(
                                                           context)
-                                                      .closeBoxRecherchEvent();
+                                                      .add(
+                                                          WelcomeBlocInitialEvent());
                                                   setState(() {
                                                     textsearch = null;
                                                   });
@@ -263,10 +265,7 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
               child: IconButton(
                 focusColor: Colors.orange,
                 hoverColor: Colors.red,
-                onPressed: () {
-                  BlocProvider.of<AppbafontCubit>(context)
-                      .appBarfontPressedEvent();
-                },
+                onPressed: () {},
                 icon: Icon(
                   Icons.shopping_basket,
                   color: color2,

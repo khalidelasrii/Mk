@@ -9,7 +9,6 @@ import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dar
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
-import 'package:mk/featchers/Authontification/domain/use_case/add_user_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
@@ -32,12 +31,9 @@ import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_reposit
 import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/get_search_results_use_case.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/adoor_articles_cuibit/adoor_articles_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/appbafont_cuibit/appbafont_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/article_par_categorie_cuibit/article_par_categorie_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/recherch_cuibit/recherch_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
 import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
 import 'featchers/Article/domain/use_case/dellet_article_use_case.dart';
@@ -51,11 +47,13 @@ import 'featchers/Profile/domaine/repository/repository_profile.dart';
 import 'featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import 'featchers/welcome_screen/domain/use_case/get_all_welcome_article_use_case.dart';
 import 'featchers/welcome_screen/presentation/bloc/secondcont_cuibit/secoundcont_cubit.dart';
+import 'featchers/welcome_screen/presentation/bloc/users_welcome_screen/users_welcome_screen_cubit.dart';
 
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
+  sl.registerFactory(() => UsersWelcomeScreenCubit());
   sl.registerFactory(() =>
       ArticleBloc(getAllArticleUseCase: sl(), addoorableArticlesUseCase: sl()));
   sl.registerFactory(() => AddordeletorupdateBloc(
@@ -64,23 +62,21 @@ Future<void> init() async {
         updateArticle: sl(),
       ));
   sl.registerFactory(() => AuthCubit(
-        addUserUseCase: sl(),
         singInUseCase: sl(),
         singOutUseCase: sl(),
         singUpUseCase: sl(),
         singInGoogleUseCase: sl(),
       ));
-  sl.registerFactory(() => RecherchCubit(getSearchResultsUseCase: sl()));
+  sl.registerFactory(() => WelcomeArticleBlocBloc(
+        getSearchResultsUseCase: sl(),
+        getAllWelcomeArticleUseCase: sl(),
+        articleParTypeUseCase: sl(),
+      ));
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
-  sl.registerFactory(() => AppbafontCubit());
   sl.registerFactory(() => ProfileBloc(getMesArticlesUseCase: sl()));
 
-  sl.registerFactory(
-      () => AdoorArticlesCubit(getAllWelcomeArticleUseCase: sl()));
-  sl.registerFactory(
-      () => ArticleParCategorieCubit(articleParTypeUseCase: sl()));
   sl.registerFactory(
       () => DescusionCubit(getDescusionUseCase: sl(), nbrVuUseCase: sl()));
   sl.registerFactory(() => MessagesCubit(
@@ -90,7 +86,6 @@ Future<void> init() async {
 
   // Use cases
 
-  sl.registerLazySingleton(() => AddUserUseCase(sl()));
   sl.registerLazySingleton(() => GetMesArticlesUseCase(sl()));
   sl.registerLazySingleton(() => NbrVuUseCase(sl()));
   sl.registerLazySingleton(() => MessageVuUseCase(sl()));

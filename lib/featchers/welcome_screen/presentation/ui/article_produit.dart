@@ -44,7 +44,7 @@ buildbody(BuildContext context, Article article, User? user) {
             AppbarWelcome(
               user: user,
             ),
-            BardeRocherche().bardeRocherche(context),
+            const BardeRocherche(),
             SizedBox(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

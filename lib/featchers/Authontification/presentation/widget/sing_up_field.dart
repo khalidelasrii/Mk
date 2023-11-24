@@ -16,6 +16,7 @@ class _SingUpFieldState extends State<SingUpField> {
   TextEditingController nameControllor = TextEditingController();
   TextEditingController emailControllor = TextEditingController();
   TextEditingController passwordControllor = TextEditingController();
+  TextEditingController adressControllor = TextEditingController();
   @override
   void dispose() {
     super.dispose();
@@ -45,7 +46,6 @@ class _SingUpFieldState extends State<SingUpField> {
               child: Row(
                 children: [
                   /// .............................................Name TextField
-
                   Expanded(
                     child: SizedBox(
                       child: Padding(
@@ -110,6 +110,34 @@ class _SingUpFieldState extends State<SingUpField> {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+
+          /// .............................................adress :
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+            child: SizedBox(
+              child: TextField(
+                controller: adressControllor,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hoverColor: Colors.blue,
+                  hintText: 'Adress',
+                  hintStyle: TextStyle(color: Colors.white),
+                  filled: true,
+                  fillColor: Color.fromARGB(255, 209, 194, 149),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 1),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.orange, width: 2),
+                  ),
+                ),
               ),
             ),
           ),
@@ -180,14 +208,15 @@ class _SingUpFieldState extends State<SingUpField> {
                         minimumSize: const Size(200, 50),
                         backgroundColor: Colors.green),
                     onPressed: () {
-                      print("${phoneControllor.text}_${nameControllor.text}");
                       BlocProvider.of<AuthCubit>(context).singUp(Usr(
                           phoneNumber: phoneControllor.text,
                           name: nameControllor.text,
                           email: emailControllor.text,
                           password: passwordControllor.text,
-                          adress: '',
-                          payes: ''));
+                          adress: adressControllor.text,
+                          payes: '',
+                          profile: '',
+                          uid: ''));
                     },
                     child: const Text('Create'),
                   ),

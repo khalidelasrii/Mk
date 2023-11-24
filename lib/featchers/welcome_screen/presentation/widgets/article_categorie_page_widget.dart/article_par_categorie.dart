@@ -1,41 +1,30 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
+import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
+import '../../../../../core/Widgets/core_widgets.dart';
 import '../../ui/article_produit.dart';
-import '../../../domain/entitie/welcome_article.dart';
 
-class ArticleParCategorieWidget {
-  ferstContainer() {
-    return const SingleChildScrollView(
-      child: Column(
-        children: [Text('Ferst Container ')],
-      ),
-    );
-  }
+class ArticleParCategorieWidget extends StatefulWidget {
+  const ArticleParCategorieWidget({super.key});
 
-  secoundContainer(BuildContext context, List<WelcomeArticle> articleList) {
+  @override
+  State<ArticleParCategorieWidget> createState() =>
+      _ArticleParCategorieWidgetState();
+}
+
+class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
+  @override
+  Widget build(BuildContext context) {
     String isHover = '';
-    void navToarticlepage(int index) {
-      final artic = Article(
-          userId: articleList[index].userId,
-          type: articleList[index].type,
-          email: articleList[index].email,
-          article: articleList[index].article,
-          name: articleList[index].name,
-          prix: articleList[index].prixArticle,
-          id: articleList[index].id,
-          articleUrl: articleList[index].imageUrl);
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => ArticleProduit(
-                    article: artic,
-                  )));
-    }
 
-    return StatefulBuilder(
-      builder: (context, setState) {
+    return BlocBuilder<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
+        builder: (context, state) {
+      if (state is ArticleParCategorieIsLoadidState) {
+        final List<WelcomeArticle> articleList = state.articleList;
         return ListView.builder(
           itemCount: articleList.length,
           itemBuilder: (context, index) {
@@ -72,7 +61,24 @@ class ArticleParCategorieWidget {
                         child: SizedBox(
                           child: MaterialButton(
                             onPressed: () {
-                              navToarticlepage(index);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => ArticleProduit(
+                                            article: Article(
+                                                userId:
+                                                    articleList[index].userId,
+                                                type: articleList[index].type,
+                                                email: articleList[index].email,
+                                                article:
+                                                    articleList[index].article,
+                                                name: articleList[index].name,
+                                                prix: articleList[index]
+                                                    .prixArticle,
+                                                id: articleList[index].id,
+                                                articleUrl: articleList[index]
+                                                    .imageUrl),
+                                          )));
                             },
                             child: Card(
                               child: CachedNetworkImage(
@@ -96,7 +102,29 @@ class ArticleParCategorieWidget {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    navToarticlepage(index);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) => ArticleProduit(
+                                                  article: Article(
+                                                      userId: articleList[index]
+                                                          .userId,
+                                                      type: articleList[index]
+                                                          .type,
+                                                      email: articleList[index]
+                                                          .email,
+                                                      article:
+                                                          articleList[index]
+                                                              .article,
+                                                      name: articleList[index]
+                                                          .name,
+                                                      prix: articleList[index]
+                                                          .prixArticle,
+                                                      id: articleList[index].id,
+                                                      articleUrl:
+                                                          articleList[index]
+                                                              .imageUrl),
+                                                )));
                                   },
                                   child: Text(
                                     articleList[index].article,
@@ -167,7 +195,9 @@ class ArticleParCategorieWidget {
             );
           },
         );
-      },
-    );
+      } else {
+        return const CerclulareLodingWidget();
+      }
+    });
   }
 }

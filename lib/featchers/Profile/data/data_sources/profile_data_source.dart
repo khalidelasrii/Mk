@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 
 import '../../domaine/entitie/profile_user.dart';
 
@@ -25,7 +26,11 @@ class ProfileDataSourceImpl implements ProfileDataSource {
   }
 
   @override
-  Future<ProfileUser> getProfile(ProfileUser profile) {
-    throw UnimplementedError();
+  Future<ProfileUser> getProfile(ProfileUser profile) async {
+    final data = await _firestore.collection("Users").doc(profile.uid).get();
+    final sub = data.data();
+
+    return ProfileUser(
+        name: sub?["name"], email: sub?["email"], uid: sub?["uid"]);
   }
 }
