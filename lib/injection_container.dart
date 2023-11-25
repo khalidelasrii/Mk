@@ -31,6 +31,7 @@ import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_reposit
 import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/get_search_results_use_case.dart';
+import 'package:mk/featchers/welcome_screen/domain/use_case/get_users_usecase.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
@@ -53,7 +54,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
-  sl.registerFactory(() => UsersWelcomeScreenCubit());
+  sl.registerFactory(() => UsersWelcomeScreenCubit(getUsersUsecase: sl()));
   sl.registerFactory(() =>
       ArticleBloc(getAllArticleUseCase: sl(), addoorableArticlesUseCase: sl()));
   sl.registerFactory(() => AddordeletorupdateBloc(
@@ -85,6 +86,7 @@ Future<void> init() async {
       messageVuUseCase: sl()));
 
   // Use cases
+  sl.registerLazySingleton(() => GetUsersUsecase(sl()));
 
   sl.registerLazySingleton(() => GetMesArticlesUseCase(sl()));
   sl.registerLazySingleton(() => NbrVuUseCase(sl()));

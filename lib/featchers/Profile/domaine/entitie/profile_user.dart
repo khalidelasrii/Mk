@@ -11,11 +11,9 @@ class ProfileUser extends Equatable {
   final String? payes;
 
   final Type? type;
-  final int? number;
 
   const ProfileUser(
-      {this.number,
-      this.type,
+      {this.type,
       required this.email,
       this.name,
       this.adress,

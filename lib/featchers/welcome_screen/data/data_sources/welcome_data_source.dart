@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mk/featchers/welcome_screen/data/models/welcome_article_model.dart';
 
+import '../../../Profile/domaine/entitie/profile_user.dart';
+
 abstract class WelcomeDataSource {
   Future<List<WelcomeArticleModel>> getAllArticle();
   Future<List<WelcomeArticleModel>> articlePartype(String collection);
   Future<Stream<QuerySnapshot>> getSearchResults(String query);
+  Future<List<ProfileUser>> getUsers();
 }
 
 class WelcomeDataSourcesImpl implements WelcomeDataSource {
@@ -94,5 +97,24 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
     } catch (e) {
       return [];
     }
+  }
+
+  @override
+  Future<List<ProfileUser>> getUsers() async {
+    final user = await _firestore.collection("Users").get();
+
+    return user.docs.map((sub) {
+      final subData = sub.data();
+
+      return ProfileUser(
+        email: subData["email"],
+        name: subData["name"],
+        uid: subData["uid"],
+        adress: subData["adress"],
+        phoneNumber: subData["phoneNumber"],
+        profile: subData["profile"],
+        payes: subData["payes"],
+      );
+    }).toList();
   }
 }
