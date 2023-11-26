@@ -110,7 +110,7 @@ class _SingInFieldState extends State<SingInField> {
                           payes: '',
                           name: '',
                           phoneNumber: '',
-                          profile: '',
+                          profileUrl: '',
                           uid: '');
                       BlocProvider.of<AuthCubit>(context).singIn(usr);
                     },

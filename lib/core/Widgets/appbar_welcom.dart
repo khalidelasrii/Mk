@@ -134,6 +134,9 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                         child: Row(
                           children: [
                             //! bar de recherche
+                            const SizedBox(
+                              width: 30,
+                            ),
                             Expanded(
                               flex: 2,
                               child: Container(
@@ -291,7 +294,7 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                             MaterialPageRoute(
                                 builder: (_) => ProfileScreen(
                                       user: Usr(
-                                          email: user.email,
+                                          email: user.email!,
                                           uid: user.uid,
                                           name: user.displayName ?? 'Milo'),
                                     )));

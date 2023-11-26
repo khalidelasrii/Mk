@@ -47,7 +47,7 @@ class _AutreProfileOptionState extends State<AutreProfileOption> {
                                       user: Usr(
                                           email: userfirestor.email,
                                           uid: userfirestor.uid,
-                                          profile: userfirestor.profileUrl ??
+                                          profileUrl: userfirestor.profileUrl ??
                                               'images/aa.jpg',
                                           name: userfirestor.name,
                                           phoneNumber:

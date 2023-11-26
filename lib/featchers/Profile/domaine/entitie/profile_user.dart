@@ -1,24 +1,15 @@
-import 'package:equatable/equatable.dart';
+import '../../../Authontification/domain/entitie/user.dart';
 
-class ProfileUser extends Equatable {
-  final String uid;
-  final String email;
-  final String? password;
-  final String? profileUrl;
-  final String name;
-  final String? phoneNumber;
-  final String? adress;
-  final String? payes;
-
+class ProfileUser extends Usr {
   const ProfileUser(
-      {required this.email,
-      required this.name,
-      this.adress,
-      this.password,
-      this.payes,
-      this.phoneNumber,
-      this.profileUrl,
-      required this.uid});
+      {required super.email,
+      required super.name,
+      required super.uid,
+      super.adress,
+      super.password,
+      super.payes,
+      super.phoneNumber,
+      super.profileUrl});
 
   @override
   List<Object?> get props =>

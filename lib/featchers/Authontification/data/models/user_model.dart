@@ -4,19 +4,19 @@ class UserModel extends Usr {
   const UserModel(
       {super.adress,
       super.payes,
-      super.email,
+      required super.email,
       super.password,
-      super.name,
+      required super.name,
       super.phoneNumber,
-      super.profile,
-      super.uid});
+      required super.profileUrl,
+      required super.uid});
 
   Map<String, dynamic> toMap() {
     return {
       "payes": payes,
-      "profile": profile,
+      "profileUrl": profileUrl,
       'phoneNumber': phoneNumber,
-      'id': uid,
+      'uid': uid,
       'email': email,
       'name': name,
       'adress': adress,

@@ -21,13 +21,13 @@ class UserDataSourcesImpl1 implements UserDataSources {
   @override
   Future<void> signIn(Usr usr) async {
     await _auth.signInWithEmailAndPassword(
-        email: usr.email!, password: usr.password!);
+        email: usr.email, password: usr.password!);
   }
 
   @override
   Future<void> signUp(Usr usr) async {
     await _auth.createUserWithEmailAndPassword(
-      email: usr.email!,
+      email: usr.email,
       password: usr.password!,
     );
     final user = _auth.currentUser;
@@ -37,7 +37,7 @@ class UserDataSourcesImpl1 implements UserDataSources {
         phoneNumber: usr.phoneNumber,
         email: usr.email,
         password: usr.password,
-        profile: usr.profile,
+        profileUrl: usr.profileUrl,
         name: usr.name,
         uid: user!.uid));
   }
@@ -70,10 +70,10 @@ class UserDataSourcesImpl1 implements UserDataSources {
         payes: "",
         email: user.user!.email!,
         password: "",
-        name: user.user!.displayName,
+        name: user.user!.displayName!,
         uid: user.user!.uid,
         phoneNumber: user.user!.phoneNumber,
-        profile: user.user!.photoURL,
+        profileUrl: user.user!.photoURL,
       ));
     }
   }
@@ -86,20 +86,8 @@ class UserDataSourcesImpl1 implements UserDataSources {
             adress: user.adress,
             payes: user.payes,
             email: user.email,
-            password: user.password)
+            password: user.password,
+            profileUrl: '')
         .toMap());
-    // await _firebase
-    //     .collection('Users')
-    //     .doc(user.uid)
-    //     .collection(user.email!)
-    //     .add(UserModel(
-    //             uid: user.uid,
-    //             name: user.name,
-    //             phoneNumber: user.phoneNumber,
-    //             adress: user.adress,
-    //             payes: user.payes,
-    //             email: user.email,
-    //             password: user.password)
-    //         .toMap());
   }
 }

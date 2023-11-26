@@ -215,7 +215,7 @@ class _SingUpFieldState extends State<SingUpField> {
                           password: passwordControllor.text,
                           adress: adressControllor.text,
                           payes: '',
-                          profile: '',
+                          profileUrl: '',
                           uid: ''));
                     },
                     child: const Text('Create'),

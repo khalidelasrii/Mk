@@ -4,6 +4,7 @@ import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/get_Mes_article/get_mes_article_cubit.dart';
 import 'package:mk/featchers/Profile/presentation/bloc/get_profile/get_pofile_cubit.dart';
 import '../../../Authontification/domain/entitie/user.dart';
 import '../widgets/about_nous.dart';
@@ -25,21 +26,16 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int currentIndex = 0;
-  @override
-  void initState() {
-    BlocProvider.of<GetPofileCubit>(context).getProfileEvent(ProfileUser(
-        email: widget.user.email!,
-        name: widget.user.name ?? "",
-        uid: widget.user.uid!));
-
-    super.initState();
-  }
+  int currIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<GetPofileCubit>(context).getProfileEvent(ProfileUser(
+        email: widget.user.email,
+        name: widget.user.name,
+        uid: widget.user.uid));
     return BlocProvider(
-      create: (context) => di.sl<GetPofileCubit>(),
+      create: (context) => di.sl<GetMesArticleCubit>(),
       child: Scaffold(
           backgroundColor: mybluebackgroundcolor,
           appBar: AppBar(
@@ -124,10 +120,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 selectedItemColor: Colors.amber,
                                 unselectedItemColor: Colors.white,
                                 elevation: 0,
-                                currentIndex: currentIndex,
+                                currentIndex: currIndex,
                                 onTap: (int newIndex) {
                                   setState(() {
-                                    currentIndex = newIndex;
+                                    currIndex = newIndex;
                                   });
                                 },
                                 items: [
@@ -149,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ],
                               ),
-                              pages[currentIndex]
+                              pages[currIndex],
                             ],
                           ),
                         ),
@@ -158,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 );
               } else {
-                return CerclulareLodingWidget();
+                return const CerclulareLodingWidget();
               }
             },
           )),
