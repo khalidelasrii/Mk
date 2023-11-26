@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
-import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
-import 'package:mk/featchers/Profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:mk/featchers/Profile/presentation/page/profile_screen.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';

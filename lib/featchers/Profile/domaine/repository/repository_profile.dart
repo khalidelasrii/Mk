@@ -10,5 +10,5 @@ abstract class RepositoryProfile {
       getMesArticle(
     ProfleArticle profleArticle,
   );
-  Future<Either<Faillure, ProfileUser>> getProfile(ProfleArticle proUser);
+  Future<Either<Faillure, ProfileUser>> getProfile(ProfileUser proUser);
 }

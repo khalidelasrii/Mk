@@ -3,19 +3,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Profile/domaine/entitie/profile_articles.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/get_Mes_article/get_mes_article_cubit.dart';
 
 import '../../../../../core/Widgets/core_widgets.dart';
-
-import '../../bloc/profile_bloc/profile_bloc.dart';
 
 class AllCategorie extends StatelessWidget {
   const AllCategorie({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileBloc, ProfileState>(
+    return BlocBuilder<GetMesArticleCubit, GetMesArticleState>(
       builder: (context, state) {
-        if (state is LodidAutreProfileState) {
+        if (state is LodidArticleState) {
           return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: state.articles,
             builder: (context, snapshot) {

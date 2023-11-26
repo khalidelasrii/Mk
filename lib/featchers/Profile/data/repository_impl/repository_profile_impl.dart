@@ -14,12 +14,11 @@ class RepositoryProfileImpl implements RepositoryProfile {
   final ProfileDataSource profileDataSource;
   RepositoryProfileImpl({required this.profileDataSource});
   @override
-  Future<Either<Stream<QuerySnapshot<Map<String, dynamic>>>, ProfileUser>>
-      getProfile(ProfleArticle proUser) async {
-    if (proUser.articleType == "") {
+  Future<Either<Faillure, ProfileUser>> getProfile(ProfileUser proUser) async {
+    try {
       return Right(await profileDataSource.getProfile(proUser));
-    } else {
-      return Left(await profileDataSource.getmesArticles(proUser));
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 

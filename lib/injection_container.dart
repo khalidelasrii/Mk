@@ -16,7 +16,8 @@ import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart
 import 'package:mk/featchers/Profile/data/repository_impl/repository_profile_impl.dart';
 import 'package:mk/featchers/Profile/domaine/use_case/get_autre_profile_use_case.dart';
 import 'package:mk/featchers/Profile/domaine/use_case/get_mes_articles_use_case.dart';
-import 'package:mk/featchers/Profile/presentation/bloc/profile_bloc/profile_bloc.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/get_Mes_article/get_mes_article_cubit.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/get_profile/get_pofile_cubit.dart';
 import 'package:mk/featchers/messaget_futchers/datat/data_sources/data_sources.dart';
 import 'package:mk/featchers/messaget_futchers/datat/repository_impl/repository_impl_message.dart';
 import 'package:mk/featchers/messaget_futchers/domain/repository/repository_message.dart';
@@ -55,6 +56,8 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
+  sl.registerFactory(() => GetPofileCubit(getAutreProfileUseCase: sl()));
+  sl.registerFactory(() => GetMesArticleCubit(getMesArticlesUseCase: sl()));
   sl.registerFactory(() => UsersWelcomeScreenCubit(getUsersUsecase: sl()));
   sl.registerFactory(() =>
       ArticleBloc(getAllArticleUseCase: sl(), addoorableArticlesUseCase: sl()));
@@ -77,8 +80,6 @@ Future<void> init() async {
   sl.registerFactory(() => ToolbarCubit());
   sl.registerFactory(() => CategoriecheldrenCubit());
   sl.registerFactory(() => SecoundcontCubit());
-  sl.registerFactory(() =>
-      ProfileBloc(getMesArticlesUseCase: sl(), getAutreProfileUseCase: sl()));
 
   sl.registerFactory(
       () => DescusionCubit(getDescusionUseCase: sl(), nbrVuUseCase: sl()));

@@ -1,9 +1,9 @@
 //! Articles
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/get_Mes_article/get_mes_article_cubit.dart';
 import '../../../Authontification/domain/entitie/user.dart';
 import '../../domaine/entitie/profile_articles.dart';
-import '../bloc/profile_bloc/profile_bloc.dart';
 import '../page/profile_screen.dart';
 import 'article_profile_child/all_categorie.dart';
 
@@ -30,8 +30,8 @@ class _MesArticlesDeProfileState extends State<MesArticlesDeProfile> {
   @override
   Widget build(BuildContext context) {
     //! apelle des articles par categorie
-    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent(
-      user: ProfleArticle(
+    BlocProvider.of<GetMesArticleCubit>(context).getMesArticleEvent(
+      ProfleArticle(
           article: '',
           articleId: '',
           email: widget.user.email!,
@@ -39,7 +39,7 @@ class _MesArticlesDeProfileState extends State<MesArticlesDeProfile> {
           prix: '',
           articleType: pages[currentIndex],
           uid: widget.user.uid!),
-    ));
+    );
     // apelle des articles par categorie
     return Expanded(
       child: Container(
