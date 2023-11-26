@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
+import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
+import 'package:mk/featchers/Profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'package:mk/featchers/Profile/presentation/page/profile_screen.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
@@ -10,24 +13,31 @@ import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.
 
 import '../../featchers/Authontification/presentation/ui/sing_in.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
-import '../../featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 
 class AppbarWelcome extends StatefulWidget {
-  const AppbarWelcome({super.key, required this.user});
-  final User? user;
+  const AppbarWelcome({super.key});
+  // final User? user;
 
   @override
   State<AppbarWelcome> createState() => _AppbarWelcomeState();
 }
 
 class _AppbarWelcomeState extends State<AppbarWelcome> {
+  User? user;
   @override
   void initState() {
     super.initState();
-
+    FirebaseAuth.instance.authStateChanges().listen(
+      (User? usr) {
+        if (usr != null) {
+          setState(() {
+            user = usr;
+          });
+        }
+      },
+    );
     BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
-    BlocProvider.of<MessagesCubit>(context).initialEvent();
   }
 
   TextEditingController textEditingController = TextEditingController();
@@ -43,8 +53,8 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
     return BlocBuilder<ToolbarCubit, ToolbarState>(
       builder: (context, state) {
         if (state is ToolbarInitial) {
-          return appbarwelcom(context, Colors.transparent, Colors.white,
-              widget.user, textEditingController);
+          return appbarwelcom(context, Colors.transparent, Colors.white, user,
+              textEditingController);
         } else if (state is CategorieState1 ||
             state is CategorieState2 ||
             state is CategorieState3 ||
@@ -52,10 +62,10 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
             state is CategorieState5 ||
             state is CategorieState6) {
           return appbarwelcom(context, const Color.fromARGB(70, 49, 128, 52),
-              Colors.amber, widget.user, textEditingController);
+              Colors.amber, user, textEditingController);
         }
-        return appbarwelcom(context, Colors.transparent, Colors.white,
-            widget.user, textEditingController);
+        return appbarwelcom(context, Colors.transparent, Colors.white, user,
+            textEditingController);
       },
     );
   }
@@ -282,7 +292,10 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                             context,
                             MaterialPageRoute(
                                 builder: (_) => ProfileScreen(
-                                      user: user,
+                                      user: Usr(
+                                          email: user.email,
+                                          uid: user.uid,
+                                          name: user.displayName ?? 'Milo'),
                                     )));
                       },
                       child: user.photoURL != null

@@ -28,9 +28,7 @@ class _ArticleCategoriePageState extends State<ArticleCategoriePage> {
       backgroundColor: mybluebackgroundcolor,
       body: Column(
         children: [
-          AppbarWelcome(
-            user: user,
-          ),
+          const AppbarWelcome(),
           Expanded(
             child: SizedBox(
               child: Row(

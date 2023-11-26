@@ -41,9 +41,7 @@ class _MessagesUiState extends State<MessagesUi> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Barre d'applications
-            AppbarWelcome(
-              user: user,
-            ), // Core des messages
+            const AppbarWelcome(), // Core des messages
             MessageCore(user: user),
           ],
         ),

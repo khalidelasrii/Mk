@@ -1,14 +1,15 @@
 //! Articles
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../Authontification/domain/entitie/user.dart';
+import '../../domaine/entitie/profile_articles.dart';
 import '../bloc/profile_bloc/profile_bloc.dart';
 import '../page/profile_screen.dart';
 import 'article_profile_child/all_categorie.dart';
 
 class MesArticlesDeProfile extends StatefulWidget {
   const MesArticlesDeProfile({super.key, required this.user});
-  final User? user;
+  final Usr user;
 
   @override
   State<MesArticlesDeProfile> createState() => _MesArticlesDeProfileState();
@@ -16,6 +17,7 @@ class MesArticlesDeProfile extends StatefulWidget {
 
 class _MesArticlesDeProfileState extends State<MesArticlesDeProfile> {
   int currentIndex = 0;
+
   final List<String> pages = [
     "AllCategorie",
     "Forniture",
@@ -28,64 +30,71 @@ class _MesArticlesDeProfileState extends State<MesArticlesDeProfile> {
   @override
   Widget build(BuildContext context) {
     //! apelle des articles par categorie
-    BlocProvider.of<ProfileBloc>(context)
-        .add(GetMesArticlesEvent(articletype: pages[currentIndex]));
-
+    BlocProvider.of<ProfileBloc>(context).add(GetProfileEvent(
+      user: ProfleArticle(
+          article: '',
+          articleId: '',
+          email: widget.user.email!,
+          name: '',
+          prix: '',
+          articleType: pages[currentIndex],
+          uid: widget.user.uid!),
+    ));
     // apelle des articles par categorie
-    return Container(
-      width: double.infinity,
-      height: 1000,
-      color: mygreen,
-      child: Column(
-        children: [
-          //! botonliste
-          BottomNavigationBar(
-            backgroundColor: const Color.fromARGB(98, 0, 0, 0),
-            selectedItemColor: Colors.amber,
-            unselectedItemColor: Colors.white,
-            elevation: 0,
-            currentIndex: currentIndex,
-            onTap: (value) {
-              setState(() {
-                currentIndex = value;
-              });
-            },
-            items: [
-              const BottomNavigationBarItem(
-                backgroundColor: Color.fromARGB(98, 0, 0, 0),
-                icon: Icon(Icons.category_outlined),
-                label: 'AllCategorie',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: mygreen,
-                icon: const Icon(Icons.calendar_view_week_rounded),
-                label: 'Forniture',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: myblue,
-                icon: const Icon(Icons.wallet_travel_outlined),
-                label: 'Cartables',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: myblue,
-                icon: const Icon(Icons.menu_book),
-                label: 'Livres',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: myblue,
-                icon: const Icon(Icons.ramp_left_sharp),
-                label: 'Stylo',
-              ),
-              BottomNavigationBarItem(
-                backgroundColor: myblue,
-                icon: const Icon(Icons.all_inclusive_outlined),
-                label: 'Autres',
-              ),
-            ],
-          ),
-          //! All pages
-          const AllCategorie(),
-        ],
+    return Expanded(
+      child: Container(
+        color: mygreen,
+        child: Column(
+          children: [
+            //! botonliste
+            BottomNavigationBar(
+              backgroundColor: const Color.fromARGB(98, 0, 0, 0),
+              selectedItemColor: Colors.amber,
+              unselectedItemColor: Colors.white,
+              elevation: 0,
+              currentIndex: currentIndex,
+              onTap: (value) {
+                setState(() {
+                  currentIndex = value;
+                });
+              },
+              items: [
+                const BottomNavigationBarItem(
+                  backgroundColor: Color.fromARGB(98, 0, 0, 0),
+                  icon: Icon(Icons.category_outlined),
+                  label: 'AllCategorie',
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: mygreen,
+                  icon: const Icon(Icons.calendar_view_week_rounded),
+                  label: 'Forniture',
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: myblue,
+                  icon: const Icon(Icons.wallet_travel_outlined),
+                  label: 'Cartables',
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: myblue,
+                  icon: const Icon(Icons.menu_book),
+                  label: 'Livres',
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: myblue,
+                  icon: const Icon(Icons.ramp_left_sharp),
+                  label: 'Stylo',
+                ),
+                BottomNavigationBarItem(
+                  backgroundColor: myblue,
+                  icon: const Icon(Icons.all_inclusive_outlined),
+                  label: 'Autres',
+                ),
+              ],
+            ),
+            //! All pages
+            const AllCategorie(),
+          ],
+        ),
       ),
     );
   }

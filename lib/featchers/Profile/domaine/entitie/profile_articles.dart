@@ -1,38 +1,34 @@
 import 'dart:typed_data';
 
-import 'package:equatable/equatable.dart';
+import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
 
-class ProfleArticle extends Equatable {
-  final String userId;
-  final String id;
-  final String article;
-  final String name;
+class ProfleArticle extends ProfileUser {
+  final String articleId;
+  final String? article;
+  final String articleType;
   final String prix;
-  final String email;
   final Uint8List? selectedImageInBytes;
   final String? articleUrl;
-  final String type;
 
   const ProfleArticle(
-      {required this.userId,
-      required this.type,
+      {required this.articleType,
       this.articleUrl,
       this.selectedImageInBytes,
-      required this.email,
       required this.article,
-      required this.name,
       required this.prix,
-      required this.id});
+      required this.articleId,
+      required super.email,
+      required super.name,
+      required super.uid});
 
   @override
   List<Object?> get props => [
-        article,
-        name,
         prix,
-        id,
+        articleId,
         article,
         name,
-        email,
         selectedImageInBytes,
+        articleType,
+        articleUrl,
       ];
 }

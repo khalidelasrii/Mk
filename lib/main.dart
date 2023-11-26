@@ -7,6 +7,7 @@ import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
+import 'featchers/Profile/presentation/bloc/profile_bloc/profile_bloc.dart';
 import 'featchers/messaget_futchers/presentation/bloc/message_cubit/messages_cubit.dart';
 import 'featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'injection_container.dart' as di;
@@ -48,6 +49,9 @@ class Maktabati extends StatelessWidget {
           BlocProvider(create: (context) => di.sl<WelcomeArticleBlocBloc>()),
           BlocProvider(create: (context) => di.sl<MessagesCubit>()),
           BlocProvider(create: (context) => di.sl<DescusionCubit>()),
+          BlocProvider(
+            create: (context) => di.sl<ProfileBloc>(),
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

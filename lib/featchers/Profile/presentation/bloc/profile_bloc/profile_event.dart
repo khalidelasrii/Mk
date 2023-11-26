@@ -8,15 +8,15 @@ sealed class ProfileEvent extends Equatable {
 }
 
 class GetMesArticlesEvent extends ProfileEvent {
-  final String articletype;
-  const GetMesArticlesEvent({required this.articletype});
+  final ProfleArticle profleArticle;
+  const GetMesArticlesEvent({required this.profleArticle});
   @override
-  List<Object> get props => [articletype];
+  List<Object> get props => [profleArticle];
 }
 
 class GetProfileEvent extends ProfileEvent {
-  final ProfileUser profileUser;
-  const GetProfileEvent({required this.profileUser});
+  final ProfleArticle user;
+  const GetProfileEvent({required this.user});
   @override
-  List<Object> get props => [profileUser];
+  List<Object> get props => [user];
 }

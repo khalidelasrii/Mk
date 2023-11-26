@@ -16,11 +16,12 @@ class ProfileLodedState extends ProfileState {
   List<Object> get props => [profileUser];
 }
 
-class ArticleLodedState extends ProfileState {
-  final Stream<QuerySnapshot<Map<String, dynamic>>> articles;
-  const ArticleLodedState({required this.articles});
+class LodidAutreProfileState extends ProfileState {
+  final ProfileUser profile;
+  final Stream<QuerySnapshot<Map<String, dynamic>>>? articles;
+  const LodidAutreProfileState({required this.profile, required this.articles});
   @override
-  List<Object> get props => [articles];
+  List<Object> get props => [];
 }
 
 class ErrorProfileState extends ProfileState {

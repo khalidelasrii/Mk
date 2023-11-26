@@ -1,26 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 
+import '../../domaine/entitie/profile_articles.dart';
 import '../../domaine/entitie/profile_user.dart';
 
 abstract class ProfileDataSource {
   Future<ProfileUser> getProfile(ProfileUser profile);
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getmesArticles(
-      String typearticle);
+      ProfleArticle profleArticle);
 }
 
 class ProfileDataSourceImpl implements ProfileDataSource {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance.currentUser;
 
   @override
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getmesArticles(
-      String type) async {
+      ProfleArticle profleArticle) async {
     return _firestore
         .collection('Articles')
-        .doc(_auth!.uid)
-        .collection(type)
+        .doc(profleArticle.uid)
+        .collection(profleArticle.articleType)
         .orderBy("date", descending: true)
         .snapshots();
   }
@@ -31,6 +29,10 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     final sub = data.data();
 
     return ProfileUser(
-        name: sub?["name"], email: sub?["email"], uid: sub?["uid"]);
+        name: sub?["name"],
+        email: sub?["email"],
+        uid: sub?["id"],
+        phoneNumber: sub?['phoneNumber'],
+        adress: sub?["adress"]);
   }
 }

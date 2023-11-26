@@ -109,10 +109,10 @@ class WelcomeDataSourcesImpl implements WelcomeDataSource {
       return ProfileUser(
         email: subData["email"],
         name: subData["name"],
-        uid: subData["uid"],
+        uid: sub.id,
         adress: subData["adress"],
         phoneNumber: subData["phoneNumber"],
-        profile: subData["profile"],
+        profileUrl: subData["profile"],
         payes: subData["payes"],
       );
     }).toList();

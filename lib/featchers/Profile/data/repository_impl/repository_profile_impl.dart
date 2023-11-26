@@ -6,6 +6,7 @@ import 'package:mk/core/errure/faillure.dart';
 
 import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
 
+import '../../domaine/entitie/profile_articles.dart';
 import '../../domaine/repository/repository_profile.dart';
 import '../data_sources/profile_data_source.dart';
 
@@ -13,19 +14,22 @@ class RepositoryProfileImpl implements RepositoryProfile {
   final ProfileDataSource profileDataSource;
   RepositoryProfileImpl({required this.profileDataSource});
   @override
-  Future<Either<Faillure, ProfileUser>> getProfile(ProfileUser proUser) async {
-    try {
+  Future<Either<Stream<QuerySnapshot<Map<String, dynamic>>>, ProfileUser>>
+      getProfile(ProfleArticle proUser) async {
+    if (proUser.articleType == "") {
       return Right(await profileDataSource.getProfile(proUser));
-    } on ServerException {
-      return Left(ServerFailure());
+    } else {
+      return Left(await profileDataSource.getmesArticles(proUser));
     }
   }
 
   @override
   Future<Either<Faillure, Stream<QuerySnapshot<Map<String, dynamic>>>>>
-      getMesArticle(String typearticle) async {
+      getMesArticle(
+    ProfleArticle profleArticle,
+  ) async {
     try {
-      return Right(await profileDataSource.getmesArticles(typearticle));
+      return Right(await profileDataSource.getmesArticles(profleArticle));
     } on ServerException {
       return Left(ServerFailure());
     }

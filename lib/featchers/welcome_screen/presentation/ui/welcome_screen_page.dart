@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
@@ -21,22 +20,6 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  User? user;
-
-  @override
-  void initState() {
-    super.initState();
-    FirebaseAuth.instance.authStateChanges().listen(
-      (User? userr) {
-        if (userr != null) {
-          setState(() {
-            user = userr;
-          });
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -48,10 +31,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         ],
         child: Scaffold(
             backgroundColor: const Color.fromARGB(183, 0, 0, 0),
-            body: _buildbody(context, user)));
+            body: _buildbody(context)));
   }
 
-  _buildbody(BuildContext context, User? user) {
+  _buildbody(BuildContext context) {
     return SingleChildScrollView(
         child: Column(children: [
       Stack(alignment: AlignmentDirectional.topEnd, children: [
@@ -71,9 +54,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           children: [
             //! Appbar Widget
 
-            AppbarWelcome(
-              user: user,
-            ),
+            const AppbarWelcome(),
 
             BlocBuilder<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
               builder: (context, state) {
