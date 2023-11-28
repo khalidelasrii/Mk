@@ -26,7 +26,8 @@ class _AutreProfileOptionState extends State<AutreProfileOption> {
       return BlocBuilder<UsersWelcomeScreenCubit, UsersWelcomeScreenState>(
         builder: (context, state) {
           if (state is LodidUsersWelcomeState) {
-            return SizedBox(
+            return Container(
+              color: Colors.indigo,
               width: double.infinity,
               height: 100,
               child: ListView.builder(
@@ -84,7 +85,8 @@ class _AutreProfileOptionState extends State<AutreProfileOption> {
               ),
             );
           } else {
-            return const SizedBox(
+            return Container(
+              color: Colors.indigo,
               width: double.infinity,
               height: 100,
             );

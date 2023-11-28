@@ -38,7 +38,7 @@ class _FormWidgetState extends State<FormWidget> {
       _articleControlor.text = widget.article!.article;
       _prixControlor.text = widget.article!.prix.toString();
       _nameControlor.text = widget.article!.name;
-      _idControlor.text = widget.article!.id;
+      _idControlor.text = widget.article!.articleId;
     }
 
     super.initState();
@@ -57,13 +57,13 @@ class _FormWidgetState extends State<FormWidget> {
       Uint8List? selectedImageInBytes, String type) {
     final Article article = Article(
         date: Timestamp.now(),
-        userId: widget.user!.uid,
-        type: type, //! add the type of objet her
+        uid: widget.user!.uid,
+        articleType: type, //! add the type of objet her
         email: widget.user!.email!,
         article: _articleControlor.text,
         name: _nameControlor.text,
         prix: _prixControlor.text,
-        id: _idControlor.text,
+        articleId: _idControlor.text,
         selectedImageInBytes: selectedImageInBytes);
 
     if (widget.isUpdate) {

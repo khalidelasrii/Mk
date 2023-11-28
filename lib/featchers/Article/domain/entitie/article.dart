@@ -4,20 +4,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Article extends Equatable {
-  final String userId;
-  final String id;
+  final String uid;
+  final String articleId;
   final String article;
   final String name;
   final String prix;
   final String email;
   final Uint8List? selectedImageInBytes;
   final String? articleUrl;
-  final String type;
+  final String articleType;
   final Timestamp? date;
 
   const Article(
-      {required this.userId,
-      required this.type,
+      {required this.uid,
+      required this.articleType,
       this.date,
       this.articleUrl,
       this.selectedImageInBytes,
@@ -25,14 +25,14 @@ class Article extends Equatable {
       required this.article,
       required this.name,
       required this.prix,
-      required this.id});
+      required this.articleId});
 
   @override
   List<Object?> get props => [
         article,
         name,
         prix,
-        id,
+        articleId,
         article,
         name,
         email,

@@ -140,8 +140,8 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                             Expanded(
                               flex: 2,
                               child: Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 400),
+                                constraints: const BoxConstraints(
+                                    maxWidth: 400, maxHeight: 60),
                                 child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SearchBar(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/users_welcome_screen/users_welcome_screen_cubit.dart';
@@ -30,32 +31,56 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           BlocProvider(create: (context) => di.sl<UsersWelcomeScreenCubit>()),
         ],
         child: Scaffold(
-            backgroundColor: const Color.fromARGB(183, 0, 0, 0),
-            body: _buildbody(context)));
+            backgroundColor: mybluebackgroundcolor, body: _buildbody(context)));
   }
 
   _buildbody(BuildContext context) {
     return SingleChildScrollView(
         child: Column(children: [
-      Stack(alignment: AlignmentDirectional.topEnd, children: [
-        Container(
-          color: Colors.black,
-          height: 500,
-          width: double.infinity,
-          child: Opacity(
-            opacity: 0.3,
-            child: Image.asset(
-              'images/bck.jpg',
-              fit: BoxFit.cover,
+      Stack(alignment: Alignment.topCenter, children: [
+        Stack(
+          alignment: Alignment.centerLeft,
+          children: [
+            Container(
+              color: Colors.black,
+              height: 600,
+              width: double.infinity,
+              child: Opacity(
+                opacity: 0.3,
+                child: Image.asset(
+                  'images/bck.jpg',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: RichText(
+                text: const TextSpan(
+                  children: [
+                    TextSpan(
+                        text: 'Innovative Solutions for Global Transactions:',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text:
+                            '\n\n  MiloTeck Ecommerce Platform Redefining International Commerce',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold))
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         Column(
           children: [
             //! Appbar Widget
-
-            const AppbarWelcome(),
-
+            AppbarWelcome(),
             BlocBuilder<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
               builder: (context, state) {
                 if (state is RecherchStartstate) {

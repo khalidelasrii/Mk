@@ -12,7 +12,13 @@ import '../bloc/article/article_bloc.dart';
 import '../widgets/form_widget.dart';
 
 Article article = const Article(
-    article: '', name: '', prix: '', id: '', email: '', type: '', userId: "");
+    article: '',
+    name: '',
+    prix: '',
+    articleId: '',
+    email: '',
+    articleType: '',
+    uid: "");
 final TextEditingController _nameController = TextEditingController();
 final TextEditingController _articleController = TextEditingController();
 final TextEditingController _prixController = TextEditingController();

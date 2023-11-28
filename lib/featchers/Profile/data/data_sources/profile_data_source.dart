@@ -31,7 +31,7 @@ class ProfileDataSourceImpl implements ProfileDataSource {
     return ProfileUser(
         name: sub?["name"],
         email: sub?["email"],
-        uid: sub?["id"],
+        uid: sub?["uid"],
         phoneNumber: sub?['phoneNumber'],
         adress: sub?["adress"]);
   }

@@ -46,12 +46,12 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       await _firestore
           .collection('Articles')
           .doc(_auth!.uid)
-          .collection(article.type)
+          .collection(article.articleType)
           .doc(uniqueImageId)
           .set({
-        "userId": _auth!.uid,
-        "id": uniqueImageId,
-        'type': article.type,
+        "uid": _auth!.uid,
+        "articleId": uniqueImageId,
+        'articleType': article.articleType,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,
@@ -59,15 +59,16 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'articleUrl': imageUrl,
         "date": messageid,
       });
+
       await _firestore
           .collection('Articles')
           .doc(_auth!.uid)
           .collection("AllCategorie")
           .doc(uniqueImageId)
           .set({
-        "userId": _auth!.uid,
-        "id": uniqueImageId,
-        'type': article.type,
+        "uid": _auth!.uid,
+        "articleId": uniqueImageId,
+        'articleType': article.articleType,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,
@@ -76,9 +77,9 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         "date": messageid,
       });
       await _firestore.collection('Searche').doc(uniqueImageId).set({
-        "userId": _auth!.uid,
-        "id": uniqueImageId,
-        'type': article.type,
+        "uid": _auth!.uid,
+        "articleId": uniqueImageId,
+        'articleType': article.articleType,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,
@@ -89,13 +90,13 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
       await _firestore
           .collection('Searche')
-          .doc(article.type)
-          .collection(article.type)
+          .doc(article.articleType)
+          .collection(article.articleType)
           .doc(uniqueImageId)
           .set({
-        "userId": _auth!.uid,
-        "id": uniqueImageId,
-        'type': article.type,
+        "uid": _auth!.uid,
+        "articleId": uniqueImageId,
+        'articleType': article.articleType,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,
@@ -142,22 +143,22 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
     await _firestore
         .collection('Articles')
         .doc(_auth!.uid)
-        .collection(article.type)
-        .doc(article.id)
+        .collection(article.articleType)
+        .doc(article.articleId)
         .set({
-      "userId": _auth!.uid,
-      "id": article.id,
-      'type': article.type,
+      "uid": _auth!.uid,
+      "articleId": article.articleId,
+      'articleType': article.articleType,
       'article': article.article,
       'name': article.name,
       'prix': article.prix,
       'email': _auth!.email,
       'articleUrl': article.articleUrl,
     });
-    await _firestore.collection('Searche').doc(article.id).set({
-      "userId": _auth!.uid,
-      "id": article.id,
-      'type': article.type,
+    await _firestore.collection('Searche').doc(article.articleId).set({
+      "uid": _auth!.uid,
+      "articleId": article.articleId,
+      'articleType': article.articleType,
       'article': article.article,
       'name': article.name,
       'prix': article.prix,
@@ -166,13 +167,13 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
     });
     await _firestore
         .collection('Searche')
-        .doc(article.type)
-        .collection(article.type)
-        .doc(article.id)
+        .doc(article.articleType)
+        .collection(article.articleType)
+        .doc(article.articleId)
         .set({
-      "userId": _auth!.uid,
-      "id": article.id,
-      'type': article.type,
+      "uid": _auth!.uid,
+      "articleId": article.articleId,
+      'articleType': article.articleType,
       'article': article.article,
       'name': article.name,
       'prix': article.prix,
@@ -195,9 +196,10 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   @override
   Future<Unit> addoorableArticle(Article article) async {
     try {
-      await _firestore.collection('ArticleSherché').doc(article.id).set({
-        'userId': article.userId,
-        'id': article.id,
+      await _firestore.collection('ArticleSherché').doc(article.articleId).set({
+        "articleType": article.articleType,
+        'uid': article.uid,
+        'articleId': article.articleId,
         'article': article.article,
         'name': article.name,
         'prix': article.prix,

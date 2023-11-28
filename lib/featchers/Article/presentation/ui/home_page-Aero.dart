@@ -37,13 +37,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mybluebackgroundcolor,
-      appBar: AppBar(elevation: 0,backgroundColor: Colors.transparent ,flexibleSpace: const AppbarWelcome(),),
-      body: 
-          
-          GridViewBody(
-            user: userconnect,
-          ),
-      
+      appBar: AppBar(flexibleSpace: const AppbarWelcome()),
+      body: GridViewBody(
+        user: userconnect,
+      ),
       floatingActionButton: userconnect != null
           ? _floatingActionButton(context, userconnect)
           : null,

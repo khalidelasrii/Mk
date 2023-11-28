@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
 
 class ProfleArticle extends ProfileUser {
@@ -9,6 +10,7 @@ class ProfleArticle extends ProfileUser {
   final String prix;
   final Uint8List? selectedImageInBytes;
   final String? articleUrl;
+  final Timestamp? date;
 
   const ProfleArticle(
       {required this.articleType,
@@ -19,7 +21,8 @@ class ProfleArticle extends ProfileUser {
       required this.articleId,
       required super.email,
       required super.name,
-      required super.uid});
+      required super.uid,
+      this.date});
 
   @override
   List<Object?> get props => [

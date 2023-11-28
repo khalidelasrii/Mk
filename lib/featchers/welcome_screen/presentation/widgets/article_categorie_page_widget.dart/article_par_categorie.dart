@@ -66,16 +66,17 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                   MaterialPageRoute(
                                       builder: (_) => ArticleProduit(
                                             article: Article(
-                                                userId:
-                                                    articleList[index].userId,
-                                                type: articleList[index].type,
+                                                uid: articleList[index].userId,
+                                                articleType:
+                                                    articleList[index].type,
                                                 email: articleList[index].email,
                                                 article:
                                                     articleList[index].article,
                                                 name: articleList[index].name,
                                                 prix: articleList[index]
                                                     .prixArticle,
-                                                id: articleList[index].id,
+                                                articleId:
+                                                    articleList[index].id,
                                                 articleUrl: articleList[index]
                                                     .imageUrl),
                                           )));
@@ -107,10 +108,11 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                         MaterialPageRoute(
                                             builder: (_) => ArticleProduit(
                                                   article: Article(
-                                                      userId: articleList[index]
+                                                      uid: articleList[index]
                                                           .userId,
-                                                      type: articleList[index]
-                                                          .type,
+                                                      articleType:
+                                                          articleList[index]
+                                                              .type,
                                                       email: articleList[index]
                                                           .email,
                                                       article:
@@ -120,7 +122,8 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                                           .name,
                                                       prix: articleList[index]
                                                           .prixArticle,
-                                                      id: articleList[index].id,
+                                                      articleId:
+                                                          articleList[index].id,
                                                       articleUrl:
                                                           articleList[index]
                                                               .imageUrl),

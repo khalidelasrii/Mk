@@ -14,7 +14,6 @@ class SliderCrusur extends StatelessWidget {
     return CarouselSlider(
       options: CarouselOptions(
         aspectRatio: 32 / 5, // Rapport largeur-hauteur des images
-
         enlargeCenterPage: true, // Agrandit la page actuellement centrée
         enableInfiniteScroll: true, // Défilement infini
         autoPlay: true, // Lecture automatique

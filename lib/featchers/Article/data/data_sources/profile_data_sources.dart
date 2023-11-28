@@ -31,10 +31,10 @@ class ProfileDataSourcesImpl implements ProfileDataSources {
         final usrid = alluser.id;
 
         return Article(
-            userId: data['userId'] ?? "",
-            type: data['type'],
+            uid: data['uid'] ?? "",
+            articleType: data['articleType'],
             email: data['email'],
-            id: usrid,
+            articleId: usrid,
             name: data['name'],
             prix: data['prix'],
             article: data['article'],
