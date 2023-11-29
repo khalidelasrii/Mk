@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,118 +13,162 @@ Color color4 = Colors.transparent;
 Color color5 = Colors.transparent;
 
 Color color6 = Colors.transparent;
-Color colortranst = Colors.white;
-Color greenColor = const Color(0x464CAF4F);
+Color textColor = Colors.white;
+Color greenColor = Colors.indigo;
 
 class BarDeBotonPage extends StatelessWidget {
   const BarDeBotonPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    categorieIs(BuildContext context, Color c1, Color c2, Color c3, Color c4,
-        Color c5, Color c6, Color tran, Color contaiColor) {
-      return Container(
-          color: contaiColor,
-          child: SingleChildScrollView(
+    return BlocBuilder<ToolbarCubit, ToolbarState>(
+      builder: (context, state) {
+        if (state is CategorieState1) {
+          return CategorieIs(
+            c1: state.color1,
+            c2: state.color2,
+            c3: state.color3,
+            c4: state.color4,
+            c5: state.color5,
+            c6: state.color6,
+            tran: textColor,
+            contaiColor: greenColor,
+          );
+        } else if (state is CategorieState2) {
+          return CategorieIs(
+            c1: state.color1,
+            c2: state.color2,
+            c3: state.color3,
+            c4: state.color4,
+            c5: state.color5,
+            c6: state.color6,
+            tran: textColor,
+            contaiColor: greenColor,
+          );
+        } else if (state is CategorieState3) {
+          return CategorieIs(
+            c1: state.color1,
+            c2: state.color2,
+            c3: state.color3,
+            c4: state.color4,
+            c5: state.color5,
+            c6: state.color6,
+            tran: textColor,
+            contaiColor: greenColor,
+          );
+        } else if (state is CategorieState4) {
+          return CategorieIs(
+            c1: state.color1,
+            c2: state.color2,
+            c3: state.color3,
+            c4: state.color4,
+            c5: state.color5,
+            c6: state.color6,
+            tran: textColor,
+            contaiColor: greenColor,
+          );
+        } else if (state is CategorieState5) {
+          return CategorieIs(
+            c1: state.color1,
+            c2: state.color2,
+            c3: state.color3,
+            c4: state.color4,
+            c5: state.color5,
+            c6: state.color6,
+            tran: textColor,
+            contaiColor: greenColor,
+          );
+        } else if (state is CategorieState6) {
+          return CategorieIs(
+            c1: state.color1,
+            c2: state.color2,
+            c3: state.color3,
+            c4: state.color4,
+            c5: state.color5,
+            c6: state.color6,
+            tran: textColor,
+            contaiColor: greenColor,
+          );
+        } else {
+          return CategorieIs(
+            c1: color1,
+            c2: color2,
+            c3: color3,
+            c4: color4,
+            c5: color5,
+            c6: color6,
+            tran: Colors.white,
+            contaiColor: Colors.transparent,
+          );
+        }
+      },
+    );
+  }
+}
+
+class CategorieIs extends StatelessWidget {
+  const CategorieIs(
+      {super.key,
+      required this.c1,
+      required this.c2,
+      required this.c3,
+      required this.c4,
+      required this.c5,
+      required this.c6,
+      required this.tran,
+      required this.contaiColor});
+  final Color c1, c2, c3, c4, c5, c6, tran, contaiColor;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: contaiColor,
+      width: double.infinity,
+      child: Column(
+        children: [
+          SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                BarBotonsAllPages().categoriePageBoton(
-                    context, false, 1, 'All Categorie', c1, tran),
-                BarBotonsAllPages().categoriePageBoton(
-                    context, false, 2, ' option 1', c2, tran),
-                BarBotonsAllPages().categoriePageBoton(
-                    context, false, 3, 'option 2', c3, tran),
+                BarBotonsAllPages(
+                  bontonNembr: 1,
+                  botonColor: c1,
+                  textColor: tran,
+                  textBoton: 'All Categorie',
+                ),
+                BarBotonsAllPages(
+                    bontonNembr: 2,
+                    botonColor: c2,
+                    textColor: tran,
+                    textBoton: ' option 1'),
+                BarBotonsAllPages(
+                    bontonNembr: 3,
+                    botonColor: c3,
+                    textColor: tran,
+                    textBoton: ' option 2'),
                 const SizedBox(
                   width: 20,
                 ),
-                BarBotonsAllPages().categoriePageBoton(
-                    context, false, 4, 'option 3', c4, tran),
-                BarBotonsAllPages().categoriePageBoton(
-                    context, false, 5, 'option 4', c5, tran),
-                BarBotonsAllPages().categoriePageBoton(
-                    context, false, 6, 'option 5', c6, tran),
+                BarBotonsAllPages(
+                    bontonNembr: 4,
+                    botonColor: c4,
+                    textColor: tran,
+                    textBoton: ' option 3'),
+                BarBotonsAllPages(
+                    bontonNembr: 5,
+                    botonColor: c5,
+                    textColor: tran,
+                    textBoton: ' option 4'),
+                BarBotonsAllPages(
+                    bontonNembr: 6,
+                    botonColor: c6,
+                    textColor: tran,
+                    textBoton: ' option 5'),
               ],
             ),
-          ));
-    }
-
-    return BlocBuilder<ToolbarCubit, ToolbarState>(
-      builder: (context, state) {
-        if (state is ToolbarInitial) {
-          return categorieIs(context, color1, color2, color3, color4, color5,
-              color6, colortranst, Colors.transparent);
-        } else if (state is CategorieState1) {
-          return categorieIs(
-              context,
-              state.color1,
-              state.color2,
-              state.color3,
-              state.color4,
-              state.color5,
-              state.color6,
-              colortranst,
-              greenColor);
-        } else if (state is CategorieState2) {
-          return categorieIs(
-              context,
-              state.color1,
-              state.color2,
-              state.color3,
-              state.color4,
-              state.color5,
-              state.color6,
-              colortranst,
-              greenColor);
-        } else if (state is CategorieState3) {
-          return categorieIs(
-              context,
-              state.color1,
-              state.color2,
-              state.color3,
-              state.color4,
-              state.color5,
-              state.color6,
-              colortranst,
-              greenColor);
-        } else if (state is CategorieState4) {
-          return categorieIs(
-              context,
-              state.color1,
-              state.color2,
-              state.color3,
-              state.color4,
-              state.color5,
-              state.color6,
-              colortranst,
-              greenColor);
-        } else if (state is CategorieState5) {
-          return categorieIs(
-              context,
-              state.color1,
-              state.color2,
-              state.color3,
-              state.color4,
-              state.color5,
-              state.color6,
-              colortranst,
-              greenColor);
-        } else if (state is CategorieState6) {
-          return categorieIs(
-              context,
-              state.color1,
-              state.color2,
-              state.color3,
-              state.color4,
-              state.color5,
-              state.color6,
-              colortranst,
-              greenColor);
-        }
-        return categorieIs(context, color1, color2, color3, color4, color5,
-            color6, colortranst, Colors.transparent);
-      },
+          ),
+        ],
+      ),
     );
   }
 }

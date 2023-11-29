@@ -13,7 +13,7 @@ class ContainerAllCategorie extends StatelessWidget {
     return BlocBuilder<ToolbarCubit, ToolbarState>(
       builder: (context, state) {
         if (state is CategorieState1) {
-          return sousListeCategorie(context, 1, const Color(0x464CAF4F));
+          return sousListeCategorie(context, 1, Colors.indigo);
         } else if (state is CategorieState2) {
           return Container(
             color: Colors.red,

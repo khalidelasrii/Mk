@@ -3,12 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
-class BarBotonsAllPages {
-  categoriePageBoton(BuildContext context, bool isin, int bontonNembr,
-      String textBoton, Color color1, Color color2) {
+class BarBotonsAllPages extends StatelessWidget {
+  const BarBotonsAllPages(
+      {super.key,
+      required this.bontonNembr,
+      required this.textBoton,
+      required this.botonColor,
+      required this.textColor});
+  final int bontonNembr;
+  final String textBoton;
+  final Color botonColor, textColor;
+  @override
+  Widget build(BuildContext context) {
     return MouseRegion(
       onEnter: (_) {
-        isin = true;
         bontonNembr == 1
             ? BlocProvider.of<WelcomeArticleBlocBloc>(context)
                 .add(AdoorArticlesloadingEvent())
@@ -17,25 +25,24 @@ class BarBotonsAllPages {
         BlocProvider.of<ToolbarCubit>(context).categorie1(bontonNembr);
       },
       onExit: (_) {
-        isin = false;
         BlocProvider.of<ToolbarCubit>(context).isInitial();
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: MaterialButton(
-          color: color1,
+          color: botonColor,
           elevation: 0,
           onPressed: () {},
           child: Row(
             children: [
               Icon(
                 Icons.list,
-                color: color2,
+                color: textColor,
               ),
               Text(
                 textBoton,
                 style: TextStyle(
-                  color: color2,
+                  color: textColor,
                 ),
               )
             ],

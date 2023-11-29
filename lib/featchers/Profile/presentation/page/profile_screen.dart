@@ -60,52 +60,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Expanded(
                         child: SizedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              usr.profileUrl != null
-                                  ? Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ClipOval(
-                                          child: Image.network(
-                                        usr.profileUrl!,
-                                        height: 120,
-                                        width: 120,
-                                        fit: BoxFit.cover,
-                                      )),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        width: 120,
-                                        height: 120,
-                                        decoration: BoxDecoration(
-                                            color: Colors.blue,
-                                            borderRadius:
-                                                BorderRadius.circular(100)),
-                                        child: const Icon(
-                                          Icons.person,
-                                          size: 100,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                usr.profileUrl != null
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: ClipOval(
+                                            child: Image.network(
+                                          usr.profileUrl!,
+                                          height: 120,
+                                          width: 120,
+                                          fit: BoxFit.cover,
+                                        )),
+                                      )
+                                    : Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          width: 120,
+                                          height: 120,
+                                          decoration: BoxDecoration(
+                                              color: Colors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(100)),
+                                          child: const Icon(
+                                            Icons.person,
+                                            size: 100,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                              Text(
-                                usr.name,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  usr.email,
+                                Text(
+                                  usr.name,
                                   style: const TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 200, 200, 200)),
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    usr.email,
+                                    style: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 200, 200, 200)),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -114,36 +116,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: SizedBox(
                           child: Column(
                             children: [
-                              BottomNavigationBar(
-                                backgroundColor:
-                                    const Color.fromARGB(98, 0, 0, 0),
-                                selectedItemColor: Colors.amber,
-                                unselectedItemColor: Colors.white,
-                                elevation: 0,
-                                currentIndex: currIndex,
-                                onTap: (int newIndex) {
-                                  setState(() {
-                                    currIndex = newIndex;
-                                  });
-                                },
-                                items: [
-                                  const BottomNavigationBarItem(
-                                    backgroundColor:
-                                        Color.fromARGB(98, 0, 0, 0),
-                                    icon: Icon(Icons.person),
-                                    label: 'Profil',
-                                  ),
-                                  BottomNavigationBarItem(
-                                    backgroundColor: mygreen,
-                                    icon: const Icon(Icons.category),
-                                    label: 'Articles',
-                                  ),
-                                  BottomNavigationBarItem(
-                                    backgroundColor: myblue,
-                                    icon: const Icon(Icons.info),
-                                    label: 'About Nous',
-                                  ),
-                                ],
+                              Container(
+                                decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(25),
+                                        topRight: Radius.circular(25)),
+                                    color: Colors.orangeAccent),
+                                child: BottomNavigationBar(
+                                  backgroundColor: Colors.transparent,
+                                  selectedItemColor: Colors.indigo,
+                                  unselectedItemColor: Colors.white,
+                                  elevation: 0,
+                                  currentIndex: currIndex,
+                                  onTap: (int newIndex) {
+                                    setState(() {
+                                      currIndex = newIndex;
+                                    });
+                                  },
+                                  items: const [
+                                    BottomNavigationBarItem(
+                                      icon: Icon(Icons.person),
+                                      label: 'Profil',
+                                    ),
+                                    BottomNavigationBarItem(
+                                      icon: Icon(Icons.category),
+                                      label: 'Articles',
+                                    ),
+                                    BottomNavigationBarItem(
+                                      icon: Icon(Icons.info),
+                                      label: 'About Nous',
+                                    ),
+                                  ],
+                                ),
                               ),
                               pages[currIndex],
                             ],

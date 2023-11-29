@@ -9,7 +9,7 @@ import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.d
 import 'package:mk/injection_container.dart' as di;
 import '../../../../core/Widgets/bar_de_recherche.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
-import '../widgets/autre_profile_option.dart';
+import '../widgets/profileInwelcom/autre_profile_option.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
 
@@ -80,7 +80,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         Column(
           children: [
             //! Appbar Widget
-            AppbarWelcome(),
+            const AppbarWelcome(),
             BlocBuilder<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
               builder: (context, state) {
                 if (state is RecherchStartstate) {

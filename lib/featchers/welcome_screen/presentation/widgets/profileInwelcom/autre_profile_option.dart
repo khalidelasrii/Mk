@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Authontification/domain/entitie/user.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/users_welcome_screen/users_welcome_screen_cubit.dart';
 
-import '../../../Profile/presentation/page/profile_screen.dart';
+import '../../../../Profile/presentation/page/profile_screen.dart';
 
 class AutreProfileOption extends StatefulWidget {
   const AutreProfileOption({super.key});
