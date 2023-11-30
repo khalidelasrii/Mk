@@ -31,7 +31,7 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
             return MouseRegion(
               onEnter: (_) {
                 setState(() {
-                  isHover = articleList[index].id;
+                  isHover = articleList[index].articleId;
                 });
               },
               onExit: (_) {
@@ -43,7 +43,7 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0),
                     side: BorderSide(
-                      color: isHover == articleList[index].id
+                      color: isHover == articleList[index].articleId
                           ? Colors.blue
                           : Colors
                               .transparent, // Changer la couleur de la bordure en survol
@@ -66,24 +66,23 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                   MaterialPageRoute(
                                       builder: (_) => ArticleProduit(
                                             article: Article(
-                                                uid: articleList[index].userId,
-                                                articleType:
-                                                    articleList[index].type,
+                                                uid: articleList[index].uid,
+                                                articleType: articleList[index]
+                                                    .articleType,
                                                 email: articleList[index].email,
                                                 article:
                                                     articleList[index].article,
                                                 name: articleList[index].name,
-                                                prix: articleList[index]
-                                                    .prixArticle,
-                                                articleId:
-                                                    articleList[index].id,
+                                                prix: articleList[index].prix,
+                                                articleId: articleList[index]
+                                                    .articleId,
                                                 articleUrl: articleList[index]
-                                                    .imageUrl),
+                                                    .articleUrl),
                                           )));
                             },
                             child: Card(
                               child: CachedNetworkImage(
-                                imageUrl: articleList[index].imageUrl,
+                                imageUrl: articleList[index].articleUrl!,
                                 fit: BoxFit.cover,
                                 height: 200,
                                 width: 200,
@@ -109,10 +108,10 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                             builder: (_) => ArticleProduit(
                                                   article: Article(
                                                       uid: articleList[index]
-                                                          .userId,
+                                                          .uid,
                                                       articleType:
                                                           articleList[index]
-                                                              .type,
+                                                              .articleType,
                                                       email: articleList[index]
                                                           .email,
                                                       article:
@@ -121,12 +120,13 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                                       name: articleList[index]
                                                           .name,
                                                       prix: articleList[index]
-                                                          .prixArticle,
+                                                          .prix,
                                                       articleId:
-                                                          articleList[index].id,
+                                                          articleList[index]
+                                                              .articleId,
                                                       articleUrl:
                                                           articleList[index]
-                                                              .imageUrl),
+                                                              .articleUrl),
                                                 )));
                                   },
                                   child: Text(
@@ -138,7 +138,7 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                   ),
                                 ),
                                 Text(
-                                  articleList[index].type,
+                                  articleList[index].articleType,
                                   style: const TextStyle(
                                     color: Colors.amber,
                                   ),
@@ -153,7 +153,7 @@ class _ArticleParCategorieWidgetState extends State<ArticleParCategorieWidget> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8),
                                   child: Text(
-                                    articleList[index].prixArticle,
+                                    articleList[index].prix,
                                     style: const TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   ),

@@ -10,7 +10,7 @@ sealed class WelcomeArticleBlocState extends Equatable {
 final class WelcomeArticleBlocInitial extends WelcomeArticleBlocState {}
 
 class RecherchStartstate extends WelcomeArticleBlocState {
-  final Stream<QuerySnapshot> value;
+  final Stream<QuerySnapshot<Map<String, dynamic>>> value;
 
   const RecherchStartstate(this.value);
   @override

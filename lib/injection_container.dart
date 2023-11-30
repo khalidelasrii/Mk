@@ -30,11 +30,12 @@ import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit
 
 import 'package:mk/featchers/welcome_screen/data/data_sources/welcome_data_source.dart';
 import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_repository_impl.dart';
-import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
+import 'package:mk/featchers/welcome_screen/domain/repository/repository_welcome.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
-import 'package:mk/featchers/welcome_screen/domain/use_case/get_search_results_use_case.dart';
+import 'package:mk/featchers/welcome_screen/domain/use_case/search_results_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/get_users_usecase.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
@@ -56,6 +57,8 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
+  sl.registerFactory(() => DrawerDataCubit());
+
   sl.registerFactory(() => GetPofileCubit(getAutreProfileUseCase: sl()));
   sl.registerFactory(() => GetMesArticleCubit(getMesArticlesUseCase: sl()));
   sl.registerFactory(() => UsersWelcomeScreenCubit(getUsersUsecase: sl()));
@@ -73,7 +76,7 @@ Future<void> init() async {
         singInGoogleUseCase: sl(),
       ));
   sl.registerFactory(() => WelcomeArticleBlocBloc(
-        getSearchResultsUseCase: sl(),
+        searchResultsUseCase: sl(),
         getAllWelcomeArticleUseCase: sl(),
         articleParTypeUseCase: sl(),
       ));
@@ -99,7 +102,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetMessageUseCase(sl()));
   sl.registerLazySingleton(() => GetDescusionUseCase(sl()));
   sl.registerLazySingleton(() => SendMessageUseCase(sl()));
-  sl.registerLazySingleton(() => GetSearchResultsUseCase(sl()));
+  sl.registerLazySingleton(() => SearchResultsUseCase(sl()));
   sl.registerLazySingleton(() => SingInUseCase(sl()));
   sl.registerLazySingleton(() => SingUpUseCase(sl()));
   sl.registerLazySingleton(() => SingOutUseCase(sl()));
@@ -122,7 +125,7 @@ Future<void> init() async {
       () => ArticleRepositoryImpl(articlesFirebase: sl()));
   sl.registerLazySingleton<RepositoryAuth>(
       () => UserRepositooryImpl(userDataSources: sl()));
-  sl.registerLazySingleton<WelcomeRepository>(
+  sl.registerLazySingleton<RepositoryWelcome>(
       () => WelcomeRepositoryImpl(welcomeDataSource: sl()));
 
   // Data sources

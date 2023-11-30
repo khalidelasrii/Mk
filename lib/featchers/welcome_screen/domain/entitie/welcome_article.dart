@@ -1,30 +1,28 @@
-import 'package:equatable/equatable.dart';
+import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
-class WelcomeArticle extends Equatable {
-  final String userId;
-  final String name;
-  final String prixArticle;
-  final String article;
-  final String imageUrl;
-  final String id;
-  final String email;
-  final String type;
-
+class WelcomeArticle extends Article {
   const WelcomeArticle(
-      {required this.userId,
-      required this.type,
-      required this.name,
-      required this.prixArticle,
-      required this.article,
-      required this.id,
-      required this.imageUrl,
-      required this.email});
+      {required super.uid,
+      required super.articleType,
+      required super.email,
+      required super.article,
+      required super.name,
+      required super.prix,
+      required super.articleId,
+      super.articleUrl,
+      super.date});
 
   @override
   List<Object?> get props => [
-        name,
-        prixArticle,
+        uid,
+        articleType,
+        email,
         article,
-        type,
+        name,
+        prix,
+        articleId,
+        article,
+        articleUrl,
+        date
       ];
 }

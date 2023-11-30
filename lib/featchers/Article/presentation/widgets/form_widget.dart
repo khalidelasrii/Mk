@@ -5,8 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mk/core/snackbar_widget.dart';
 
+import '../../../../core/const_widget/snackbar_widget.dart';
 import '../../domain/entitie/article.dart';
 import '../bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import '../bloc/article/article_bloc.dart';

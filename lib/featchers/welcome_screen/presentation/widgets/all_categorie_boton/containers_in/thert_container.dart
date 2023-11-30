@@ -24,12 +24,12 @@ thertContainer() {
                   padding: const EdgeInsets.all(1.0),
                   child: SizedBox(
                     child: GridTile(
-                      header: Text(article.type),
+                      header: Text(article.articleType),
                       child: MaterialButton(
                         onPressed: () {
                           BlocProvider.of<WelcomeArticleBlocBloc>(context).add(
                               GetarticleParCategorieEvent(
-                                  collection: article.type));
+                                  collection: article.articleType));
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -38,7 +38,7 @@ thertContainer() {
                         },
                         child: ClipOval(
                           child: CachedNetworkImage(
-                            imageUrl: article.imageUrl,
+                            imageUrl: article.articleUrl!,
                             fit: BoxFit.cover,
                           ),
                         ),

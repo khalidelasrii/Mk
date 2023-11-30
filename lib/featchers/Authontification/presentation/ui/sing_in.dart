@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/core_widgets.dart';
-import 'package:mk/core/snackbar_widget.dart';
 import 'package:mk/featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
+import '../../../../core/const_widget/snackbar_widget.dart';
 import '../widget/sign_in_field.dart';
 
 class SingIn extends StatefulWidget {

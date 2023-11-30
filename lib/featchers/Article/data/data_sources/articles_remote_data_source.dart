@@ -8,7 +8,7 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 abstract class ArticlesRemoteDataSource {
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllArticles();
-  Future<Stream<QuerySnapshot<Map>>> getAllArticlestype(String type);
+  Future<Stream<QuerySnapshot<Map>>> getArticlesPartype(String type);
   Future<Unit> updateArticle(Article article);
   Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String collectiontype, String id);
@@ -184,7 +184,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<Stream<QuerySnapshot<Map>>> getAllArticlestype(String type) async {
+  Future<Stream<QuerySnapshot<Map>>> getArticlesPartype(String type) async {
     return _firestore
         .collection('Searche')
         .doc(type)

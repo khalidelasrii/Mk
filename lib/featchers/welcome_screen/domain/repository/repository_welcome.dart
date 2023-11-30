@@ -5,10 +5,12 @@ import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart'
 
 import '../../../Profile/domaine/entitie/profile_user.dart';
 
-abstract class WelcomeRepository {
-  Future<Either<Faillure, List<WelcomeArticle>>> getAllWelcomeArticle();
-  Future<Either<Faillure, List<WelcomeArticle>>> articleParCategorie(
+abstract class RepositoryWelcome {
+  Future<Either<Faillure, List<WelcomeArticle>>> getAllArticle();
+  Future<Either<Faillure, List<WelcomeArticle>>> articleParType(
       String collection);
-  Future<Stream<QuerySnapshot<Object?>>> getSearchResults(String query);
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> searchResults(
+      String query);
   Future<Either<Faillure, List<ProfileUser>>> getUsers();
+  Future<Either<Faillure, List<WelcomeArticle>>> shopArticleWalet();
 }

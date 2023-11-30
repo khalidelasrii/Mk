@@ -1,13 +1,13 @@
 import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/faillure.dart';
 import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart';
-import 'package:mk/featchers/welcome_screen/domain/repository/welcome_repository.dart';
+import 'package:mk/featchers/welcome_screen/domain/repository/repository_welcome.dart';
 
 class ArticleParTypeUseCase {
-  WelcomeRepository welcomeRepository;
+  RepositoryWelcome welcomeRepository;
   ArticleParTypeUseCase(this.welcomeRepository);
 
-  Future<Either<Faillure, List<WelcomeArticle>>> call(String collection) async {
-    return await welcomeRepository.articleParCategorie(collection);
+  Future<Either<Faillure, List<WelcomeArticle>>> call(String type) async {
+    return await welcomeRepository.articleParType(type);
   }
 }

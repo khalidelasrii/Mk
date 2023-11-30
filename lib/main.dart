@@ -5,6 +5,7 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Profile/presentation/bloc/get_profile/get_pofile_cubit.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
+import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 import 'featchers/Authontification/presentation/cubit/auth_cubit.dart';
@@ -50,6 +51,7 @@ class Maktabati extends StatelessWidget {
           BlocProvider(create: (context) => di.sl<MessagesCubit>()),
           BlocProvider(create: (context) => di.sl<DescusionCubit>()),
           BlocProvider(create: (context) => di.sl<GetPofileCubit>()),
+          BlocProvider(create: (context) => di.sl<DrawerDataCubit>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

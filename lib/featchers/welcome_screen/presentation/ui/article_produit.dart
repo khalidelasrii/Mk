@@ -5,8 +5,6 @@ import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 
-import '../../../../core/Widgets/bar_de_recherche.dart';
-
 class ArticleProduit extends StatefulWidget {
   const ArticleProduit({super.key, required this.article});
   final Article article;
@@ -42,7 +40,6 @@ buildbody(BuildContext context, Article article, User? user) {
         child: Column(
           children: [
             const AppbarWelcome(),
-            const BardeRocherche(),
             SizedBox(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

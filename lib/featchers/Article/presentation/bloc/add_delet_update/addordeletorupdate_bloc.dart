@@ -3,11 +3,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:mk/core/messages.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/dellet_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 
+import '../../../../../core/const_widget/messages.dart';
 import '../../../../../core/errure/faillure.dart';
 import '../../../domain/entitie/article.dart';
 

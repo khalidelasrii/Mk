@@ -7,6 +7,8 @@ import 'package:mk/core/Widgets/core_widgets.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
+import '../../../../core/Widgets/drawer_shop.dart';
+import '../../../welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../bloc/message_cubit/messages_cubit.dart';
 
 class MessagesUi extends StatefulWidget {
@@ -36,15 +38,28 @@ class _MessagesUiState extends State<MessagesUi> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mybluebackgroundcolor,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Barre d'applications
-            const AppbarWelcome(), // Core des messages
-            MessageCore(user: user),
-          ],
-        ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Barre d'applications
+                const AppbarWelcome(), // Core des messages
+                MessageCore(user: user),
+              ],
+            ),
+          ),
+          BlocBuilder<DrawerDataCubit, DrawerDataState>(
+            builder: (context, state) {
+              if (state is DrawerDataInitial) {
+                return const SizedBox();
+              } else {
+                return const DrawerShop();
+              }
+            },
+          )
+        ],
       ),
     );
   }
