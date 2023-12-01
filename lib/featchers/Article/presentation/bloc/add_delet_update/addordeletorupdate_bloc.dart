@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/add_like_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/dellet_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 
@@ -19,8 +20,10 @@ class AddordeletorupdateBloc
   final AddArticleUseCase addArticle;
   final DelletArticleUseCase delletArticle;
   final UpdateArticleUseCase updateArticle;
+  final AddLikeUseCase addLikeUseCase;
   AddordeletorupdateBloc(
-      {required this.addArticle,
+      {required this.addLikeUseCase,
+      required this.addArticle,
       required this.delletArticle,
       required this.updateArticle})
       : super(AddordeletorupdateInitial()) {
@@ -63,6 +66,8 @@ class AddordeletorupdateBloc
           (_) => emit(const MessageAddDeleteUpdatePostState(
               message: UPDAT_SUCCESS_MESSAGES)),
         );
+      } else if (event is AddLikeEvent) {
+        await addLikeUseCase(event.article);
       }
     });
   }

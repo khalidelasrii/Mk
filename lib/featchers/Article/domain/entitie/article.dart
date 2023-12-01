@@ -14,6 +14,7 @@ class Article extends Equatable {
   final String? articleUrl;
   final String articleType;
   final Timestamp? date;
+  final List? likers;
 
   const Article(
       {required this.uid,
@@ -25,7 +26,8 @@ class Article extends Equatable {
       required this.article,
       required this.name,
       required this.prix,
-      required this.articleId});
+      required this.articleId,
+      this.likers});
 
   @override
   List<Object?> get props => [

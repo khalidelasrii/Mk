@@ -40,18 +40,20 @@ class _GridViewBodyState extends State<GridViewBody> {
                   final sub = subdata.data();
 
                   return Article(
-                      uid: sub['uid'],
-                      articleType: sub['articleType'],
-                      email: sub['email'],
-                      article: sub['article'],
-                      name: sub['name'],
-                      prix: sub['prix'],
-                      articleUrl: sub['articleUrl'],
-                      articleId: subdata.id);
+                    uid: sub['uid'],
+                    articleType: sub['articleType'],
+                    email: sub['email'],
+                    article: sub['article'],
+                    name: sub['name'],
+                    prix: sub['prix'],
+                    articleUrl: sub['articleUrl'],
+                    articleId: subdata.id,
+                    likers: sub["likers"],
+                  );
                 }).toList();
 
                 return Container(
-                  constraints: BoxConstraints(maxHeight: 1000),
+                  constraints: const BoxConstraints(maxHeight: 1000),
                   child: GridView.builder(
                     itemCount: allArticle.length,
                     gridDelegate:
@@ -59,10 +61,72 @@ class _GridViewBodyState extends State<GridViewBody> {
                             crossAxisCount: 6),
                     itemBuilder: (context, index) {
                       final article = allArticle[index];
+                      String? userLike = article.likers!.firstWhere(
+                          (element) => element == widget.user!.uid,
+                          orElse: () => "true");
                       return GridTile(
-                        footer: Container(
-                            constraints: const BoxConstraints(maxWidth: 150),
-                            child: Text(article.email)),
+                        footer: Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                child: Text(article.email),
+                              ),
+                            ),
+                            Stack(
+                              alignment: Alignment.centerRight,
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      if (userLike != "true") {
+                                        article.likers!
+                                            .remove(widget.user!.uid);
+                                        BlocProvider.of<AddordeletorupdateBloc>(
+                                                context)
+                                            .add(AddLikeEvent(
+                                                article: Article(
+                                          uid: article.uid,
+                                          articleType: article.articleType,
+                                          email: article.email,
+                                          article: article.article,
+                                          name: article.name,
+                                          prix: article.prix,
+                                          articleId: article.articleId,
+                                          articleUrl: article.articleUrl,
+                                          likers: article.likers,
+                                          date: article.date,
+                                        )));
+                                      } else {
+                                        article.likers!.add(widget.user!.uid);
+                                        BlocProvider.of<AddordeletorupdateBloc>(
+                                                context)
+                                            .add(AddLikeEvent(
+                                                article: Article(
+                                          uid: article.uid,
+                                          articleType: article.articleType,
+                                          email: article.email,
+                                          article: article.article,
+                                          name: article.name,
+                                          prix: article.prix,
+                                          articleId: article.articleId,
+                                          articleUrl: article.articleUrl,
+                                          likers: article.likers,
+                                        )));
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.handshake,
+                                      color: userLike == "true"
+                                          ? Colors.white
+                                          : Colors.red,
+                                    )),
+                                Text(
+                                  "${(article.likers!.length - 1)}",
+                                  style: const TextStyle(color: Colors.white),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                         header: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

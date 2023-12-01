@@ -56,6 +56,7 @@ class _FormWidgetState extends State<FormWidget> {
   void validateFormthenUpdateOrAddArticle(
       Uint8List? selectedImageInBytes, String type) {
     final Article article = Article(
+        likers: ["hello"],
         date: Timestamp.now(),
         uid: widget.user!.uid,
         articleType: type, //! add the type of objet her

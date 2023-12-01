@@ -31,3 +31,11 @@ class UpdatArticleEvent extends AddordeletorupdateEvent {
   @override
   List<Object> get props => [article];
 }
+
+class AddLikeEvent extends AddordeletorupdateEvent {
+  final Article article;
+
+  const AddLikeEvent({required this.article});
+  @override
+  List<Object> get props => [article];
+}

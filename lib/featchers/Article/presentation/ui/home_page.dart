@@ -8,6 +8,7 @@ import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart
 
 import '../../../welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../widgets/grid_view_body.dart';
+import 'add_article.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -38,25 +39,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: mybluebackgroundcolor,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent,
-      //   flexibleSpace:
-      //       BlocBuilder<WelcomeArticleBlocBloc, WelcomeArticleBlocState>(
-      //     builder: (context, state) {
-      //       if (state is ShoppingWelcomState) {
-      //         return MaterialButton(
-      //             onPressed: () {
-      //               BlocProvider.of<WelcomeArticleBlocBloc>(context)
-      //                   .add(WelcomeBlocInitialEvent());
-      //             },
-      //             child: Container());
-      //       } else {
-      //         return const AppbarWelcome();
-      //       }
-      //     },
-      //   ),
-      // ),
+      floatingActionButton: IconButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => AddOrUpdateArticle(
+                          isUpdate: false,
+                          user: userconnect,
+                        )));
+          },
+          icon: const Icon(Icons.add)),
       body: Stack(
         children: [
           SingleChildScrollView(

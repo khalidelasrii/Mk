@@ -13,6 +13,8 @@ abstract class ArticlesRemoteDataSource {
   Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String collectiontype, String id);
   Future<Unit> addoorableArticle(Article article);
+  Future<void> addshoparticle(Article article);
+  Future<void> addLiketoArticle(Article article);
 }
 
 class ArticlesFirebase implements ArticlesRemoteDataSource {
@@ -23,26 +25,19 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   Future<Unit> addArticle(Article article) async {
     try {
       final messageid = Timestamp.now();
-
       final String userId = _auth!.uid;
-
       // Créez un ID unique pour le fichier image
       String uniqueImageId =
           userId + DateTime.now().millisecondsSinceEpoch.toString();
-
       Reference userFolderRef =
           FirebaseStorage.instance.ref().child('user_images/$userId');
-
       Reference imageRef = userFolderRef.child('$uniqueImageId.jpg');
-
       final metadata = SettableMetadata(contentType: 'image/jpeg');
-
       await imageRef.putData(article.selectedImageInBytes!, metadata);
-
       String imageUrl = await imageRef.getDownloadURL();
 
       // Enregistrez les informations de l'image dans la base de données Firestore
-
+//! add article for usr of categorie
       await _firestore
           .collection('Articles')
           .doc(_auth!.uid)
@@ -58,8 +53,9 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'email': _auth!.email,
         'articleUrl': imageUrl,
         "date": messageid,
+        "likers": article.likers,
       });
-
+//! add article all Categorie
       await _firestore
           .collection('Articles')
           .doc(_auth!.uid)
@@ -75,7 +71,9 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'email': _auth!.email,
         'articleUrl': imageUrl,
         "date": messageid,
+        "likers": article.likers,
       });
+      //! add article for all users
       await _firestore.collection('Searche').doc(uniqueImageId).set({
         "uid": _auth!.uid,
         "articleId": uniqueImageId,
@@ -86,8 +84,9 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'email': _auth!.email,
         'articleUrl': imageUrl,
         "date": messageid,
+        "likers": article.likers,
       });
-
+//! add article for all users users  of categorie
       await _firestore
           .collection('Searche')
           .doc(article.articleType)
@@ -103,6 +102,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'email': _auth!.email,
         'articleUrl': imageUrl,
         "date": messageid,
+        "likers": article.likers,
       });
 
       return unit;
@@ -140,6 +140,8 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
   @override
   Future<Unit> updateArticle(Article article) async {
+    //! update  Article in user walet
+
     await _firestore
         .collection('Articles')
         .doc(_auth!.uid)
@@ -154,7 +156,11 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       'prix': article.prix,
       'email': _auth!.email,
       'articleUrl': article.articleUrl,
+      "likers": article.likers,
+      "date": article.date,
     });
+
+    //! update  All Categorie of article
     await _firestore.collection('Searche').doc(article.articleId).set({
       "uid": _auth!.uid,
       "articleId": article.articleId,
@@ -164,7 +170,11 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       'prix': article.prix,
       'email': _auth!.email,
       'articleUrl': article.articleUrl,
+      "likers": article.likers,
+      "date": article.date,
     });
+    //! update   article par categorie
+
     await _firestore
         .collection('Searche')
         .doc(article.articleType)
@@ -179,6 +189,8 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       'prix': article.prix,
       'email': _auth!.email,
       'articleUrl': article.articleUrl,
+      "likers": article.likers,
+      "date": article.date,
     });
     return unit;
   }
@@ -205,7 +217,8 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': article.email,
         'articleUrl': article.articleUrl,
-        'date': article.date
+        'date': article.date,
+        "likers": article.likers,
       });
 
       return Future.value(unit);
@@ -220,5 +233,82 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         .collection('Searche')
         .orderBy("date", descending: true)
         .snapshots();
+  }
+
+  @override
+  Future<void> addshoparticle(Article article) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addLiketoArticle(Article article) async {
+//! add article for all users users  of categorie
+    await _firestore.collection('Searche').doc(article.articleId).set({
+      "articleType": article.articleType,
+      'uid': article.uid,
+      'articleId': article.articleId,
+      'article': article.article,
+      'name': article.name,
+      'prix': article.prix,
+      'email': article.email,
+      'articleUrl': article.articleUrl,
+      'date': article.date,
+      "likers": article.likers
+    });
+    //! add article for all users users  of categorie
+
+    await _firestore
+        .collection('Searche')
+        .doc(article.articleType)
+        .collection(article.articleType)
+        .doc(article.articleId)
+        .set({
+      "articleType": article.articleType,
+      'uid': article.uid,
+      'articleId': article.articleId,
+      'article': article.article,
+      'name': article.name,
+      'prix': article.prix,
+      'email': article.email,
+      'articleUrl': article.articleUrl,
+      'date': article.date,
+      "likers": article.likers
+    });
+
+    await _firestore
+        .collection('Articles')
+        .doc(article.uid)
+        .collection("AllCategorie")
+        .doc(article.articleId)
+        .set({
+      "uid": article.uid,
+      "articleId": article.articleId,
+      'articleType': article.articleType,
+      'article': article.article,
+      'name': article.name,
+      'prix': article.prix,
+      'email': article.email,
+      'articleUrl': article.articleUrl,
+      "date": article.date,
+      "likers": article.likers,
+    });
+
+    await _firestore
+        .collection('Articles')
+        .doc(article.uid)
+        .collection(article.articleType)
+        .doc(article.articleId)
+        .set({
+      "uid": article.uid,
+      "articleId": article.articleId,
+      'articleType': article.articleType,
+      'article': article.article,
+      'name': article.name,
+      'prix': article.prix,
+      'email': _auth!.email,
+      'articleUrl': article.articleUrl,
+      "date": article.date,
+      "likers": article.likers,
+    });
   }
 }

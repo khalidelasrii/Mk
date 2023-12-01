@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_source.dart';
 import 'package:mk/featchers/Article/domain/repository/repository_articles.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/add_like_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/addoorable_articles_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
@@ -12,7 +13,6 @@ import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart
 import 'package:mk/featchers/Authontification/domain/use_case/sing_in_google_use_case.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/sing_out_usecase.dart';
 import 'package:mk/featchers/Authontification/domain/use_case/singin_use_case.dart';
-import 'package:mk/featchers/Article/data/data_sources/profile_data_sources.dart';
 import 'package:mk/featchers/Profile/data/repository_impl/repository_profile_impl.dart';
 import 'package:mk/featchers/Profile/domaine/use_case/get_autre_profile_use_case.dart';
 import 'package:mk/featchers/Profile/domaine/use_case/get_mes_articles_use_case.dart';
@@ -65,6 +65,7 @@ Future<void> init() async {
   sl.registerFactory(() =>
       ArticleBloc(getAllArticleUseCase: sl(), addoorableArticlesUseCase: sl()));
   sl.registerFactory(() => AddordeletorupdateBloc(
+        addLikeUseCase: sl(),
         addArticle: sl(),
         delletArticle: sl(),
         updateArticle: sl(),
@@ -92,6 +93,8 @@ Future<void> init() async {
       messageVuUseCase: sl()));
 
   // Use cases
+  sl.registerLazySingleton(() => AddLikeUseCase(sl()));
+
   sl.registerLazySingleton(() => GetAutreProfileUseCase(sl()));
 
   sl.registerLazySingleton(() => GetUsersUsecase(sl()));
@@ -134,7 +137,6 @@ Future<void> init() async {
   sl.registerLazySingleton<ArticlesRemoteDataSource>(() => ArticlesFirebase());
   sl.registerLazySingleton<UserDataSources>(() => UserDataSourcesImpl1());
   sl.registerLazySingleton<WelcomeDataSource>(() => WelcomeDataSourcesImpl());
-  sl.registerLazySingleton<ProfileDataSources>(() => ProfileDataSourcesImpl());
   sl.registerLazySingleton<DataSourcesMessages>(
       () => DataSourcesMessagesImpl());
 

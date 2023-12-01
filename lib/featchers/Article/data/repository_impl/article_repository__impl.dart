@@ -60,4 +60,13 @@ class ArticleRepositoryImpl implements RepositoryArticles {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Faillure, void>> addLike(Article article) async {
+    try {
+      return Right(await articlesFirebase.addLiketoArticle(article));
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 }
