@@ -34,6 +34,7 @@ import 'package:mk/featchers/welcome_screen/domain/repository/repository_welcome
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/search_results_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/get_users_usecase.dart';
+import 'package:mk/featchers/welcome_screen/domain/use_case/shop_article_walet_use_case.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
@@ -57,7 +58,7 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   // Bloc
-  sl.registerFactory(() => DrawerDataCubit());
+  sl.registerFactory(() => DrawerDataCubit(shopArticleWaletUseCase: sl()));
 
   sl.registerFactory(() => GetPofileCubit(getAutreProfileUseCase: sl()));
   sl.registerFactory(() => GetMesArticleCubit(getMesArticlesUseCase: sl()));
@@ -93,12 +94,10 @@ Future<void> init() async {
       messageVuUseCase: sl()));
 
   // Use cases
+  sl.registerLazySingleton(() => ShopArticleWaletUseCase(sl()));
   sl.registerLazySingleton(() => AddLikeUseCase(sl()));
-
   sl.registerLazySingleton(() => GetAutreProfileUseCase(sl()));
-
   sl.registerLazySingleton(() => GetUsersUsecase(sl()));
-
   sl.registerLazySingleton(() => GetMesArticlesUseCase(sl()));
   sl.registerLazySingleton(() => NbrVuUseCase(sl()));
   sl.registerLazySingleton(() => MessageVuUseCase(sl()));
@@ -133,7 +132,6 @@ Future<void> init() async {
 
   // Data sources
   sl.registerLazySingleton<ProfileDataSource>(() => ProfileDataSourceImpl());
-
   sl.registerLazySingleton<ArticlesRemoteDataSource>(() => ArticlesFirebase());
   sl.registerLazySingleton<UserDataSources>(() => UserDataSourcesImpl1());
   sl.registerLazySingleton<WelcomeDataSource>(() => WelcomeDataSourcesImpl());

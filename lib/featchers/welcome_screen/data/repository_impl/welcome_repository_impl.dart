@@ -46,7 +46,11 @@ class WelcomeRepositoryImpl implements RepositoryWelcome {
   }
 
   @override
-  Future<Either<Faillure, List<WelcomeArticle>>> shopArticleWalet() {
-    throw UnimplementedError();
+  Future<Either<Faillure, List<WelcomeArticle>>> shopArticleWalet() async {
+    try {
+      return Right(await welcomeDataSource.shopArticleWalet());
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }

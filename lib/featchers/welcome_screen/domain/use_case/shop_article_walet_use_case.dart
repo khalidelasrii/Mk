@@ -4,9 +4,9 @@ import '../../../../core/errure/faillure.dart';
 import '../entitie/welcome_article.dart';
 import '../repository/repository_welcome.dart';
 
-class ShopArticleWalet {
+class ShopArticleWaletUseCase {
   RepositoryWelcome repositoryWelcome;
-  ShopArticleWalet(this.repositoryWelcome);
+  ShopArticleWaletUseCase(this.repositoryWelcome);
 
   Future<Either<Faillure, List<WelcomeArticle>>> call() async {
     return await repositoryWelcome.shopArticleWalet();

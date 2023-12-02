@@ -25,7 +25,7 @@ class DrawerShop extends StatelessWidget {
         children: [
           const Expanded(
             flex: 2,
-            child: const SizedBox(),
+            child: SizedBox(),
           ),
           Expanded(
             child: SizedBox(
@@ -53,15 +53,24 @@ class DrawerShop extends StatelessWidget {
   }
 }
 
+//! Shope walet
 class ShopWaletDrawer extends StatelessWidget {
   const ShopWaletDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Padding(
+      padding: const EdgeInsets.only(right: 66, top: 52, bottom: 50),
+      child: Container(
+        decoration: const BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+      ),
+    );
   }
 }
 
+//! Searche widget
 class SercheDrawer extends StatefulWidget {
   const SercheDrawer({super.key});
 
@@ -215,31 +224,43 @@ class _ProfileDrawerPageState extends State<ProfileDrawerPage> {
         ),
         child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: ListTile(
-                  focusColor: Colors.amber,
-                  onTap: () {
-                    BlocProvider.of<DrawerDataCubit>(context)
-                        .drawerdataInitiale();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => ProfileScreen(
-                                  user: Usr(
-                                      email: user!.email!,
-                                      uid: user!.uid,
-                                      name: user!.displayName ?? 'Milo'),
-                                )));
-                  },
-                  title: const Center(child: Text("Profile")),
-                ),
-              ),
-            ),
+            user != null
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      child: ListTile(
+                        focusColor: Colors.amber,
+                        onTap: () {
+                          BlocProvider.of<DrawerDataCubit>(context)
+                              .drawerdataInitiale();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => ProfileScreen(
+                                        user: Usr(
+                                            email: user!.email!,
+                                            uid: user!.uid,
+                                            name: user!.displayName ?? 'Milo'),
+                                      )));
+                        },
+                        leading: user!.photoURL == null
+                            ? const Icon(Icons.person_pin_outlined)
+                            : Image.network(user!.photoURL!),
+                        title: const Text(
+                          "Page de profile ",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        subtitle: Text(
+                          user!.email!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -259,7 +280,15 @@ class _ProfileDrawerPageState extends State<ProfileDrawerPage> {
                                   user: user,
                                 )));
                   },
-                  title: const Center(child: Text("add Article")),
+                  leading: const Icon(
+                    Icons.playlist_add_sharp,
+                    color: Colors.white,
+                  ),
+                  title: const Center(
+                      child: Text(
+                    "add Article",
+                    style: TextStyle(color: Colors.white),
+                  )),
                 ),
               ),
             ),
@@ -280,7 +309,15 @@ class _ProfileDrawerPageState extends State<ProfileDrawerPage> {
                         MaterialPageRoute(
                             builder: (_) => const WelcomeScreen()));
                   },
-                  title: const Center(child: Text("Deconection")),
+                  leading: const Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  ),
+                  title: const Center(
+                      child: Text(
+                    "Deconection",
+                    style: TextStyle(color: Colors.white),
+                  )),
                 ),
               ),
             )
