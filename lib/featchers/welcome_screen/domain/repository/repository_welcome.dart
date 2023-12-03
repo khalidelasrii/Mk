@@ -13,4 +13,5 @@ abstract class RepositoryWelcome {
       String query);
   Future<Either<Faillure, List<ProfileUser>>> getUsers();
   Future<Either<Faillure, List<WelcomeArticle>>> shopArticleWalet();
+  Future<void> addArticleInwalet(WelcomeArticle article);
 }

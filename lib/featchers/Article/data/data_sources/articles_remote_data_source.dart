@@ -24,7 +24,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   @override
   Future<Unit> addArticle(Article article) async {
     try {
-      final messageid = Timestamp.now();
+      final dateTiming = Timestamp.now();
       final String userId = _auth!.uid;
       // Créez un ID unique pour le fichier image
       String uniqueImageId =
@@ -52,7 +52,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
-        "date": messageid,
+        "date": dateTiming,
         "likers": article.likers,
       });
 //! add article all Categorie
@@ -70,7 +70,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
-        "date": messageid,
+        "date": dateTiming,
         "likers": article.likers,
       });
       //! add article for all users
@@ -83,7 +83,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
-        "date": messageid,
+        "date": dateTiming,
         "likers": article.likers,
       });
 //! add article for all users users  of categorie
@@ -101,7 +101,7 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
         'prix': article.prix,
         'email': _auth!.email,
         'articleUrl': imageUrl,
-        "date": messageid,
+        "date": dateTiming,
         "likers": article.likers,
       });
 

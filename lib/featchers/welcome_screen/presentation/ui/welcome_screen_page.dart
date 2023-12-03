@@ -54,7 +54,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: Opacity(
                     opacity: 0.3,
                     child: Image.asset(
-                      'images/bck.jpg',
+                      'images/GIFBACK.gif',
                       fit: BoxFit.cover,
                     ),
                   ),

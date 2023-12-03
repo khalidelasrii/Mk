@@ -9,6 +9,7 @@ import 'package:mk/featchers/welcome_screen/presentation/ui/article_produit.dart
 import '../../featchers/Authontification/domain/entitie/user.dart';
 import '../../featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import '../../featchers/Profile/presentation/page/profile_screen.dart';
+import '../../featchers/welcome_screen/domain/entitie/welcome_article.dart';
 import '../../featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import '../../featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
@@ -35,7 +36,9 @@ class DrawerShop extends StatelessWidget {
                   if (state is SearchDrawerState) {
                     return const SercheDrawer();
                   } else if (state is ShoppingDrawerState) {
-                    return const ShopWaletDrawer();
+                    return ShopWaletDrawer(
+                      articles: state.articles,
+                    );
                   } else if (state is ProfileDrawerState) {
                     return const ProfileDrawerPage();
                   } else {
@@ -55,8 +58,8 @@ class DrawerShop extends StatelessWidget {
 
 //! Shope walet
 class ShopWaletDrawer extends StatelessWidget {
-  const ShopWaletDrawer({super.key});
-
+  const ShopWaletDrawer({super.key, required this.articles});
+  final List<WelcomeArticle> articles;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -65,6 +68,31 @@ class ShopWaletDrawer extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Colors.blue,
             borderRadius: BorderRadius.all(Radius.circular(15))),
+        child: ListView.builder(
+          itemCount: articles.length,
+          itemBuilder: (context, index) {
+            final article = articles[index];
+            return ListTile(
+              leading: Image.network(
+                article.articleUrl!,
+                fit: BoxFit.cover,
+                width: 50,
+                height: 50,
+              ),
+              title: Text(article.article),
+              subtitle: Text(article.name),
+              trailing: MaterialButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => ArticleProduit(article: article)));
+                },
+                child: const Text("Acheter Now"),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

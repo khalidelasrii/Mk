@@ -10,6 +10,7 @@ class WelcomeArticleModel extends WelcomeArticle {
     required super.article,
     required super.articleId,
     required super.articleUrl,
+    super.date,
   });
 
   factory WelcomeArticleModel.fromeMap(Map<String, dynamic> map) {
@@ -35,6 +36,7 @@ class WelcomeArticleModel extends WelcomeArticle {
       'name': name,
       'prix': prix,
       'article': article,
+      'date': date
     };
   }
 }
