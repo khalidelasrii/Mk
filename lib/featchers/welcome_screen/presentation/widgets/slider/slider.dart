@@ -1,36 +1,55 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class SliderCrusur extends StatelessWidget {
-  const SliderCrusur({super.key});
+class SliderCarousel extends StatelessWidget {
+  const SliderCarousel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<String> imageUrls = [
-      'images/slider/2.jpg',
-      'images/slider/3.jpg',
-      'images/slider/4.jpg',
-    ];
-    return CarouselSlider(
-      options: CarouselOptions(
-        aspectRatio: 32 / 5, // Rapport largeur-hauteur des images
-        enlargeCenterPage: true, // Agrandit la page actuellement centrée
-        enableInfiniteScroll: true, // Défilement infini
-        autoPlay: true, // Lecture automatique
-        autoPlayInterval:
-            const Duration(seconds: 3), // Intervalle de lecture automatique
-        autoPlayAnimationDuration: const Duration(
-            milliseconds: 800), // Durée de l'animation de lecture automatique
-        autoPlayCurve:
-            Curves.fastOutSlowIn, // Courbe d'animation de lecture automatique
-        viewportFraction: 1, // Fraction de l'écran occupée par le carrousel
+    List<Widget> dataliste = [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ClipOval(
+          child: Container(
+            color: Colors.amber,
+            child: const Icon(Icons.tag_faces_sharp),
+          ),
+        ),
       ),
-      items: imageUrls.map((url) {
-        return Image.asset(
-          url,
-          fit: BoxFit.cover,
-        );
-      }).toList(),
+    ];
+
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 50000),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 50,
+            color: Colors.red,
+            height: 300,
+          ),
+          Expanded(
+            child: Container(
+              color: Colors.blue,
+              height: 300,
+              child: GridView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: dataliste.length * 20,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: (context, index) {
+                  return dataliste[index % dataliste.length];
+                },
+              ),
+            ),
+          ),
+          Container(
+            width: 50,
+            height: 300,
+            color: Colors.red,
+          ),
+        ],
+      ),
     );
   }
 }

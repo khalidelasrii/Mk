@@ -9,9 +9,16 @@ sealed class DrawerDataState extends Equatable {
 
 final class DrawerDataInitial extends DrawerDataState {}
 
-class ShoppingDrawerState extends DrawerDataState {
-  final List<WelcomeArticle> articles;
-  const ShoppingDrawerState({required this.articles});
+class ShoppingDrawerPageState extends DrawerDataState {
+  final List<Article> articles;
+  const ShoppingDrawerPageState({required this.articles});
+  @override
+  List<Object> get props => [articles];
+}
+
+class ShoppingDataState extends DrawerDataState {
+  final Stream<QuerySnapshot<Map<String, dynamic>>> articles;
+  const ShoppingDataState({required this.articles});
   @override
   List<Object> get props => [articles];
 }

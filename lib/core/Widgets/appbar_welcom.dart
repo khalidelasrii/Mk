@@ -5,9 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/messages_ui/messages_page.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
+import '../../featchers/Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../../featchers/Authontification/presentation/ui/sing_in.dart';
 import '../../featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 import '../../featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
@@ -21,6 +21,8 @@ class AppbarWelcome extends StatefulWidget {
 
 class _AppbarWelcomeState extends State<AppbarWelcome> {
   User? user;
+  TextEditingController textEditingController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -30,13 +32,12 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
           setState(() {
             user = usr;
           });
+          BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
+          BlocProvider.of<DrawerDataCubit>(context).shoppingDataDrawerEvent();
         }
       },
     );
-    BlocProvider.of<DescusionCubit>(context).getDescusionEvent();
   }
-
-  TextEditingController textEditingController = TextEditingController();
 
   @override
   void dispose() {
@@ -81,12 +82,13 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const WelcomeScreen()));
               },
-              child: Container(
+              child: SizedBox(
                 child: Row(
                   children: [
                     Image.asset(
                       'images/MK.png',
                       height: 60,
+                      width: 60,
                     ),
                     RichText(
                       text: TextSpan(
@@ -115,7 +117,7 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                   Icons.search,
                   color: Colors.white,
                 )),
-
+            //! Messages Icons
             user != null
                 ? MaterialButton(
                     onPressed: () {
@@ -150,21 +152,23 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                                         Icons.message,
                                         color: Colors.white,
                                       ),
-                                      Container(
-                                        decoration: const BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2.0),
-                                          child: Text(
-                                            cont.toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10),
-                                          ),
-                                        ),
-                                      ),
+                                      cont != 0
+                                          ? ClipOval(
+                                              child: Container(
+                                                color: Colors.red,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Text(
+                                                    cont.toString(),
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox(),
                                     ],
                                   );
                                 } else {
@@ -186,21 +190,71 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                 : const SizedBox(),
 
             //! Shop Icon
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: IconButton(
-                focusColor: Colors.orange,
-                hoverColor: Colors.red,
-                onPressed: () {
-                  BlocProvider.of<DrawerDataCubit>(context)
-                      .shoppingDrawerEvent();
-                },
-                icon: Icon(
-                  Icons.shopping_basket,
-                  color: color2,
-                ),
-              ),
-            ),
+            user != null
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: IconButton(
+                      focusColor: Colors.orange,
+                      hoverColor: Colors.red,
+                      onPressed: () {
+                        BlocProvider.of<DrawerDataCubit>(context)
+                            .shopingPageEvent();
+                      },
+                      icon: BlocBuilder<DrawerDataCubit, DrawerDataState>(
+                        builder: (context, state) {
+                          if (state is ShoppingDataState) {
+                            return StreamBuilder<
+                                QuerySnapshot<Map<String, dynamic>>>(
+                              stream: state.articles,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  final articl = snapshot.data!.size;
+
+                                  return Stack(
+                                    alignment: Alignment.topRight,
+                                    children: [
+                                      Icon(
+                                        Icons.shopping_basket,
+                                        color: color2,
+                                      ),
+                                      articl != 0
+                                          ? ClipOval(
+                                              child: Container(
+                                                color: const Color.fromARGB(
+                                                    131, 244, 67, 54),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2.0),
+                                                  child: Text(
+                                                    articl.toString(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox()
+                                    ],
+                                  );
+                                } else {
+                                  return Icon(
+                                    Icons.shopping_basket,
+                                    color: color2,
+                                  );
+                                }
+                              },
+                            );
+                          } else {
+                            return Icon(
+                              Icons.shopping_basket,
+                              color: color2,
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  )
+                : const SizedBox(),
             //! Connection Bottun
             SizedBox(
               child: user != null

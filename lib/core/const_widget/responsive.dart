@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mk/core/Widgets/core_widgets.dart';
+import 'package:mk/core/const_widget/core_widgets.dart';
 
 class ResponsiveLayote extends StatelessWidget {
   const ResponsiveLayote({

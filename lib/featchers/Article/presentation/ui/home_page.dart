@@ -6,7 +6,7 @@ import 'package:mk/core/Widgets/drawer_shop.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 
-import '../../../welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
+import '../bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../widgets/grid_view_body.dart';
 import 'add_article.dart';
 

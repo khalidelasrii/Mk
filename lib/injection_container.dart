@@ -6,7 +6,9 @@ import 'package:mk/featchers/Article/domain/repository/repository_articles.dart'
 import 'package:mk/featchers/Article/domain/use_case/add_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/add_like_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/addoorable_articles_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/dellet_shop_article_use_case.dart';
 import 'package:mk/featchers/Article/domain/use_case/get_all_article_usecase.dart';
+import 'package:mk/featchers/Article/domain/use_case/get_shop_article_walet.dart';
 import 'package:mk/featchers/Article/domain/use_case/update_article_use_case.dart';
 import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordeletorupdate_bloc.dart';
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
@@ -31,18 +33,18 @@ import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit
 import 'package:mk/featchers/welcome_screen/data/data_sources/welcome_data_source.dart';
 import 'package:mk/featchers/welcome_screen/data/repository_impl/welcome_repository_impl.dart';
 import 'package:mk/featchers/welcome_screen/domain/repository/repository_welcome.dart';
-import 'package:mk/featchers/welcome_screen/domain/use_case/add_article_in_walet_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/add_article_in_walet_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/article_par_type_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/search_results_use_case.dart';
 import 'package:mk/featchers/welcome_screen/domain/use_case/get_users_usecase.dart';
-import 'package:mk/featchers/welcome_screen/domain/use_case/shop_article_walet_use_case.dart';
+import 'package:mk/featchers/Article/domain/use_case/shop_article_walet_use_case.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/toolbar_Cuibit/toolbar_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
 import 'featchers/Article/data/repository_impl/article_repository__impl.dart';
 import 'featchers/Article/domain/use_case/dellet_article_use_case.dart';
+import 'featchers/Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'featchers/Authontification/data/date_sources.dart/user_data_sources.dart';
 import 'featchers/Authontification/data/user_repository_impl.dart/user_repository_impl.dart';
 import 'featchers/Authontification/domain/repository/repository_auth.dart';
@@ -60,7 +62,10 @@ final sl = GetIt.instance;
 Future<void> init() async {
   // Bloc
   sl.registerFactory(() => DrawerDataCubit(
-      shopArticleWaletUseCase: sl(), addArticleInWaletUseCase: sl()));
+      delletShopArticleUseCase: sl(),
+      getShopArticleWaletUseCase: sl(),
+      shopArticleWaletUseCase: sl(),
+      addArticleInWaletUseCase: sl()));
 
   sl.registerFactory(() => GetPofileCubit(getAutreProfileUseCase: sl()));
   sl.registerFactory(() => GetMesArticleCubit(getMesArticlesUseCase: sl()));
@@ -97,6 +102,8 @@ Future<void> init() async {
 
   // Use cases
 
+  sl.registerLazySingleton(() => DelletShopArticleUseCase(sl()));
+  sl.registerLazySingleton(() => GetShopArticleWaletUseCase(sl()));
   sl.registerLazySingleton(() => AddArticleInWaletUseCase(sl()));
   sl.registerLazySingleton(() => ShopArticleWaletUseCase(sl()));
   sl.registerLazySingleton(() => AddLikeUseCase(sl()));

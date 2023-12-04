@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
-import 'package:mk/core/Widgets/core_widgets.dart';
+import 'package:mk/core/const_widget/core_widgets.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/messaget_futchers/domain/entitie/message.dart';
 import 'package:mk/featchers/messaget_futchers/presentation/bloc/descusion_cubit/descusion_cubit.dart';
 import '../../../../core/Widgets/drawer_shop.dart';
-import '../../../welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
+import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../bloc/message_cubit/messages_cubit.dart';
 
 class MessagesUi extends StatefulWidget {

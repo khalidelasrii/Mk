@@ -14,4 +14,8 @@ abstract class RepositoryArticles {
   Future<Either<Faillure, Unit>> delletArticle(String collectionId, String id);
   Future<Either<Faillure, Unit>> addoorableArticle(Article article);
   Future<Either<Faillure, void>> addLike(Article article);
+  Future<void> addArticleInwalet(Article article);
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> shopArticleWalet();
+  Future<List<Article>> getShopArticleWalet();
+  Future<void> delletShopArticleWalet(String articleId);
 }

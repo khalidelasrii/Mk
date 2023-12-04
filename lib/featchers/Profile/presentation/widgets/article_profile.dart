@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/Widgets/core_widgets.dart';
+import '../../../../core/const_widget/core_widgets.dart';
 import '../../../Authontification/domain/entitie/user.dart';
 import '../../domaine/entitie/profile_articles.dart';
 import '../bloc/get_Mes_article/get_mes_article_cubit.dart';

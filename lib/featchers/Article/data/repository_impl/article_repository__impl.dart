@@ -5,6 +5,7 @@ import 'package:mk/featchers/Article/data/data_sources/articles_remote_data_sour
 import '../../../../core/errure/faillure.dart';
 import '../../domain/entitie/article.dart';
 import '../../domain/repository/repository_articles.dart';
+import '../models/article_model.dart';
 
 class ArticleRepositoryImpl implements RepositoryArticles {
   final ArticlesRemoteDataSource articlesFirebase;
@@ -68,5 +69,33 @@ class ArticleRepositoryImpl implements RepositoryArticles {
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<void> addArticleInwalet(Article article) async {
+    await articlesFirebase.addArticleInWalet(ArticleModel(
+        uid: article.uid,
+        articleType: article.articleType,
+        email: article.email,
+        article: article.article,
+        name: article.name,
+        prix: article.prix,
+        articleId: article.articleId,
+        articleUrl: article.articleUrl));
+  }
+
+  @override
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> shopArticleWalet() async {
+    return await articlesFirebase.shopArticleWalet();
+  }
+
+  @override
+  Future<List<Article>> getShopArticleWalet() async {
+    return await articlesFirebase.getShopArticleWalet();
+  }
+
+  @override
+  Future<void> delletShopArticleWalet(String articleId) async {
+    await articlesFirebase.delletShopArticleWalet(articleId);
   }
 }

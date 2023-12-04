@@ -4,11 +4,11 @@ import 'package:mk/core/Widgets/drawer_shop.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/users_welcome_screen/users_welcome_screen_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.dart';
 import 'package:mk/injection_container.dart' as di;
+import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 import '../widgets/profileInwelcom/autre_profile_option.dart';
 import '../widgets/ground_containers_botons.dart';
@@ -95,7 +95,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ]),
           const AutreProfileOption(),
-          const SliderCrusur()
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: SliderCarousel(),
+          )
         ])),
         BlocBuilder<DrawerDataCubit, DrawerDataState>(
           builder: (context, state) {

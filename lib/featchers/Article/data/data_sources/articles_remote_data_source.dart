@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
+import '../models/article_model.dart';
+
 abstract class ArticlesRemoteDataSource {
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllArticles();
   Future<Stream<QuerySnapshot<Map>>> getArticlesPartype(String type);
@@ -13,8 +15,11 @@ abstract class ArticlesRemoteDataSource {
   Future<Unit> addArticle(Article article);
   Future<Unit> delletArticle(String collectiontype, String id);
   Future<Unit> addoorableArticle(Article article);
-  Future<void> addshoparticle(Article article);
+  Future<void> addArticleInWalet(ArticleModel article);
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> shopArticleWalet();
   Future<void> addLiketoArticle(Article article);
+  Future<List<Article>> getShopArticleWalet();
+  Future<void> delletShopArticleWalet(String id);
 }
 
 class ArticlesFirebase implements ArticlesRemoteDataSource {
@@ -236,11 +241,6 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
   }
 
   @override
-  Future<void> addshoparticle(Article article) {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> addLiketoArticle(Article article) async {
 //! add article for all users users  of categorie
     await _firestore.collection('Searche').doc(article.articleId).set({
@@ -310,5 +310,55 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
       "date": article.date,
       "likers": article.likers,
     });
+  }
+
+  @override
+  Future<void> addArticleInWalet(ArticleModel article) async {
+    await _firestore
+        .collection("Users")
+        .doc(_auth!.uid)
+        .collection("Articles")
+        .doc(article.articleId)
+        .set(article.toMap());
+  }
+
+  @override
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> shopArticleWalet() async {
+    return _firestore
+        .collection("Users")
+        .doc(_auth!.uid)
+        .collection("Articles")
+        .snapshots();
+  }
+
+  @override
+  Future<List<Article>> getShopArticleWalet() async {
+    final articles = await _firestore
+        .collection("Users")
+        .doc(_auth!.uid)
+        .collection("Articles")
+        .get();
+    return articles.docs.map((sub) {
+      final subArticleData = sub.data();
+      return Article(
+          uid: subArticleData['uid'],
+          articleType: subArticleData['articleType'],
+          email: subArticleData['email'],
+          article: subArticleData['article'],
+          name: subArticleData['name'],
+          prix: subArticleData['prix'],
+          articleId: sub.id,
+          articleUrl: subArticleData['articleUrl']);
+    }).toList();
+  }
+
+  @override
+  Future<void> delletShopArticleWalet(String articleId) async {
+    await _firestore
+        .collection("Users")
+        .doc(_auth!.uid)
+        .collection("Articles")
+        .doc(articleId)
+        .delete();
   }
 }

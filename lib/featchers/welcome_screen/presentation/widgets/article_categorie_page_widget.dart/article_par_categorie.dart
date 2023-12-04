@@ -5,7 +5,7 @@ import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 
-import '../../../../../core/Widgets/core_widgets.dart';
+import '../../../../../core/const_widget/core_widgets.dart';
 import '../../ui/article_produit.dart';
 
 class ArticleParCategorieWidget extends StatefulWidget {

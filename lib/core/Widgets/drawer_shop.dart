@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/ui/article_produit.dart';
+import '../../featchers/Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../../featchers/Authontification/domain/entitie/user.dart';
 import '../../featchers/Authontification/presentation/cubit/auth_cubit.dart';
 import '../../featchers/Profile/presentation/page/profile_screen.dart';
-import '../../featchers/welcome_screen/domain/entitie/welcome_article.dart';
 import '../../featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
 import '../../featchers/welcome_screen/presentation/ui/welcome_screen_page.dart';
 
@@ -20,37 +19,64 @@ class DrawerShop extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       onPressed: () {
-        BlocProvider.of<DrawerDataCubit>(context).drawerdataInitiale();
+        BlocProvider.of<DrawerDataCubit>(context).shoppingDataDrawerEvent();
       },
-      child: Row(
-        children: [
-          const Expanded(
-            flex: 2,
-            child: SizedBox(),
-          ),
-          Expanded(
-            child: SizedBox(
-              height: double.infinity,
-              child: BlocBuilder<DrawerDataCubit, DrawerDataState>(
-                builder: (context, state) {
-                  if (state is SearchDrawerState) {
-                    return const SercheDrawer();
-                  } else if (state is ShoppingDrawerState) {
-                    return ShopWaletDrawer(
+      child: BlocBuilder<DrawerDataCubit, DrawerDataState>(
+        builder: (context, state) {
+          if (state is SearchDrawerState) {
+            return Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  child: Container(
+                    constraints: const BoxConstraints(minWidth: 300),
+                    height: double.infinity,
+                    child: const SercheDrawer(),
+                  ),
+                ),
+              ],
+            );
+          } else if (state is ShoppingDrawerPageState) {
+            return Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  child: Container(
+                    constraints: const BoxConstraints(minWidth: 300),
+                    height: double.infinity,
+                    child: ShopWaletDrawer(
                       articles: state.articles,
-                    );
-                  } else if (state is ProfileDrawerState) {
-                    return const ProfileDrawerPage();
-                  } else {
-                    return Container(
-                      color: Colors.red,
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
-        ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else if (state is ProfileDrawerState) {
+            return Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  child: Container(
+                    constraints: const BoxConstraints(minWidth: 300),
+                    height: double.infinity,
+                    child: const ProfileDrawerPage(),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
       ),
     );
   }
@@ -59,7 +85,7 @@ class DrawerShop extends StatelessWidget {
 //! Shope walet
 class ShopWaletDrawer extends StatelessWidget {
   const ShopWaletDrawer({super.key, required this.articles});
-  final List<WelcomeArticle> articles;
+  final List<Article> articles;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -81,14 +107,34 @@ class ShopWaletDrawer extends StatelessWidget {
               ),
               title: Text(article.article),
               subtitle: Text(article.name),
-              trailing: MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => ArticleProduit(article: article)));
-                },
-                child: const Text("Acheter Now"),
+              trailing: Stack(
+                alignment: Alignment.centerRight,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 40),
+                    child: MaterialButton(
+                      hoverColor: Colors.green,
+                      color: Colors.amber,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) =>
+                                    ArticleProduit(article: article)));
+                      },
+                      child: const Text("Acheter Now"),
+                    ),
+                  ),
+                  IconButton(
+                      color: Colors.red,
+                      onPressed: () {
+                        BlocProvider.of<DrawerDataCubit>(context)
+                            .delletShopArtilceEvent(article.articleId);
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                      )),
+                ],
               ),
             );
           },
@@ -206,7 +252,7 @@ class _SercheDrawerState extends State<SercheDrawer> {
                   onPressed: () {
                     textEditingController.clear();
                     BlocProvider.of<DrawerDataCubit>(context)
-                        .drawerdataInitiale();
+                        .shoppingDataDrawerEvent();
                   },
                   icon: const Icon(Icons.clear),
                 ),
@@ -263,7 +309,7 @@ class _ProfileDrawerPageState extends State<ProfileDrawerPage> {
                         focusColor: Colors.amber,
                         onTap: () {
                           BlocProvider.of<DrawerDataCubit>(context)
-                              .drawerdataInitiale();
+                              .shoppingDataDrawerEvent();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -299,7 +345,7 @@ class _ProfileDrawerPageState extends State<ProfileDrawerPage> {
                   focusColor: Colors.amber,
                   onTap: () {
                     BlocProvider.of<DrawerDataCubit>(context)
-                        .drawerdataInitiale();
+                        .shoppingDataDrawerEvent();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -330,7 +376,7 @@ class _ProfileDrawerPageState extends State<ProfileDrawerPage> {
                   focusColor: Colors.amber,
                   onTap: () {
                     BlocProvider.of<DrawerDataCubit>(context)
-                        .drawerdataInitiale();
+                        .shoppingDataDrawerEvent();
                     BlocProvider.of<AuthCubit>(context).singOut();
                     Navigator.push(
                         context,

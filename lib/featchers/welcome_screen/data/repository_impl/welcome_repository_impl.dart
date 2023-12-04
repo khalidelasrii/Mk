@@ -3,7 +3,6 @@ import 'package:dartz/dartz.dart';
 import 'package:mk/core/errure/exeption.dart';
 import 'package:mk/core/errure/faillure.dart';
 import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
-import 'package:mk/featchers/welcome_screen/data/models/welcome_article_model.dart';
 import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart';
 import 'package:mk/featchers/welcome_screen/domain/repository/repository_welcome.dart';
 
@@ -44,28 +43,5 @@ class WelcomeRepositoryImpl implements RepositoryWelcome {
     } on ServerException {
       return Left(ServerFailure());
     }
-  }
-
-  @override
-  Future<Either<Faillure, List<WelcomeArticle>>> shopArticleWalet() async {
-    try {
-      return Right(await welcomeDataSource.shopArticleWalet());
-    } on ServerException {
-      return Left(ServerFailure());
-    }
-  }
-
-  @override
-  Future<void> addArticleInwalet(WelcomeArticle article) async {
-    return await welcomeDataSource.addArticleInWalet(WelcomeArticleModel(
-        article: article.article,
-        articleId: article.articleId,
-        articleType: article.articleType,
-        articleUrl: article.articleUrl,
-        email: article.email,
-        name: article.name,
-        prix: article.prix,
-        uid: article.uid,
-        date: article.date));
   }
 }

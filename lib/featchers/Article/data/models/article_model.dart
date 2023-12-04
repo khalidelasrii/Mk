@@ -1,34 +1,41 @@
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
-  const ArticleModel(
-      {required super.uid,
-      required super.articleType,
-      required super.email,
-      required super.article,
-      required super.name,
-      required super.prix,
-      required super.articleId});
+  const ArticleModel({
+    required super.uid,
+    required super.articleType,
+    required super.email,
+    required super.name,
+    required super.prix,
+    required super.article,
+    required super.articleId,
+    required super.articleUrl,
+    super.date,
+  });
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
       uid: map['uid'],
-      articleType: map['articleType'] ?? '',
-      email: map['email'] ?? '',
-      articleId: map['articleId'] ?? '',
-      article: map['article'] ?? '',
+      articleType: map['articleType'],
+      email: map['email'],
       name: map['name'] ?? '',
-      prix: map['prix'] ?? 0.0,
+      prix: map['prix'] ?? '',
+      article: map['article'] ?? '',
+      articleId: map['articleId'] ?? '',
+      articleUrl: map['articleUrl'],
     );
   }
   Map<String, dynamic> toMap() {
     return {
+      "email": email,
       "uid": uid,
-      'articleId': articleId,
-      'article': article,
+      "articleType": articleType,
+      "articleId": articleId,
+      "articleUrl": articleUrl,
       'name': name,
       'prix': prix,
-      'email': email,
+      'article': article,
+      'date': date
     };
   }
 }

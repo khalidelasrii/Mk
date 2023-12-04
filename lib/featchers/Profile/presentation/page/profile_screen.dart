@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
-import 'package:mk/core/Widgets/core_widgets.dart';
+import 'package:mk/core/const_widget/core_widgets.dart';
 import 'package:mk/core/Widgets/drawer_shop.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/Profile/domaine/entitie/profile_user.dart';
 import 'package:mk/featchers/Profile/presentation/bloc/get_Mes_article/get_mes_article_cubit.dart';
 import 'package:mk/featchers/Profile/presentation/bloc/get_profile/get_pofile_cubit.dart';
+import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../../../Authontification/domain/entitie/user.dart';
-import '../../../welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../widgets/about_nous.dart';
 import '../widgets/article_profile.dart';
 import '../widgets/profile_Info.dart';

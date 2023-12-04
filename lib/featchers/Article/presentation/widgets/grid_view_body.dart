@@ -7,11 +7,11 @@ import 'package:mk/featchers/Article/presentation/bloc/add_delet_update/addordel
 import 'package:mk/featchers/Article/presentation/bloc/article/article_bloc.dart';
 import 'package:mk/featchers/Article/presentation/ui/add_article.dart';
 import 'package:mk/featchers/welcome_screen/domain/entitie/welcome_article.dart';
-import 'package:mk/featchers/welcome_screen/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 
-import '../../../../core/Widgets/core_widgets.dart';
+import '../../../../core/const_widget/core_widgets.dart';
 import '../../domain/entitie/article.dart';
 import '../../../welcome_screen/presentation/ui/article_produit.dart';
+import '../bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 
 class GridViewBody extends StatefulWidget {
   const GridViewBody({super.key, required this.user});
