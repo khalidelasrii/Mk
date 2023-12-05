@@ -1,17 +1,17 @@
 import 'package:mk/featchers/Article/domain/entitie/article.dart';
 
 class ArticleModel extends Article {
-  const ArticleModel({
-    required super.uid,
-    required super.articleType,
-    required super.email,
-    required super.name,
-    required super.prix,
-    required super.article,
-    required super.articleId,
-    required super.articleUrl,
-    super.date,
-  });
+  const ArticleModel(
+      {required super.uid,
+      required super.articleType,
+      required super.email,
+      required super.name,
+      required super.prix,
+      required super.article,
+      required super.articleId,
+      required super.articleUrl,
+      super.date,
+      super.likers});
 
   factory ArticleModel.fromMap(Map<String, dynamic> map) {
     return ArticleModel(
@@ -35,7 +35,8 @@ class ArticleModel extends Article {
       'name': name,
       'prix': prix,
       'article': article,
-      'date': date
+      'date': date,
+      "likers": likers,
     };
   }
 }

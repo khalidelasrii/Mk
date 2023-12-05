@@ -24,17 +24,16 @@ class DrawerShop extends StatelessWidget {
       child: BlocBuilder<DrawerDataCubit, DrawerDataState>(
         builder: (context, state) {
           if (state is SearchDrawerState) {
-            return Row(
+            return const Row(
               children: [
                 Expanded(
                   flex: 2,
-                  child: Container(),
+                  child: SizedBox(),
                 ),
                 Expanded(
-                  child: Container(
-                    constraints: const BoxConstraints(minWidth: 300),
+                  child: SizedBox(
                     height: double.infinity,
-                    child: const SercheDrawer(),
+                    child: SercheDrawer(),
                   ),
                 ),
               ],
@@ -42,13 +41,12 @@ class DrawerShop extends StatelessWidget {
           } else if (state is ShoppingDrawerPageState) {
             return Row(
               children: [
-                Expanded(
+                const Expanded(
                   flex: 2,
-                  child: Container(),
+                  child: SizedBox(),
                 ),
                 Expanded(
-                  child: Container(
-                    constraints: const BoxConstraints(minWidth: 300),
+                  child: SizedBox(
                     height: double.infinity,
                     child: ShopWaletDrawer(
                       articles: state.articles,
@@ -58,17 +56,16 @@ class DrawerShop extends StatelessWidget {
               ],
             );
           } else if (state is ProfileDrawerState) {
-            return Row(
+            return const Row(
               children: [
                 Expanded(
                   flex: 2,
-                  child: Container(),
+                  child: SizedBox(),
                 ),
                 Expanded(
-                  child: Container(
-                    constraints: const BoxConstraints(minWidth: 300),
+                  child: SizedBox(
                     height: double.infinity,
-                    child: const ProfileDrawerPage(),
+                    child: ProfileDrawerPage(),
                   ),
                 ),
               ],
@@ -177,14 +174,17 @@ class _SercheDrawerState extends State<SercheDrawer> {
                       List<Article> document = snapshot.data!.docs.map((sub) {
                         final data = sub.data();
                         return Article(
-                            articleUrl: data["articleUrl"],
-                            uid: data["uid"],
-                            articleType: data["articleType"],
-                            email: data["email"],
-                            article: data["article"],
-                            name: data["name"],
-                            prix: data["prix"],
-                            articleId: data["articleId"]);
+                          articleUrl: data["articleUrl"],
+                          uid: data["uid"],
+                          articleType: data["articleType"],
+                          email: data["email"],
+                          article: data["article"],
+                          name: data["name"],
+                          prix: data["prix"],
+                          articleId: data["articleId"],
+                          date: data["date"],
+                          likers: data["likers"],
+                        );
                       }).toList();
 
                       return Padding(

@@ -33,7 +33,11 @@ class WelcomeRepositoryImpl implements RepositoryWelcome {
   @override
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> searchResults(
       String query) async {
-    return await welcomeDataSource.searchResults(query);
+    try {
+      return await welcomeDataSource.searchResults(query);
+    } catch (e) {
+      return const Stream.empty();
+    }
   }
 
   @override

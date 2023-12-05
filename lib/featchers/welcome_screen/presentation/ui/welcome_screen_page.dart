@@ -10,6 +10,7 @@ import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.d
 import 'package:mk/injection_container.dart' as di;
 import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
+import '../widgets/calité/calete_widget.dart';
 import '../widgets/profileInwelcom/autre_profile_option.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
@@ -94,11 +95,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ],
             ),
           ]),
+          const CaleteWidgets(),
           const AutreProfileOption(),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: SliderCarousel(),
-          )
+          const SliderCarousel(),
         ])),
         BlocBuilder<DrawerDataCubit, DrawerDataState>(
           builder: (context, state) {

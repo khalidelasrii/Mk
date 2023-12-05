@@ -61,7 +61,7 @@ class Maktabati extends StatelessWidget {
             hintColor: Colors.red,
             shadowColor: Colors.white,
           ),
-          home: const WelcomeScreen(),
+          home: WelcomeScreen(),
         ));
   }
 }

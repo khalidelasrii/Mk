@@ -81,7 +81,9 @@ class ArticleRepositoryImpl implements RepositoryArticles {
         name: article.name,
         prix: article.prix,
         articleId: article.articleId,
-        articleUrl: article.articleUrl));
+        articleUrl: article.articleUrl,
+        date: article.date,
+        likers: article.likers));
   }
 
   @override

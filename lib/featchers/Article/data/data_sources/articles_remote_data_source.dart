@@ -118,96 +118,108 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
   @override
   Future<Unit> delletArticle(String typeArticle, String id) async {
-    await _firestore.collection('Articles').doc(id).delete();
-    await _firestore
-        .collection('Articles')
-        .doc(_auth!.uid)
-        .collection(typeArticle)
-        .doc(id)
-        .delete();
-    await _firestore
-        .collection('Articles')
-        .doc(_auth!.uid)
-        .collection("AllCategorie")
-        .doc(id)
-        .delete();
-    await _firestore
-        .collection('Searche')
-        .doc(typeArticle)
-        .collection(typeArticle)
-        .doc(id)
-        .delete();
+    try {
+      await _firestore.collection('Articles').doc(id).delete();
+      await _firestore
+          .collection('Articles')
+          .doc(_auth!.uid)
+          .collection(typeArticle)
+          .doc(id)
+          .delete();
+      await _firestore
+          .collection('Articles')
+          .doc(_auth!.uid)
+          .collection("AllCategorie")
+          .doc(id)
+          .delete();
+      await _firestore
+          .collection('Searche')
+          .doc(typeArticle)
+          .collection(typeArticle)
+          .doc(id)
+          .delete();
 
-    await _firestore.collection('Searche').doc(id).delete();
+      await _firestore.collection('Searche').doc(id).delete();
+    } catch (e) {
+      print(e);
+    }
 
     return unit; // Utilisez "unit" ici au lieu de "Future.value(unit)"
   }
 
   @override
   Future<Unit> updateArticle(Article article) async {
-    //! update  Article in user walet
+    try {
+      //! update  Article in user walet
 
-    await _firestore
-        .collection('Articles')
-        .doc(_auth!.uid)
-        .collection(article.articleType)
-        .doc(article.articleId)
-        .set({
-      "uid": _auth!.uid,
-      "articleId": article.articleId,
-      'articleType': article.articleType,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': _auth!.email,
-      'articleUrl': article.articleUrl,
-      "likers": article.likers,
-      "date": article.date,
-    });
+      await _firestore
+          .collection('Articles')
+          .doc(_auth!.uid)
+          .collection(article.articleType)
+          .doc(article.articleId)
+          .set({
+        "uid": _auth!.uid,
+        "articleId": article.articleId,
+        'articleType': article.articleType,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': _auth!.email,
+        'articleUrl': article.articleUrl,
+        "likers": article.likers,
+        "date": article.date,
+      });
 
-    //! update  All Categorie of article
-    await _firestore.collection('Searche').doc(article.articleId).set({
-      "uid": _auth!.uid,
-      "articleId": article.articleId,
-      'articleType': article.articleType,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': _auth!.email,
-      'articleUrl': article.articleUrl,
-      "likers": article.likers,
-      "date": article.date,
-    });
-    //! update   article par categorie
+      //! update  All Categorie of article
+      await _firestore.collection('Searche').doc(article.articleId).set({
+        "uid": _auth!.uid,
+        "articleId": article.articleId,
+        'articleType': article.articleType,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': _auth!.email,
+        'articleUrl': article.articleUrl,
+        "likers": article.likers,
+        "date": article.date,
+      });
+      //! update   article par categorie
 
-    await _firestore
-        .collection('Searche')
-        .doc(article.articleType)
-        .collection(article.articleType)
-        .doc(article.articleId)
-        .set({
-      "uid": _auth!.uid,
-      "articleId": article.articleId,
-      'articleType': article.articleType,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': _auth!.email,
-      'articleUrl': article.articleUrl,
-      "likers": article.likers,
-      "date": article.date,
-    });
-    return unit;
+      await _firestore
+          .collection('Searche')
+          .doc(article.articleType)
+          .collection(article.articleType)
+          .doc(article.articleId)
+          .set({
+        "uid": _auth!.uid,
+        "articleId": article.articleId,
+        'articleType': article.articleType,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': _auth!.email,
+        'articleUrl': article.articleUrl,
+        "likers": article.likers,
+        "date": article.date,
+      });
+      return unit;
+    } catch (e) {
+      return unit;
+    }
   }
 
   @override
   Future<Stream<QuerySnapshot<Map>>> getArticlesPartype(String type) async {
-    return _firestore
-        .collection('Searche')
-        .doc(type)
-        .collection(type)
-        .orderBy("date", descending: true)
-        .snapshots();
+    try {
+      return _firestore
+          .collection('Searche')
+          .doc(type)
+          .collection(type)
+          .orderBy("date", descending: true)
+          .snapshots();
+    } catch (e) {
+      return Stream.error(e);
+    }
   }
 
   @override
@@ -234,131 +246,157 @@ class ArticlesFirebase implements ArticlesRemoteDataSource {
 
   @override
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getAllArticles() async {
-    return _firestore
-        .collection('Searche')
-        .orderBy("date", descending: true)
-        .snapshots();
+    try {
+      return _firestore
+          .collection('Searche')
+          .orderBy("date", descending: true)
+          .snapshots();
+    } catch (e) {
+      return Stream.error(e);
+    }
   }
 
   @override
   Future<void> addLiketoArticle(Article article) async {
-//! add article for all users users  of categorie
-    await _firestore.collection('Searche').doc(article.articleId).set({
-      "articleType": article.articleType,
-      'uid': article.uid,
-      'articleId': article.articleId,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': article.email,
-      'articleUrl': article.articleUrl,
-      'date': article.date,
-      "likers": article.likers
-    });
-    //! add article for all users users  of categorie
+    try {
+      //! add article for all users users  of categorie
+      await _firestore.collection('Searche').doc(article.articleId).set({
+        "articleType": article.articleType,
+        'uid': article.uid,
+        'articleId': article.articleId,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': article.email,
+        'articleUrl': article.articleUrl,
+        'date': article.date,
+        "likers": article.likers
+      });
+      //! add article for all users users  of categorie
 
-    await _firestore
-        .collection('Searche')
-        .doc(article.articleType)
-        .collection(article.articleType)
-        .doc(article.articleId)
-        .set({
-      "articleType": article.articleType,
-      'uid': article.uid,
-      'articleId': article.articleId,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': article.email,
-      'articleUrl': article.articleUrl,
-      'date': article.date,
-      "likers": article.likers
-    });
+      await _firestore
+          .collection('Searche')
+          .doc(article.articleType)
+          .collection(article.articleType)
+          .doc(article.articleId)
+          .set({
+        "articleType": article.articleType,
+        'uid': article.uid,
+        'articleId': article.articleId,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': article.email,
+        'articleUrl': article.articleUrl,
+        'date': article.date,
+        "likers": article.likers
+      });
 
-    await _firestore
-        .collection('Articles')
-        .doc(article.uid)
-        .collection("AllCategorie")
-        .doc(article.articleId)
-        .set({
-      "uid": article.uid,
-      "articleId": article.articleId,
-      'articleType': article.articleType,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': article.email,
-      'articleUrl': article.articleUrl,
-      "date": article.date,
-      "likers": article.likers,
-    });
+      await _firestore
+          .collection('Articles')
+          .doc(article.uid)
+          .collection("AllCategorie")
+          .doc(article.articleId)
+          .set({
+        "uid": article.uid,
+        "articleId": article.articleId,
+        'articleType': article.articleType,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': article.email,
+        'articleUrl': article.articleUrl,
+        "date": article.date,
+        "likers": article.likers,
+      });
 
-    await _firestore
-        .collection('Articles')
-        .doc(article.uid)
-        .collection(article.articleType)
-        .doc(article.articleId)
-        .set({
-      "uid": article.uid,
-      "articleId": article.articleId,
-      'articleType': article.articleType,
-      'article': article.article,
-      'name': article.name,
-      'prix': article.prix,
-      'email': _auth!.email,
-      'articleUrl': article.articleUrl,
-      "date": article.date,
-      "likers": article.likers,
-    });
+      await _firestore
+          .collection('Articles')
+          .doc(article.uid)
+          .collection(article.articleType)
+          .doc(article.articleId)
+          .set({
+        "uid": article.uid,
+        "articleId": article.articleId,
+        'articleType': article.articleType,
+        'article': article.article,
+        'name': article.name,
+        'prix': article.prix,
+        'email': _auth!.email,
+        'articleUrl': article.articleUrl,
+        "date": article.date,
+        "likers": article.likers,
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Future<void> addArticleInWalet(ArticleModel article) async {
-    await _firestore
-        .collection("Users")
-        .doc(_auth!.uid)
-        .collection("Articles")
-        .doc(article.articleId)
-        .set(article.toMap());
+    try {
+      await _firestore
+          .collection("Users")
+          .doc(_auth!.uid)
+          .collection("Articles")
+          .doc(article.articleId)
+          .set(article.toMap());
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> shopArticleWalet() async {
-    return _firestore
-        .collection("Users")
-        .doc(_auth!.uid)
-        .collection("Articles")
-        .snapshots();
+    try {
+      return _firestore
+          .collection("Users")
+          .doc(_auth!.uid)
+          .collection("Articles")
+          .snapshots();
+    } catch (e) {
+      return Stream.error(0);
+    }
   }
 
   @override
   Future<List<Article>> getShopArticleWalet() async {
-    final articles = await _firestore
-        .collection("Users")
-        .doc(_auth!.uid)
-        .collection("Articles")
-        .get();
-    return articles.docs.map((sub) {
-      final subArticleData = sub.data();
-      return Article(
-          uid: subArticleData['uid'],
-          articleType: subArticleData['articleType'],
-          email: subArticleData['email'],
-          article: subArticleData['article'],
-          name: subArticleData['name'],
-          prix: subArticleData['prix'],
-          articleId: sub.id,
-          articleUrl: subArticleData['articleUrl']);
-    }).toList();
+    try {
+      final articles = await _firestore
+          .collection("Users")
+          .doc(_auth!.uid)
+          .collection("Articles")
+          .get();
+      return articles.docs.map((sub) {
+        final subArticleData = sub.data();
+        return Article(
+            uid: subArticleData['uid'],
+            articleType: subArticleData['articleType'],
+            email: subArticleData['email'],
+            article: subArticleData['article'],
+            name: subArticleData['name'],
+            prix: subArticleData['prix'],
+            articleId: sub.id,
+            articleUrl: subArticleData['articleUrl'],
+            date: subArticleData['date'],
+            likers: subArticleData['likers']);
+      }).toList();
+    } catch (e) {
+      return [];
+    }
   }
 
   @override
   Future<void> delletShopArticleWalet(String articleId) async {
-    await _firestore
-        .collection("Users")
-        .doc(_auth!.uid)
-        .collection("Articles")
-        .doc(articleId)
-        .delete();
+    try {
+      await _firestore
+          .collection("Users")
+          .doc(_auth!.uid)
+          .collection("Articles")
+          .doc(articleId)
+          .delete();
+    } catch (e) {
+      print(e);
+    }
   }
 }
