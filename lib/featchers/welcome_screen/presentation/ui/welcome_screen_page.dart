@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/drawer_shop.dart';
@@ -9,11 +10,15 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bl
 import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.dart';
 import 'package:mk/injection_container.dart' as di;
 import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
+import '../../../Authontification/presentation/cubit/auth_cubit.dart';
+import '../../../Authontification/presentation/ui/sing_in.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
 import '../widgets/calité/calete_widget.dart';
+import '../widgets/opportunités/opportunite.dart';
 import '../widgets/profileInwelcom/autre_profile_option.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
+import '../widgets/slider/deffiintion_widget.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -23,6 +28,20 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  User? user;
+  bool auth = false;
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.authStateChanges().listen((User? usr) {
+      if (usr != null) {
+        setState(() {
+          user = usr;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -33,8 +52,72 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         BlocProvider(create: (context) => di.sl<UsersWelcomeScreenCubit>()),
       ],
       child: Scaffold(
-        backgroundColor: mybluebackgroundcolor,
+        backgroundColor: Colors.white,
         body: __buildbody(context),
+        bottomNavigationBar: user == null && auth == false
+            ? Container(
+                decoration: BoxDecoration(
+                    color: mybluebackgroundcolor,
+                    border: Border.all(color: Colors.amber, width: 1)),
+                height: 50,
+                constraints: const BoxConstraints(maxWidth: 50000),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      const Text(
+                        "Explore with freedom! Log in to access exclusive areas and personalized features for our members",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      MaterialButton(
+                          hoverColor: Colors.amber,
+                          color: Colors.green,
+                          onPressed: () {
+                            BlocProvider.of<AuthCubit>(context).singGoogle();
+                          },
+                          child: const Text("Sing with Google")),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      MaterialButton(
+                          hoverColor: Colors.amber,
+                          color: Colors.green,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const SingIn()));
+                          },
+                          child: const Text("Sing In")),
+                      const SizedBox(
+                        width: 12,
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              auth = true;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          )),
+                      const SizedBox(
+                        width: 12,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            : const SizedBox(),
       ),
     );
   }
@@ -96,8 +179,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ]),
           const CaleteWidgets(),
-          const AutreProfileOption(),
+          DeffinitionWidgets(),
+
           const SliderCarousel(),
+          Opportunite()
+          // const AutreProfileOption(),
         ])),
         BlocBuilder<DrawerDataCubit, DrawerDataState>(
           builder: (context, state) {

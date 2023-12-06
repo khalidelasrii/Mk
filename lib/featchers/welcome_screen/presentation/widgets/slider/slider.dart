@@ -82,12 +82,9 @@ class _SliderCarouselState extends State<SliderCarousel> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                border: Border.all(color: Colors.red, width: 2)),
+          child: SizedBox(
+            height: 250, // Adjust the height of the carousel items
 
-            height: 200, // Adjust the height of the carousel items
             child: InfiniteCarousel.builder(
               controller: _controller,
 
@@ -100,37 +97,60 @@ class _SliderCarouselState extends State<SliderCarousel> {
           ),
         ),
         SizedBox(
-          height: 190,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      // Animate to the previous item
-                      _controller.previousItem();
-                    },
-                    icon: const Icon(
-                      Icons.arrow_circle_left_outlined,
-                      size: 40,
-                      color: Colors.white,
-                    )),
-                const Expanded(child: SizedBox()),
-                IconButton(
-                    onPressed: () {
-                      _controller.nextItem();
-                    },
-                    icon: const Icon(
-                      Icons.arrow_circle_right_outlined,
-                      size: 40,
-                      color: Colors.white,
-                    )),
-                const SizedBox(
-                  width: 15,
-                )
-              ],
-            ),
+          height: 250,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 90,
+                    height: 250,
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                      Colors.white,
+                      Color.fromARGB(76, 255, 255, 255)
+                    ])),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        // Animate to the previous item
+                        _controller.previousItem();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_circle_left_outlined,
+                        size: 40,
+                        color: Colors.green,
+                      )),
+                ],
+              ),
+              const Expanded(child: SizedBox()),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 90,
+                    height: 250,
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                      Color.fromARGB(76, 255, 255, 255),
+                      Colors.white,
+                    ])),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        // Animate to the previous item
+                        _controller.nextItem();
+                      },
+                      icon: const Icon(
+                        Icons.arrow_circle_right_outlined,
+                        size: 40,
+                        color: Colors.green,
+                      )),
+                ],
+              ),
+            ],
           ),
         ),
       ],
@@ -160,21 +180,20 @@ class CircularBorderButton extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            constraints: const BoxConstraints(maxWidth: 70, minHeight: 70),
+            constraints: const BoxConstraints(maxWidth: 100, minHeight: 100),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.amber,
+                color: Colors.grey,
                 width: 2.0,
               ),
             ),
             child: MaterialButton(
               onPressed: () {},
-              hoverColor: Colors.amber,
+              hoverColor: Colors.blue,
               shape: const CircleBorder(),
               child: Icon(
                 icon1,
-                color: Colors.white,
               ),
             ),
           ),
@@ -182,21 +201,20 @@ class CircularBorderButton extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            constraints: const BoxConstraints(maxWidth: 70, minHeight: 70),
+            constraints: const BoxConstraints(maxWidth: 100, minHeight: 100),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.amber,
+                color: Colors.grey,
                 width: 2.0,
               ),
             ),
             child: MaterialButton(
               onPressed: () {},
-              hoverColor: Colors.amber,
+              hoverColor: Colors.blue,
               shape: const CircleBorder(),
               child: Icon(
                 icon2,
-                color: Colors.white,
               ),
             ),
           ),

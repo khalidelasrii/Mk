@@ -11,7 +11,7 @@ class _CaleteWidgetsState extends State<CaleteWidgets> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 94, 57, 8),
+      color: const Color.fromARGB(255, 94, 57, 8),
       width: double.infinity,
       height: 400,
       child: const Center(

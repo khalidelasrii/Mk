@@ -136,13 +136,15 @@ class _AppbarWelcomeState extends State<AppbarWelcome> {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   int cont = 0;
-                                  List<Messages> x =
+                                  List<Messages> countList = [];
+
+                                  countList.addAll(
                                       snapshot.data!.docs.map((subdata) {
                                     final subEmail = subdata.data();
                                     return Messages(
                                         message: '', nbrvu: subEmail["nbr"]);
-                                  }).toList();
-                                  for (Messages i in x) {
+                                  }).toList());
+                                  for (Messages i in countList) {
                                     cont = i.nbrvu + cont;
                                   }
                                   return Stack(
