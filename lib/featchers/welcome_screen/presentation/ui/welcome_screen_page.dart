@@ -7,18 +7,19 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_
 import 'package:mk/core/Widgets/appbar_welcom.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/users_welcome_screen/users_welcome_screen_cubit.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bloc/welcome_article_bloc_bloc.dart';
-import 'package:mk/featchers/welcome_screen/presentation/widgets/slider/slider.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/approvisionnez_usine.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/deffiintion_widget.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/faites_commerce.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/slider.dart';
 import 'package:mk/injection_container.dart' as di;
 import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
 import '../../../Authontification/presentation/cubit/auth_cubit.dart';
 import '../../../Authontification/presentation/ui/sing_in.dart';
 import '../bloc/secondcont_cuibit/secoundcont_cubit.dart';
-import '../widgets/calité/calete_widget.dart';
+import '../widgets/opportunités/calete_widget.dart';
 import '../widgets/opportunités/opportunite.dart';
-import '../widgets/profileInwelcom/autre_profile_option.dart';
 import '../widgets/ground_containers_botons.dart';
 import '../widgets/bar_de_boton_page.dart';
-import '../widgets/slider/deffiintion_widget.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -179,11 +180,44 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
           ]),
           const CaleteWidgets(),
-          DeffinitionWidgets(),
-
+          const DeffinitionWidgets(),
           const SliderCarousel(),
-          Opportunite()
+          // text o safi
+          Container(
+            color: Colors.grey[200],
+            width: double.infinity,
+            child: const Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                "Découvrez vos prochaines opportunités commerciales",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          const Opportunite(),
           // const AutreProfileOption(),
+          const SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                "Approvisionnez-vous directement auprès de l'usine:",
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          const ApprovisionnezUsine(),
+          const FaitesCommerce(),
+          const SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
+              child: Text(
+                "Rationalisez la commande de la recherche à l’exécution, le tout en un seul endroit",
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ])),
         BlocBuilder<DrawerDataCubit, DrawerDataState>(
           builder: (context, state) {

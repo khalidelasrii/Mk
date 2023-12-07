@@ -39,6 +39,7 @@ flutter:
   assets:
     - images/
     - images/slider/
+    - images/welcome/
 
   # example:
   # fonts:
