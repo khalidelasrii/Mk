@@ -10,6 +10,7 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bl
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/approvisionnez_usine.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/deffiintion_widget.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/faites_commerce.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/rationalisez_commande.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/slider.dart';
 import 'package:mk/injection_container.dart' as di;
 import '../../../Article/presentation/bloc/drawer_data_cuibit/drawer_data_cubit.dart';
@@ -73,6 +74,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                       const Text(
                         "Explore with freedom! Log in to access exclusive areas and personalized features for our members",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       const SizedBox(
@@ -144,27 +147,29 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: RichText(
-                    text: const TextSpan(
-                      children: [
-                        TextSpan(
-                            text:
-                                'Innovative Solutions for Global Transactions:',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text:
-                                '\n\n  MiloTeck Ecommerce Platform Redefining International Commerce',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold))
-                      ],
-                    ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        "  Innovative Solutions for Global Transactions:",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 60,
+                            fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                          "MiloTeck Ecommerce Platform Redefining International Commerce",
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ))
+                    ],
                   ),
                 ),
               ],
@@ -190,6 +195,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               padding: EdgeInsets.all(20),
               child: Text(
                 "Découvrez vos prochaines opportunités commerciales",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
@@ -202,6 +209,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               padding: EdgeInsets.all(20),
               child: Text(
                 "Approvisionnez-vous directement auprès de l'usine:",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ),
@@ -214,10 +223,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
               child: Text(
                 "Rationalisez la commande de la recherche à l’exécution, le tout en un seul endroit",
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
               ),
             ),
           ),
+          const RationalisezCommande()
         ])),
         BlocBuilder<DrawerDataCubit, DrawerDataState>(
           builder: (context, state) {

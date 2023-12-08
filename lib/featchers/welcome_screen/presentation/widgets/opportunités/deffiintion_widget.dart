@@ -15,11 +15,13 @@ class DeffinitionWidgets extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              child: Padding(
-                padding: EdgeInsets.all(30),
+            const Padding(
+              padding: EdgeInsets.all(30),
+              child: SizedBox(
                 child: Text(
-                  "Découvrez des millions\n d’offres  adaptées aux \n besoins de votre...",
+                  "Découvrez des millions\n d’offres  adaptées aux \n besoins de votre",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
                 ),
               ),
