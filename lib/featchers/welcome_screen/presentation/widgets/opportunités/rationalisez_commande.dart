@@ -63,7 +63,7 @@ class _RationalisezCommandeState extends State<RationalisezCommande> {
                     child: Icon(
                       Icons.abc,
                       size: trueorfalse == false ? 30 : 50,
-                      color: trueorfalse == false ? Colors.blue : Colors.red,
+                      color: trueorfalse == false ? Colors.white : Colors.red,
                     )),
               ),
               Padding(
@@ -105,154 +105,157 @@ class _RationalisezCommandeState extends State<RationalisezCommande> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 50),
-            child: SizedBox(
-              width: 700,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    myBottonWidget(
-                        'Recherchez des offres ',
-                        "Recherchez et filtrez parmi des millions d’offres de produits et de fournisseurs pour trouver ceux qui correspondent à votre entreprise",
-                        1,
-                        one),
-                    MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          one = true;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          one = false;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 45),
-                        child: Align(
-                          alignment: Alignment
-                              .centerLeft, // Adjust the alignment of the line
-                          child: Container(
-                            width: 2,
-                            height: one == true || two == true ? 50 : 20,
-                            color: Colors.black,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 50),
+              child: SizedBox(
+                width: 700,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      myBottonWidget(
+                          'Recherchez des offres ',
+                          "Recherchez et filtrez parmi des millions d’offres de produits et de fournisseurs pour trouver ceux qui correspondent à votre entreprise",
+                          1,
+                          one),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            one = true;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            one = false;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 45),
+                          child: Align(
+                            alignment: Alignment
+                                .centerLeft, // Adjust the alignment of the line
+                            child: Container(
+                              width: 2,
+                              height: one == true || two == true ? 50 : 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    myBottonWidget(
-                        'identifiez le bon fournisseur  ',
-                        "Évaluez la qualité des produits et les capacités des fournisseurs facilement et efficacement grâce à des inspections vérifiées et à des outils d’approvisionnement numérique.",
-                        2,
-                        two),
-                    MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          two = true;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          two = false;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 45),
-                        child: Align(
-                          alignment: Alignment
-                              .centerLeft, // Adjust the alignment of the line
-                          child: Container(
-                            width: 2,
-                            height: tree == true || two == true ? 50 : 20,
-                            color: Colors.black,
+                      myBottonWidget(
+                          'identifiez le bon fournisseur  ',
+                          "Évaluez la qualité des produits et les capacités des fournisseurs facilement et efficacement grâce à des inspections vérifiées et à des outils d’approvisionnement numérique.",
+                          2,
+                          two),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            two = true;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            two = false;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 45),
+                          child: Align(
+                            alignment: Alignment
+                                .centerLeft, // Adjust the alignment of the line
+                            child: Container(
+                              width: 2,
+                              height: tree == true || two == true ? 50 : 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    myBottonWidget(
-                        'payez en toute sécurité ',
-                        "Payez votre commande dans plus de 20 devises par le biais de plus de 20 méthodes de paiement multiples et sécurisées, y compris des conditions de paiement flexibles.",
-                        3,
-                        tree),
-                    MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          tree = true;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          tree = false;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 45),
-                        child: Align(
-                          alignment: Alignment
-                              .centerLeft, // Adjust the alignment of the line
-                          child: Container(
-                            width: 2,
-                            height: tree == true || foor == true ? 50 : 20,
-                            color: Colors.black,
+                      myBottonWidget(
+                          'payez en toute sécurité ',
+                          "Payez votre commande dans plus de 20 devises par le biais de plus de 20 méthodes de paiement multiples et sécurisées, y compris des conditions de paiement flexibles.",
+                          3,
+                          tree),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            tree = true;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            tree = false;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 45),
+                          child: Align(
+                            alignment: Alignment
+                                .centerLeft, // Adjust the alignment of the line
+                            child: Container(
+                              width: 2,
+                              height: tree == true || foor == true ? 50 : 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    myBottonWidget(
-                        'procédez en toute sérénité ',
-                        "Répondez à vos besoins logistiques grâce au suivi en temps réel de plus de 26 000 itinéraires dans 220 pays et régions, assuré par Logistique Alibaba.com.",
-                        4,
-                        foor),
-                    MouseRegion(
-                      onEnter: (_) {
-                        setState(() {
-                          foor = true;
-                        });
-                      },
-                      onExit: (_) {
-                        setState(() {
-                          foor = false;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 45),
-                        child: Align(
-                          alignment: Alignment
-                              .centerLeft, // Adjust the alignment of the line
-                          child: Container(
-                            width: 2,
-                            height: five == true || foor == true ? 50 : 20,
-                            color: Colors.black,
+                      myBottonWidget(
+                          'procédez en toute sérénité ',
+                          "Répondez à vos besoins logistiques grâce au suivi en temps réel de plus de 26 000 itinéraires dans 220 pays et régions, assuré par Logistique Alibaba.com.",
+                          4,
+                          foor),
+                      MouseRegion(
+                        onEnter: (_) {
+                          setState(() {
+                            foor = true;
+                          });
+                        },
+                        onExit: (_) {
+                          setState(() {
+                            foor = false;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 45),
+                          child: Align(
+                            alignment: Alignment
+                                .centerLeft, // Adjust the alignment of the line
+                            child: Container(
+                              width: 2,
+                              height: five == true || foor == true ? 50 : 20,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    myBottonWidget(
-                        'procédez en toute sérénité ',
-                        "Répondez à vos besoins logistiques grâce au suivi en temps réel de plus de 26 000 itinéraires dans 220 pays et régions, assuré par Logistique Alibaba.com.",
-                        5,
-                        five),
-                  ]),
+                      myBottonWidget(
+                          'procédez en toute sérénité ',
+                          "Répondez à vos besoins logistiques grâce au suivi en temps réel de plus de 26 000 itinéraires dans 220 pays et régions, assuré par Logistique Alibaba.com.",
+                          5,
+                          five),
+                    ]),
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Image.asset(
-              "images/welcome/$numb.jpg",
-              height: 400,
-              width: 400,
-              fit: BoxFit.cover,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Image.asset(
+                "images/welcome/$numb.jpg",
+                height: 400,
+                width: 400,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

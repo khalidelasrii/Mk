@@ -10,6 +10,7 @@ import 'package:mk/featchers/welcome_screen/presentation/bloc/welcome_article_bl
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/approvisionnez_usine.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/deffiintion_widget.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/faites_commerce.dart';
+import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/personnalisez_votre.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/rationalisez_commande.dart';
 import 'package:mk/featchers/welcome_screen/presentation/widgets/opportunit%C3%A9s/slider.dart';
 import 'package:mk/injection_container.dart' as di;
@@ -32,6 +33,10 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   User? user;
   bool auth = false;
+  bool x = false;
+
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +47,137 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         });
       }
     });
+  }
+
+  Widget _buildBody(BuildContext context) {
+    scrollController.addListener(() {
+      if (scrollController.offset >= 100) {
+        setState(() {
+          x = true;
+        });
+      } else {
+        setState(() {
+          x = false;
+        });
+      }
+    });
+    return Stack(
+      children: [
+        SingleChildScrollView(
+            controller: scrollController,
+            child: Column(children: [
+              Stack(alignment: Alignment.topCenter, children: [
+                Stack(
+                  alignment: Alignment.centerLeft,
+                  children: [
+                    Container(
+                      color: Colors.black,
+                      height: 600,
+                      width: double.infinity,
+                      child: Opacity(
+                        opacity: 0.3,
+                        child: Image.asset(
+                          'images/GIFBACK.gif',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            "  Innovative Solutions for Global Transactions:",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                              "MiloTeck Ecommerce Platform Redefining International Commerce",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const Column(
+                  children: [
+                    //! Appbar Widget
+                    AppbarWelcome(),
+                    BarDeBotonPage(),
+                    //!   la Sous liste du Catégorie:
+                    ContainerAllCategorie(),
+                  ],
+                ),
+              ]),
+              const CaleteWidgets(),
+              const DeffinitionWidgets(),
+              const SliderCarousel(),
+              // text o safi
+              Container(
+                color: Colors.grey[200],
+                width: double.infinity,
+                child: const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    "Découvrez vos prochaines opportunités commerciales",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const Opportunite(),
+              // const AutreProfileOption(),
+              const SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    "Approvisionnez-vous directement auprès de l'usine:",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const ApprovisionnezUsine(),
+              const FaitesCommerce(),
+              const SizedBox(
+                width: double.infinity,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
+                  child: Text(
+                    "Rationalisez la commande de la recherche à l’exécution, le tout en un seul endroit",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              const RationalisezCommande(),
+              const PersonnalisezVotre(),
+            ])),
+        BlocBuilder<DrawerDataCubit, DrawerDataState>(
+          builder: (context, state) {
+            if (state is DrawerDataInitial) {
+              return const SizedBox();
+            } else {
+              return const DrawerShop();
+            }
+          },
+        )
+      ],
+    );
   }
 
   @override
@@ -55,7 +191,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ],
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: __buildbody(context),
+        appBar: x == true
+            ? AppBar(
+                backgroundColor: mybluebackgroundcolor,
+                flexibleSpace: const AppbarWelcome(),
+              )
+            : AppBar(
+                toolbarHeight: 0,
+              ),
+        body: _buildBody(context),
         bottomNavigationBar: user == null && auth == false
             ? Container(
                 decoration: BoxDecoration(
@@ -123,124 +267,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               )
             : const SizedBox(),
       ),
-    );
-  }
-
-  __buildbody(BuildContext context) {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-            child: Column(children: [
-          Stack(alignment: Alignment.topCenter, children: [
-            Stack(
-              alignment: Alignment.centerLeft,
-              children: [
-                Container(
-                  color: Colors.black,
-                  height: 600,
-                  width: double.infinity,
-                  child: Opacity(
-                    opacity: 0.3,
-                    child: Image.asset(
-                      'images/GIFBACK.gif',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        "  Innovative Solutions for Global Transactions:",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 60,
-                            fontWeight: FontWeight.bold),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                          "MiloTeck Ecommerce Platform Redefining International Commerce",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ))
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Column(
-              children: [
-                //! Appbar Widget
-                AppbarWelcome(),
-                BarDeBotonPage(),
-                //!   la Sous liste du Catégorie:
-                ContainerAllCategorie(),
-              ],
-            ),
-          ]),
-          const CaleteWidgets(),
-          const DeffinitionWidgets(),
-          const SliderCarousel(),
-          // text o safi
-          Container(
-            color: Colors.grey[200],
-            width: double.infinity,
-            child: const Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "Découvrez vos prochaines opportunités commerciales",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const Opportunite(),
-          // const AutreProfileOption(),
-          const SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "Approvisionnez-vous directement auprès de l'usine:",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const ApprovisionnezUsine(),
-          const FaitesCommerce(),
-          const SizedBox(
-            width: double.infinity,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 50),
-              child: Text(
-                "Rationalisez la commande de la recherche à l’exécution, le tout en un seul endroit",
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          const RationalisezCommande()
-        ])),
-        BlocBuilder<DrawerDataCubit, DrawerDataState>(
-          builder: (context, state) {
-            if (state is DrawerDataInitial) {
-              return const SizedBox();
-            } else {
-              return const DrawerShop();
-            }
-          },
-        )
-      ],
     );
   }
 }
