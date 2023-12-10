@@ -146,30 +146,108 @@ class PersonnalisezVotre extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20),
-                child: Container(
-                  height: 800,
-                  width: 500,
-                  color: Colors.amber,
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: 500,
+                      width: 500,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            "images/friend.jpg",
+                            fit: BoxFit.cover,
+                          )),
+                    ),
+                    Container(
+                      height: 500,
+                      width: 500,
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          gradient: LinearGradient(
+                              colors: [
+                                Color.fromRGBO(191, 54, 12, 1),
+                                Colors.transparent
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "NOTRE MISSION",
+                              style: TextStyle(color: Colors.amber[50]),
+                            ),
+                            Text(
+                              "Faciliter les échanges commerciaux dans le monde...",
+                              maxLines: 3,
+                              overflow: TextStyle().overflow,
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 40),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 50, horizontal: 50),
-                    child: Container(
-                      height: 400,
+                        vertical: 20, horizontal: 50),
+                    child: SizedBox(
+                      height: 200,
                       width: 500,
-                      color: Colors.amber,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            "images/mondmap.png",
+                            fit: BoxFit.cover,
+                          )),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 50, horizontal: 20),
-                    child: Container(
-                      height: 300,
-                      width: 500,
-                      color: Colors.amber,
+                        vertical: 20, horizontal: 20),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: 300,
+                          width: 500,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset(
+                                "images/aire.jpg",
+                                fit: BoxFit.cover,
+                              )),
+                        ),
+                        Container(
+                          height: 300,
+                          width: 500,
+                          decoration: const BoxDecoration(
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(224, 224, 224, 1),
+                                    Colors.transparent
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: const Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              "Une technologie responsable pour une transformation durable",
+                              maxLines: 2,
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ],
