@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mk/core/Widgets/drawer_shop.dart';
+import 'package:mk/core/Widgets/info_about_nous.dart';
 import 'package:mk/core/const_widget/my_colors.dart';
 import 'package:mk/featchers/welcome_screen/presentation/bloc/categoriecheldren_cuibit/categoriecheldren_cubit.dart';
 import 'package:mk/core/Widgets/appbar_welcom.dart';
@@ -166,6 +167,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               ),
               const RationalisezCommande(),
               const PersonnalisezVotre(),
+              const InfoAboutNous()
             ])),
         BlocBuilder<DrawerDataCubit, DrawerDataState>(
           builder: (context, state) {

@@ -1,0 +1,100 @@
+{
+  "name": "",
+  "css_prefix_text": "",
+  "css_use_suffix": false,
+  "hinting": true,
+  "units_per_em": 1000,
+  "ascent": 850,
+  "glyphs": [
+    {
+      "uid": "4c1ef492f1d2c39a2250ae457cee2a6e",
+      "css": "instagram-1",
+      "code": 59392,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "71064f0fa3be043351efdcaea9c5b8ea",
+      "css": "instagram",
+      "code": 61805,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "627abcdb627cb1789e009c08e2678ef9",
+      "css": "twitter-1",
+      "code": 61593,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "cb1b238b03c21450ef717fe3d8534d68",
+      "css": "twitter-2",
+      "code": 59394,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "d090355c31f497b61d676416c1fd39fb",
+      "css": "twitter",
+      "code": 62217,
+      "src": "entypo"
+    },
+    {
+      "uid": "ec3648a34c41b70671dc38dbb72deb04",
+      "css": "twitter-3",
+      "code": 61528,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "3e0d6ad6090a1e3937cf2dac38d853eb",
+      "css": "youtube",
+      "code": 61799,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "47a1f80457068fbeab69fdb83d7d0817",
+      "css": "youtube-play",
+      "code": 61802,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "57a4f84c40a0c44d47387105f162a427",
+      "css": "youtube-1",
+      "code": 59393,
+      "src": "zocial"
+    },
+    {
+      "uid": "993283c9447d547cdaa4618a9d157422",
+      "css": "facebook_square",
+      "code": 61570,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "c8a620baa7b8ea0db70149cb5da9b6ae",
+      "css": "facebook",
+      "code": 61594,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "4283eb9b8a2b741092e7e3e6c8943dae",
+      "css": "facebook_messenger",
+      "code": 62367,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "74c70e9699596fa9d000c2f13060a381",
+      "css": "linkedin",
+      "code": 61580,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "de0b4c8527be9d491c6b5a201b4b7130",
+      "css": "linkedin_in",
+      "code": 61665,
+      "src": "fontawesome5"
+    },
+    {
+      "uid": "1145676a91138011729fa2909997af66",
+      "css": "linkedin-squared",
+      "code": 62220,
+      "src": "fontawesome"
+    }
+  ]
+}
